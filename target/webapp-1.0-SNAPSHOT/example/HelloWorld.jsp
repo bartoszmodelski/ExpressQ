@@ -9,6 +9,8 @@
 <h2><s:property value="message"/></h2>
 
 <h3>Languages</h3>
+		<h4>Hello <s:property value="#session.loginId" /></h4>
+
 <ul>
     <li>
         <s:url id="url" action="HelloWorld">

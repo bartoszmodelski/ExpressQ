@@ -6,10 +6,18 @@
     <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
     <constant name="struts.devMode" value="true"/>
 
-    <!--<include file="example.xml"/>-->
+    <include file="example.xml"/>
 
     <package name="default" namespace="/" extends="struts-default">
-
+		
+		<interceptors>
+			<interceptor class="com.delta.expressq.example" name="LoginInterceptor"></interceptor>
+			<interceptor-stack name="myStack">
+				<interceptor-ref name ="LoginInterceptor"/>
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+		
         <default-action-ref name="index"/>
 
         <action name="index">
@@ -23,7 +31,7 @@
 			<result>login.jsp</result>
 		</action>
 		
-		<action name="result" class="com.delta.expressq.example.ResultAction">
+		<action name="result" class="com.delta.expressq.example.LoginAction" method="login">
 			<result name="SUCCESS">result.jsp</result>
 			<result name="ERROR">error.jsp</result>
 		</action>
