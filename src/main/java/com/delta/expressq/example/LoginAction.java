@@ -6,50 +6,56 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class LoginAction extends ActionSupport implements SessionAware{
-    private static final long serialVersionUID = 1L;
-    private Map<String, Object> session;
-	private String username;
+public class LoginAction extends ActionSupport implements SessionAware {
+
+	private static final long serialVersionUID = 1L;
+	private String userName;
 	private String password;
-	
-	public String login(){
-		if(getUsername() !=null && getUsername().equals(getPassword())){
-            session.put("loginId", username);
-			return "SUCCESS";
-		}else{
-			return "ERROR";
-	
+	private Map<String, Object> session;
+
+	public String home() {
+		return SUCCESS;
+	}
+
+	public String logOut() {
+		session.remove("loginId");
+		addActionMessage("You Have Been Logged Out");
+		return SUCCESS;
+	}
+
+	public String login() {
+		if (userName.equals("test") && password.equals("testpassword")) {
+			session.put("loginId", userName);
+			return SUCCESS;
+		} else {
+			addActionError("Please Enter Valid Username or Password");
+			return LOGIN;
 		}
 	}
-		
-    public String logOut() {
-        session.remove("loginId");
-        addActionMessage("You have been Successfully Logged Out");
-        return SUCCESS;
-}
 
-	
-	public String getUsername(){
-		return username;
+	public String getUserName() {
+		return userName;
 	}
-	
-	public void setUsername(String username){
-		this.username = username;
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return password;
 	}
-	
-	public void setPassword(String password){
+
+	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-    public Map<String, Object> getSession() {
-        return session;
-    }
-    public void setSession(Map<String, Object> map) {
-        this.session = map;
-    }	
+
+	public Map<String, Object> getSession() {
+		return session;
+	}
+
+	public void setSession(Map<String, Object> map) {
+		this.session = map;
+	}
+
 }
-	
+
