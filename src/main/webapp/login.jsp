@@ -9,11 +9,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login</title>
 <body>
+	<!-- action<> for testing purposes, delete when later -->
 	<s:actionmessage />
 
 	<s:actionerror />
 
-	<s:form id="idLoginForm" action="loginUser" namespace="/LoginUser">
+	<s:form id="idLoginForm" action="loginUser">
 		<s:textfield name="userName" placeholder="Username" label="Username" />
 		<s:password name="password" placeholder="Password" label="Password" />
 		<s:submit value="Submit" />

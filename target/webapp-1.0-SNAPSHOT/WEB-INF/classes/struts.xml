@@ -39,7 +39,7 @@
 			<result name="success">home.jsp</result>
 		</action>
 		<!--   logout action  -->
-		<action name="logOut" class="com.delta.expressq.example.LoginAction" method="logOut">
+		<action name="logout" class="com.delta.expressq.example.LoginAction" method="logout">
 			<result name="success">login.jsp</result>
 		</action>
 		

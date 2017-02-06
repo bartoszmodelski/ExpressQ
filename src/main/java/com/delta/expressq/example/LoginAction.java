@@ -17,18 +17,20 @@ public class LoginAction extends ActionSupport implements SessionAware {
 		return SUCCESS;
 	}
 
-	public String logOut() {
+	//log out user
+	public String logout() {
 		session.remove("loginId");
-		addActionMessage("You Have Been Logged Out");
+		addActionMessage("You Have Been Logged Out");//for testing delete later
 		return SUCCESS;
 	}
 
+	//authenticate and login user
 	public String login() {
 		if (userName.equals("test") && password.equals("testpassword")) {
 			session.put("loginId", userName);
 			return SUCCESS;
 		} else {
-			addActionError("Please Enter Valid Username or Password");
+			addActionError("Please Enter Valid Username or Password");//for testing delete later
 			return LOGIN;
 		}
 	}

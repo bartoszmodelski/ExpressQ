@@ -11,7 +11,7 @@
     </head>
     <body>
         Hello <s:property value="%{#session['loginId']}"/><br>
-        <a href="<s:url action="logOut"/>">LogOut</a>
+        <a href="<s:url action="logout"/>">LogOut</a>
     </body>
 </html>
 
