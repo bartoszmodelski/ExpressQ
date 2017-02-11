@@ -27,18 +27,19 @@
 			<result>login.jsp</result>
 		</action>
 
-		<!--   login action  -->
+		<!-- login action -->
 		<action name="loginUser" class="com.delta.expressq.example.LoginAction" method="login">
 			<result name="success" type="redirect">homeAction.action</result>
 			<result name="login">login.jsp</result>
 		</action>
 
-		<!-- home link action -->
+		<!-- home link action, change to website front page perhaps? -->
 		<action name="homeAction" class="com.delta.expressq.example.LoginAction" method="home">
 			<interceptor-ref name="loginStack" />
 			<result name="success">home.jsp</result>
 		</action>
-		<!--   logout action  -->
+		
+		<!-- logout action -->
 		<action name="logout" class="com.delta.expressq.example.LoginAction" method="logout">
 			<result name="success">login.jsp</result>
 		</action>

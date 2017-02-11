@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.delta.expressq.database.ConnectionManager;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class LoginAction extends ActionSupport implements SessionAware {
@@ -26,12 +27,13 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
 	//authenticate and login user
 	public String login() {
-		if (userName.equals("test") && password.equals("testpassword")) {
+		if (ConnectionManager.checkCredentials(userName, password) == false) {
+			addActionError("Please Enter Valid Username or Password");//for testing delete later
+			return LOGIN;		
+
+		} else {
 			session.put("loginId", userName);
 			return SUCCESS;
-		} else {
-			addActionError("Please Enter Valid Username or Password");//for testing delete later
-			return LOGIN;
 		}
 	}
 

@@ -46,7 +46,7 @@ public class ConnectionManager {
 			}
 			rs.close();
 			conn.close();
-		} catch (SQLException se) {
+		} catch (SQLException sqle) {
 			System.out.println("SQL query failed.");
 		}
 		return false;
