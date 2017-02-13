@@ -35,8 +35,8 @@ public class ConnectionManager {
 		try {
 			// Query returning a user with matching username and password.
 			pstmt = conn.prepareStatement("SELECT * FROM User WHERE Username = ? and Password = ?");
-			pstmt.setString(1, "test");
-			pstmt.setString(2, "test");
+			pstmt.setString(1, username);
+			pstmt.setString(2, password);
 			ResultSet rs = pstmt.executeQuery();
 			// Check whether a matching user was returned.
 			if (rs.next()) {
