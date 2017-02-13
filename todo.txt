@@ -1,3 +1,4 @@
 1. SQL Injection vulnerability
 2. ConnectionManager should handle all internal exceptions itself and throw one generic, when service cannot be provided.
+3. CM can connect only once and store connection for as long as possible.
 3. General clean-up of the project 
