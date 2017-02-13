@@ -8,10 +8,10 @@ public class ConnectionManager {
 	// JDBC driver name and database URL
 	// CHANGE FOR DEPLOYMENT
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_URL = "jdbc:mysql://localhost/ExpressQ";
+	private static final String DB_URL = "jdbc:mysql://sql8.freesqldatabase.com/sql8158754";
 	// Database credentials
-	private static final String DB_USER = "root";
-	private static final String DB_PASS = "";
+	private static final String DB_USER = "sql8158754";
+	private static final String DB_PASS = "CXcct8XvGL";
 	private static Connection conn = null;
 
 	// Method controlling connections to the database
@@ -34,9 +34,9 @@ public class ConnectionManager {
 		PreparedStatement pstmt = null;
 		try {
 			// Query returning a user with matching username and password.
-			pstmt = conn.prepareStatement("SELECT * FROM user WHERE Username = ? and Password = ?");
-			pstmt.setString(1, username);
-			pstmt.setString(2, password);
+			pstmt = conn.prepareStatement("SELECT * FROM User WHERE Username = ? and Password = ?");
+			pstmt.setString(1, "test");
+			pstmt.setString(2, "test");
 			ResultSet rs = pstmt.executeQuery();
 			// Check whether a matching user was returned.
 			if (rs.next()) {
@@ -47,7 +47,7 @@ public class ConnectionManager {
 			rs.close();
 			conn.close();
 		} catch (SQLException sqle) {
-			System.out.println("SQL query failed.");
+			System.out.println("SQL query failed: " + sqle.getMessage());
 		}
 		return false;
 	}

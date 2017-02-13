@@ -25,3 +25,13 @@
 	git remotes rm heroku   	<deleting remote to current heroku>
 	heroku create --stack cedar    	<use --stack cedar, shit's not written anywhere except web-app runner github, but won't work otherwise>
 	<new remote should be already added to git, check with git remote -v and continue as in 2.3>  
+
+2.5 Database db4free.net
+	email: kestelut@norih.com
+	pass: TeamDelta123
+	
+	Host: sql8.freesqldatabase.com
+	Database name: sql8158754
+	Database user: sql8158754
+	Database password: CXcct8XvGL
+	Port number: 3306
