@@ -27,6 +27,16 @@
 			<result>login.jsp</result>
 		</action>
 
+		<action name="registration">
+			<result>registration.jsp</result>
+		</action>
+
+    <action name="reg" class ="com.delta.expressq.example.Registration">
+			<result name="success">login.jsp</result>
+			<result name="failure">failure.jsp</result>
+			<result name="existed">exists.jsp</result>
+		</action>
+
 		<!-- login action -->
 		<action name="loginUser" class="com.delta.expressq.example.LoginAction" method="login">
 			<result name="success" type="redirect">homeAction.action</result>

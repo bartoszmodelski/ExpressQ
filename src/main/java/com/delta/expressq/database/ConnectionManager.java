@@ -102,4 +102,41 @@ public class ConnectionManager {
 		}
 		return null;
 	}
+	
+	public static boolean checkUserName(String username) {
+		  Connection conn = getConnection();
+		  // Using prepared statement to prevent SQL injection
+		  PreparedStatement pstmt = null;
+		  try {
+		    // Query returning a user with matching username
+		    pstmt = conn.prepareStatement("SELECT * FROM User WHERE Username = ?");
+		    pstmt.setString(1, username);
+		    ResultSet rs = pstmt.executeQuery();
+		    // Check whether a matching user was returned.
+		    if (rs.next()) {
+		      rs.close();
+		      conn.close();
+		      return true;
+		    }
+		    rs.close();
+		    conn.close();
+		  } catch (SQLException sqle) {
+		    System.out.println("SQL query failed: " + sqle.getMessage());
+		  }
+		  return false;
+		}
+	
+	public static boolean writeUser(String username, String password, String email, String fname, String lname ) {
+		  Connection conn = getConnection();
+		  // Using prepared statement to prevent SQL injection
+		  PreparedStatement pstmt = null;
+		  try {
+		    pstmt = conn.prepareStatement("INSERT into User" + "(fname + lname, email, username, password)" + "(?,?,?,?,?)");
+		    conn.close();
+		  } catch (SQLException sqle) {
+		    System.out.println("SQL query failed: " + sqle.getMessage());
+		  }
+		  return false;
+		}
+
 }
