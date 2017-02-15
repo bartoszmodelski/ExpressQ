@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<<<<<<< HEAD
 <testsuite tests="2" failures="0" name="com.delta.expressq.example.LoginTest" time="0.164" errors="0" skipped="0">
+=======
+<testsuite tests="2" failures="0" name="com.delta.expressq.example.LoginTest" time="0.414" errors="0" skipped="0">
+>>>>>>> json-api
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_101\jre\bin"/>
@@ -63,6 +67,11 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
+<<<<<<< HEAD
   <testcase classname="com.delta.expressq.example.LoginTest" name="testLoginSubmit" time="0.091"/>
   <testcase classname="com.delta.expressq.example.LoginTest" name="testConfig" time="0.073"/>
+=======
+  <testcase classname="com.delta.expressq.example.LoginTest" name="testLoginSubmit" time="0.221"/>
+  <testcase classname="com.delta.expressq.example.LoginTest" name="testConfig" time="0.193"/>
+>>>>>>> json-api
 </testsuite>

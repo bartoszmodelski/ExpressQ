@@ -4,6 +4,9 @@ import java.sql.*;
 //Remove this if we don't need BigInteger or BigDecimal support
 import java.math.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ConnectionManager {
 	// JDBC driver name and database URL
 	// CHANGE FOR DEPLOYMENT
@@ -51,7 +54,28 @@ public class ConnectionManager {
 		}
 		return false;
 	}
-
+	
+	public static String getUsername(int userID) {
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT Username FROM User WHERE UserID = ?");
+			pstmt.setInt(1, userID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				String username = rs.getString("Username");
+				rs.close();
+				conn.close();
+				return username;
+			}
+			rs.close();
+			conn.close();
+		} catch (SQLException sqle) {
+			System.out.println("SQL query failed: " + sqle.getMessage());
+		}
+		return "";
+	}
+	
 	// Gets a venue and returns it as a venue object.
     public static Venue getVenue(int venueID) {
         Connection conn = getConnection();
@@ -78,12 +102,19 @@ public class ConnectionManager {
     }
 
 	// Gets a transaction and returns it as a transaction object.
-	public static Transaction getTransaction(int transactionID) {
+	public static Transaction getTransaction(String name, String APIpass, int transactionID) {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * FROM Transaction WHERE TransactionID = ?");
+			pstmt = conn.prepareStatement("SELECT TransactionID, UserID, Transaction.VenueID, TotalPrice, Time, Issued " 
+													+ "FROM Transaction, Venue "
+													+ "WHERE TransactionId = ? "
+													+ "AND Venue.VenueID = Transaction.VenueID "
+													+ "AND Venue.Name =  ? "
+													+ "AND Venue.APIpass =  ? ");
 			pstmt.setInt(1, transactionID);
+			pstmt.setString(2, name);
+			pstmt.setString(3, APIpass);
 			ResultSet rs = pstmt.executeQuery();
 			// Check whether a transaction was returned.
 			while (rs.next()) {
@@ -98,7 +129,32 @@ public class ConnectionManager {
 				return rTransaction;
 			}
 		} catch (SQLException se) {
-			System.out.println("SQL query failed.");
+			System.out.println("SQL query failed. "+se.getMessage());
+		}
+		return null;
+	}
+	
+	public static HashMap getItemsInTransaction(int transactionID) {
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+		try {
+			pstmt = conn.prepareStatement("SELECT Name, Quantity " 
+													+ "FROM ItemQuantity, Item "
+													+ "WHERE ItemQuantity.TransactionId = ? "
+													+ "AND ItemQuantity.ItemID = Item.ItemID ");
+			pstmt.setInt(1, transactionID);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				hmap.put(rs.getString("Name"), rs.getInt("Quantity"));
+			}
+			rs.close();
+			conn.close();
+			
+			return hmap;
+			
+		} catch (SQLException se) {
+			System.out.println("SQL query failed. "+se.getMessage());
 		}
 		return null;
 	}
@@ -149,3 +205,4 @@ public class ConnectionManager {
 		}
 
 }
+
