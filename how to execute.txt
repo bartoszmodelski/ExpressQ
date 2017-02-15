@@ -6,14 +6,14 @@
 
 2. For Heroku deployment:
 2.1 Credentials:
-	e-mail: timlucar@norih.com (unaccessible temp. mailbox)
-	login:	deltateam
+	e-mail: tifyeros@norih.com (unaccessible temp. mailbox)
+	login:	ilmat
 	pass:	DeltaTeam123
 
 2.2 Execute following commands only for the first time, to configure Heroku:
 	heroku
 	<you should be asked for e-mail and password, provide them>
-	git remote add heroku https://git.heroku.com/cryptic-stream-13853.git
+	git remote add heroku https://git.heroku.com/warm-fjord-75730.git
 	
 2.3 Anytime you want to actually deploy app: 
 	git add .
