@@ -11,6 +11,8 @@
 <body>
 	<!-- action<> for testing purposes, delete when later -->
   <h1>Struts <logic:iterate> Venues</h1>
-  <s:property value="Table" />
+  <s:iterator value="Table">
+      <p><s:property/></b></p>
+  </s:iterator>
 </body>
 </html>
