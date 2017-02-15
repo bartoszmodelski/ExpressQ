@@ -64,7 +64,7 @@ public class Json extends ActionSupport implements ServletRequestAware {
         	obj.put("price", trans.total);
         	obj.put("date", trans.date);
         	obj.put("issued", trans.issued);
-			obj.put("succes", 1);
+			obj.put("success", 1);
 			
 			JSONObject obj2 = new JSONObject();
 			for (Map.Entry<String, Integer> entry : hmap.entrySet()) {				
