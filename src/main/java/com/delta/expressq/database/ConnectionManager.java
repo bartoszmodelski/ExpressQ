@@ -51,7 +51,7 @@ public class ConnectionManager {
 		}
 		return false;
 	}
-
+	
 	// Gets a venue and returns it as a venue object.
     public static Venue getVenue(int venueID) {
         Connection conn = getConnection();
@@ -78,27 +78,34 @@ public class ConnectionManager {
     }
 
 	// Gets a transaction and returns it as a transaction object.
-	public static Transaction getTransaction(int transactionID) {
+	public static Transaction getTransaction(String name, String APIpass, int transactionID) {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * FROM Transaction WHERE TransactionID = ?");
+			pstmt = conn.prepareStatement("SELECT TransactionID, UserID, Transaction.VenueID, TotalPrice, Time, Issued " 
+													+ "FROM Transaction, Venue "
+													+ "WHERE TransactionId = ? "
+													+ "AND Venue.VenueID = Transaction.VenueID "
+													+ "AND Venue.Name =  ? "
+													+ "AND Venue.APIpass =  ? ");
 			pstmt.setInt(1, transactionID);
+			pstmt.setString(2, name);
+			pstmt.setString(3, APIpass);
 			ResultSet rs = pstmt.executeQuery();
 			// Check whether a transaction was returned.
 			while (rs.next()) {
 				int userID = rs.getInt("UserID");
 				int venueID = rs.getInt("VenueID");
-				int listID = rs.getInt("ListID");
 				float total = rs.getFloat("TotalPrice");
 				String date = rs.getTimestamp("Time").toString();
-				Transaction rTransaction = new Transaction(transactionID, userID, venueID, listID, total, date);
+				boolean issued = rs.getBoolean("Issued");
+				Transaction rTransaction = new Transaction(transactionID, userID, venueID, total, date, issued);
 				rs.close();
 				conn.close();
 				return rTransaction;
 			}
 		} catch (SQLException se) {
-			System.out.println("SQL query failed.");
+			System.out.println("SQL query failed. "+se.getMessage());
 		}
 		return null;
 	}
