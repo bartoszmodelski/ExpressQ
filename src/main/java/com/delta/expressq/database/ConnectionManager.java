@@ -148,6 +148,28 @@ public class ConnectionManager {
 		  }
 		  return false;
 		}
+
+	// Get the venueID
+	public static int getVenueID(String name){
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM Venue WHERE Name = ?");
+			pstmt.setString(1, name);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int venueID = rs.getInt("VenueID");
+				rs.close();
+				return venueID;
+			}
+		} catch (SQLException se) {
+			System.out.println("SQL query failed.");
+		}
+		return 0;
+	}
+
+	
+	
 	
 	public static ArrayList<String> listVenueNames(){
 		ArrayList<String> venueNames = new ArrayList<String>();
