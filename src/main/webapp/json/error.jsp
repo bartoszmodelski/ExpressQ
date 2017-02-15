@@ -1,1 +1,1 @@
-{"error": 1}
+{"success": 0}

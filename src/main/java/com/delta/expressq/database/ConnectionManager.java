@@ -4,6 +4,9 @@ import java.sql.*;
 //Remove this if we don't need BigInteger or BigDecimal support
 import java.math.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ConnectionManager {
 	// JDBC driver name and database URL
 	// CHANGE FOR DEPLOYMENT
@@ -50,6 +53,27 @@ public class ConnectionManager {
 			System.out.println("SQL query failed: " + sqle.getMessage());
 		}
 		return false;
+	}
+	
+	public static String getUsername(int userID) {
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT Username FROM User WHERE UserID = ?");
+			pstmt.setInt(1, userID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				String username = rs.getString("Username");
+				rs.close();
+				conn.close();
+				return username;
+			}
+			rs.close();
+			conn.close();
+		} catch (SQLException sqle) {
+			System.out.println("SQL query failed: " + sqle.getMessage());
+		}
+		return "";
 	}
 	
 	// Gets a venue and returns it as a venue object.
@@ -109,4 +133,30 @@ public class ConnectionManager {
 		}
 		return null;
 	}
+	
+	public static HashMap getItemsInTransaction(int transactionID) {
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+		try {
+			pstmt = conn.prepareStatement("SELECT Name, Quantity " 
+													+ "FROM ItemQuantity, Item "
+													+ "WHERE ItemQuantity.TransactionId = ? "
+													+ "AND ItemQuantity.ItemID = Item.ItemID ");
+			pstmt.setInt(1, transactionID);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				hmap.put(rs.getString("Name"), rs.getInt("Quantity"));
+			}
+			rs.close();
+			conn.close();
+			
+			return hmap;
+			
+		} catch (SQLException se) {
+			System.out.println("SQL query failed. "+se.getMessage());
+		}
+		return null;
+	}
 }
+
