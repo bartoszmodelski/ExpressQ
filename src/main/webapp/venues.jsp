@@ -11,11 +11,6 @@
 <body>
 	<!-- action<> for testing purposes, delete when later -->
   <h1>Struts <logic:iterate> Venues</h1>
-
-  <logic:iterate name="venueList" id="venueListId">
-  <p>
-  	List Messages <bean:write name="venueListId"/>
-  </p>
-  </logic:iterate>
+  <s:property value="Table" />
 </body>
 </html>

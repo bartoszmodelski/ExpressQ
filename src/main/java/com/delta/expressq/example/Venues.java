@@ -6,12 +6,16 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.Map;
 
 
-public class VenuesAction extends ActionSupport{
+public class Venues extends ActionSupport{
 	private ArrayList<String> venueList;
 
 	public String execute() throws Exception{
 		venueList = new ArrayList<String>();
 		venueList = ConnectionManager.listVenueNames();
 		return SUCCESS;
+	}
+	
+	public ArrayList<String> getTable(){
+		return venueList;
 	}
 }

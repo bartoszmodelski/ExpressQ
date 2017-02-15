@@ -31,7 +31,7 @@
 			<result>registration.jsp</result>
 		</action>
 
-    <action name ="venues" class="com.delta.expressq.example.VenuesAction" method="execute">
+    <action name ="venues" class="com.delta.expressq.example.Venues" method="execute">
       <result name="success">venues.jsp</result>
     </action>
 
