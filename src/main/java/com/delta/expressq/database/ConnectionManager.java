@@ -1,6 +1,7 @@
 package com.delta.expressq.database;
 
 import java.sql.*;
+import java.util.ArrayList;
 //Remove this if we don't need BigInteger or BigDecimal support
 import java.math.*;
 
@@ -147,5 +148,22 @@ public class ConnectionManager {
 		  }
 		  return false;
 		}
-
+	
+	public static ArrayList<String> listVenueNames(){
+		ArrayList<String> venueNames = new ArrayList<String>();
+		Connection conn = getConnection();
+		Statement stmt = null;
+		try{
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT Name FROM Venue");
+			while(rs.next()){
+				venueNames.add(rs.getString("Name"));
+			}
+			rs.close();
+			conn.close();
+		} catch(SQLException sqle) {
+			System.out.println("SQL query failed: " + sqle.getMessage());
+		}
+		return venueNames;
+	}
 }
