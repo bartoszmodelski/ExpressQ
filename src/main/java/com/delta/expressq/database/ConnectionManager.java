@@ -1,6 +1,7 @@
 package com.delta.expressq.database;
 
 import java.sql.*;
+import java.util.*;
 //Remove this if we don't need BigInteger or BigDecimal support
 import java.math.*;
 
@@ -204,5 +205,75 @@ public class ConnectionManager {
 		  return false;
 		}
 
+	// Get the venueID
+	public static int getVenueID(String name){
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM Venue WHERE Name = ?");
+			pstmt.setString(1, name);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int venueID = rs.getInt("VenueID");
+				rs.close();
+				return venueID;
+			}
+		} catch (SQLException se) {
+			System.out.println("SQL query failed.");
+		}
+		return 0;
+	}
+
+	
+	
+	public static void setItems(Map<String, Map<String, Map<String, Double>>> items, String venueID) {
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT Item.Name AS ItemName, Item.Price as ItemPrice, Section.SectionID, "
+					+ " Section.Description AS SectionName, "
+					+ " Menu.MenuID, Menu.VenueID, Menu.Description AS MenuName " 
+					+ "FROM Menu, Section, Item " 
+					+ "WHERE Menu.VenueID = ?" 
+					+ "AND Menu.MenuID = Section.MenuID " 
+					+ "AND Section.SectionID = Item.SectionID");
+			pstmt.setString(1, venueID);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				String menuName = rs.getString("MenuName");
+				if (!items.containsKey(menuName))
+					items.put(menuName, new HashMap<String, Map<String, Double>>());
+				
+				String sectionName = rs.getString("SectionName");
+				if (!items.get(menuName).containsKey(sectionName))
+					items.get(menuName).put(sectionName, new HashMap<String, Double>());
+				
+				items.get(menuName).get(sectionName).put(rs.getString("ItemName"), rs.getDouble("ItemPrice"));
+
+			}	
+			rs.close();
+			conn.close();
+			
+		} catch(SQLException sqle) {
+			System.out.println("SQL query failed: " + sqle.getMessage());
+		}
+	}
+	
+	public static void setVenues(Map<String,Integer> venues){
+		Connection conn = getConnection();
+		Statement stmt = null;
+		try{
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT Name, VenueID FROM Venue");
+			while(rs.next()){
+				venues.put(rs.getString("Name"), rs.getInt("VenueID"));
+			}
+			rs.close();
+			conn.close();
+		} catch(SQLException sqle) {
+			System.out.println("SQL query failed: " + sqle.getMessage());
+		}
+	}
 }
 

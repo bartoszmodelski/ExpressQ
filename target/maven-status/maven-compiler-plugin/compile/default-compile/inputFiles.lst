@@ -1,8 +1,15 @@
+<<<<<<< HEAD
+=======
+C:\ExpressQ\webapp\src\main\java\com\delta\expressq\example\Venues.java
+>>>>>>> listing
 C:\ExpressQ\webapp\src\main\java\com\delta\expressq\database\Venue.java
 C:\ExpressQ\webapp\src\main\java\com\delta\expressq\database\ConnectionManager.java
 C:\ExpressQ\webapp\src\main\java\com\delta\expressq\example\LoginInterceptor.java
 C:\ExpressQ\webapp\src\main\java\com\delta\expressq\example\HelloWorld.java
+<<<<<<< HEAD
 C:\ExpressQ\webapp\src\main\java\com\delta\expressq\example\Json.java
+=======
+>>>>>>> listing
 C:\ExpressQ\webapp\src\main\java\com\delta\expressq\example\Login.java
 C:\ExpressQ\webapp\src\main\java\com\delta\expressq\database\Transaction.java
 C:\ExpressQ\webapp\src\main\java\com\delta\expressq\example\ExampleSupport.java

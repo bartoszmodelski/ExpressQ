@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.delta.expressq.example.LoginTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.213 sec
+=======
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.219 sec
+>>>>>>> listing
