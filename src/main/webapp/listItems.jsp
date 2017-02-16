@@ -11,26 +11,32 @@
 <body>
 	<!-- action<> for testing purposes, delete when later -->
 	<h1>Struts <logic:iterate> Venues</h1>
-	<s:iterator value="items">
-		<h2><s:property value="key" /></h2>
-			<s:iterator value="value">
-					<h3><s:property value="key" /></h3>
-					<table>
-					<col width="200">
-					<col width="50">
-					<s:iterator value="value">
-						<tr>
-							<td>
-								<s:property value="key"/> 
-							</td>
-							<td>
-								<s:property value="value"/>
-							</td>
-						</tr>
-					</s:iterator>
-					</table>
-			</s:iterator>
-	</s:iterator>
+	<s:form method = "POST" action="purchase">
+		<s:iterator value="items">
+			<h2><s:property value="key" /></h2>
+				<s:iterator value="value">
+						<h3><s:property value="key" /></h3>
+						<table>
+						<col width="200">
+						<col width="50">
+						<col width="50">
+						<s:iterator value="value">
+							<tr>
+								<td>
+									<s:property value="key"/> 
+								</td>
+								<td>
+									<s:property value="value"/>
+								</td>
+								<td>
+									<s:textfield name= "<s:property value="key"/>" label = "Quanity" value = "0"/>
+								</td>
+							</tr>
+						</s:iterator
+						</table>
+				</s:iterator>
+		</s:iterator>
+	</s:form>
 </body>
 </html>
 	 
