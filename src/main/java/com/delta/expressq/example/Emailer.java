@@ -12,8 +12,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class Emailer extends ActionSupport {
 
-   private String from;
-   private String password;
+   private String from = "expressQDelta@gmail.com";
+   private String password = "qzwx1234rv";
    private String to;
    private String subject;
    private String body;

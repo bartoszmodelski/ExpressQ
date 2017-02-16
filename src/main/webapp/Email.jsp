@@ -9,13 +9,7 @@
 <title>Email Form</title>
 </head>
 <body>
-   <em>The form below uses Google's SMTP server. 
-   So you need to enter a gmail username and password
-   </em>
    <s:form action="emailer" method="post">
-
-	<s:textfield name= "from" label = "from"/>
-	<s:textfield name= "password" label = "password"/>
 	<s:textfield name= "to" label = "to"/>
 	<s:textfield name= "subject" label = "subject"/>
 	<s:textfield name= "body" label = "body"/>
