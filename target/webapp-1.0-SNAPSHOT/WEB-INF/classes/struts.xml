@@ -31,6 +31,19 @@
 			<result>registration.jsp</result>
 		</action>
 
+		<action name="confirm">
+			<result>confirmation.jsp</result>
+		</action>
+		
+		<action name="conf" class="com.delta.expressq.example.ConfirmAction">
+			<result name="success" type="redirect">confirmedAction</result>
+			<result name="fail">confirmation.jsp</result>
+		</action>
+
+		<action name="confirmedAction" class="com.delta.expressq.example.ConfirmAction" method="qrCode">
+			<result name="success">orderconfirmed.jsp</result>
+		</action>
+
     <action name="reg" class ="com.delta.expressq.example.Registration">
 			<result name="success">login.jsp</result>
 			<result name="failure">failure.jsp</result>
