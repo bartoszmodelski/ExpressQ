@@ -23,19 +23,19 @@ public class Venues extends ActionSupport implements ServletRequestAware {
 		} 
 		ConnectionManager.setItems(items, id);
 		System.out.println(items.toString());
-		return "listVenues";
+		return "listItems";
 	}
 	
-	/*
-	public ArrayList<String> getTable(){
-		return new ArrayList<String>(venues.keySet()); 
-	}*/
 	
 	public Map<String, Integer> getMap(){
 		return venues;
 	}
 	
-		public void setServletRequest(HttpServletRequest request) {
+	public Map<String, Map<String, Map<String, Double>>> getItems() {
+		return items;
+	}
+	
+	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
 
