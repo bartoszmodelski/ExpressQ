@@ -8,7 +8,7 @@ public class Registration extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	private String Uname;
 	private String Pass;
-	private String Confirm;
+	private String PassConf;
 	private String Email;
 	private String Fname;
 	private String Lname;
@@ -26,6 +26,14 @@ public class Registration extends ActionSupport {
 	public void setPass(String Pass) {
 		this.Pass = Pass;
 }
+	
+	public String getPassConf(){
+		return PassConf;
+	}
+	
+	public void setPassConf(String PassConf){
+		this.PassConf = PassConf;
+	}
 
 	public String getEmail(){
 		return Email;}
@@ -33,7 +41,7 @@ public class Registration extends ActionSupport {
 	public void setEmail(String Email) {
 		this.Email = Email;
 }
-
+	
 	public String getFname(){
 		return Fname;}
 
