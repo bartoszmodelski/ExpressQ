@@ -170,6 +170,39 @@ public class ConnectionManager {
 
 	
 	
+	public static void setItems(Map<String, Map<String, Map<String, Double>>> items, String venueID) {
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT Item.Name AS ItemName, Item.Price as ItemPrice, Section.SectionID, "
+					+ " Section.Description AS SectionName, "
+					+ " Menu.MenuID, Menu.VenueID, Menu.Description AS MenuName " 
+					+ "FROM Menu, Section, Item " 
+					+ "WHERE Menu.VenueID = ?" 
+					+ "AND Menu.MenuID = Section.MenuID " 
+					+ "AND Section.SectionID = Item.SectionID");
+			pstmt.setString(1, venueID);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				String menuName = rs.getString("MenuName");
+				if (!items.containsKey(menuName))
+					items.put(menuName, new HashMap<String, Map<String, Double>>());
+				
+				String sectionName = rs.getString("SectionName");
+				if (!items.get(menuName).containsKey(sectionName))
+					items.get(menuName).put(sectionName, new HashMap<String, Double>());
+				
+				items.get(menuName).get(sectionName).put(rs.getString("ItemName"), rs.getDouble("ItemPrice"));
+
+			}	
+			rs.close();
+			conn.close();
+			
+		} catch(SQLException sqle) {
+			System.out.println("SQL query failed: " + sqle.getMessage());
+		}
+	}
 	
 	public static void setVenues(Map<String,Integer> venues){
 		Connection conn = getConnection();

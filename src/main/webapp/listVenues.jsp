@@ -12,7 +12,7 @@
 	<!-- action<> for testing purposes, delete when later -->
   <h1>Struts <logic:iterate> Venues</h1>
   <s:iterator value="Map">
-	<p><a href="/venus?id=<s:property value="value"/>"><s:property value="key"/></a></b></p>
+	<p><a href="/venues?id=<s:property value="value"/>"><s:property value="key"/></a></b></p>
   </s:iterator>
 </body>
 </html>
