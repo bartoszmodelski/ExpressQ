@@ -18,24 +18,25 @@
 						<h3><s:property value="key" /></h3>
 						<table>
 						<col width="200">
-						<col width="50">
-						<col width="50">
+						<col width="100">
+						<col width="100">
 						<s:iterator value="value">
 							<tr>
 								<td>
-									<s:property value="key"/> 
+									<s:property value="key"/>
 								</td>
 								<td>
-									<s:property value="value"/>
+									&pound;<s:property value="value"/>
 								</td>
 								<td>
-									<s:textfield name= "<s:property value="key"/>" label = "Quanity" value = "0"/>
+									<s:textfield name = "%{key}" value = "0"/>
 								</td>
 							</tr>
-						</s:iterator
+						</s:iterator>
 						</table>
 				</s:iterator>
 		</s:iterator>
+		<s:submit value = "Purchase!"/>
 	</s:form>
 </body>
 </html>
