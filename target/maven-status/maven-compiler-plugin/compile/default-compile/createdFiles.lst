@@ -7,6 +7,7 @@ com\delta\expressq\example\HelloWorld.class
 com\delta\expressq\util\Item.class
 com\delta\expressq\example\LoginAction.class
 com\delta\expressq\example\LoginInterceptor.class
+com\delta\expressq\example\Venues.class
 com\delta\expressq\example\Login.class
 com\delta\expressq\example\Json.class
 com\delta\expressq\example\Summary.class
