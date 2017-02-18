@@ -1,7 +1,4 @@
 com\delta\expressq\database\Venue.class
-com\delta\expressq\example\ExampleSupport.class
 com\delta\expressq\database\Transaction.class
 com\delta\expressq\database\ConnectionManager.class
-com\delta\expressq\example\HelloWorld.class
 com\delta\expressq\util\Item.class
-com\delta\expressq\example\Login.class

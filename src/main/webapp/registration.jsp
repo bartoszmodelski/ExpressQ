@@ -33,8 +33,8 @@
 
 	<s:form name="registration" method = "POST" action="reg" onsubmit="return validateForm()">
 		<s:textfield name= "Uname" label = "Username:"/>
-		<s:textfield name= "Pass" label = "Password:"/>
-		<s:textfield name = "PassConf" label ="Confirm Password"/>
+		<s:password name= "Pass" label = "Password:"/>
+		<s:password name = "PassConf" label ="Confirm Password"/>
 		<s:textfield name= "Email" label = "Email Adress:"/>
 		<s:textfield name= "Fname" label = "First Name:"/>
 		<s:textfield name= "Lname" label = "Last Name:"/>

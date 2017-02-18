@@ -5,11 +5,10 @@
 
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<title>Insert Title</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>User Exists</title>
+</head>
 <body>
-<br><br>
 <h2>ExpressQ Registration Status</h2>
 <font color="red" size="5">
 <b>

@@ -1,13 +1,10 @@
 H:\delta\src\main\java\com\delta\expressq\actions\LoginAction.java
-H:\delta\src\main\java\com\delta\expressq\actions\Venues.java
-H:\delta\src\main\java\com\delta\expressq\example\Login.java
-H:\delta\src\main\java\com\delta\expressq\database\Venue.java
-H:\delta\src\main\java\com\delta\expressq\database\ConnectionManager.java
 H:\delta\src\main\java\com\delta\expressq\actions\Registration.java
+H:\delta\src\main\java\com\delta\expressq\actions\Venues.java
 H:\delta\src\main\java\com\delta\expressq\util\Item.java
 H:\delta\src\main\java\com\delta\expressq\database\Transaction.java
-H:\delta\src\main\java\com\delta\expressq\example\ExampleSupport.java
-H:\delta\src\main\java\com\delta\expressq\example\HelloWorld.java
+H:\delta\src\main\java\com\delta\expressq\database\Venue.java
+H:\delta\src\main\java\com\delta\expressq\database\ConnectionManager.java
 H:\delta\src\main\java\com\delta\expressq\actions\ConfirmAction.java
 H:\delta\src\main\java\com\delta\expressq\actions\Summary.java
 H:\delta\src\main\java\com\delta\expressq\interceptors\LoginInterceptor.java
