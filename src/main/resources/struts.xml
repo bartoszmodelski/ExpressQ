@@ -44,6 +44,19 @@
 			<result name="error">/error.jsp</result>
 		</action>
 
+		<action name="confirm">
+			<result>confirmation.jsp</result>
+		</action>
+
+		<action name="conf" class="com.delta.expressq.example.ConfirmAction">
+			<result name="success" type="redirect">confirmedAction</result>
+			<result name="fail">confirmation.jsp</result>
+		</action>
+
+		<action name="confirmedAction" class="com.delta.expressq.example.ConfirmAction" method="qrCode">
+			<result name="success">orderconfirmed.jsp</result>
+		</action>
+		
 		<action name="venues" class="com.delta.expressq.example.Venues" method="execute">
 			<result name="listVenues">listVenues.jsp</result>
 			<result name="listItems">listItems.jsp</result>

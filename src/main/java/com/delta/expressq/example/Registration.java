@@ -2,8 +2,6 @@ package com.delta.expressq.example;
 import com.delta.expressq.database.ConnectionManager;
 import com.opensymphony.xwork2.ActionSupport;
 
-
-
 public class Registration extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	private String Uname;
@@ -13,6 +11,8 @@ public class Registration extends ActionSupport {
 	private String Fname;
 	private String Lname;
 
+	
+	//Setters and getters for registration variables
 	public String getUname(){
 		return Uname;}
 
@@ -57,10 +57,11 @@ public class Registration extends ActionSupport {
 }
 
 	public String execute()throws Exception{
-
+		//if the username already exists in the system inform the user. otherwise add the user details to the database
 		if (ConnectionManager.checkUserName(Uname) == true) {
 			return "existed";		
-		}else{
+		}
+		else{
 			ConnectionManager.writeUser(Uname, Pass, Email, Fname, Lname);
 			return "success";
 		}

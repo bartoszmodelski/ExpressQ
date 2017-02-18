@@ -318,5 +318,22 @@ public class ConnectionManager {
 		
 		return items;
 	}
+	
+    public static int getLastTransactionID(){
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT *FROM `Transaction`ORDER BY `TransactionID` DESC LIMIT 0 , 1");
+		ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int transactionID = rs.getInt("TransactionID");
+				rs.close();
+				return transactionID;
+			}
+		} catch (SQLException se) {
+			System.out.println("SQL query failed.");
+		}
+		return 0;
+	}
 }
 

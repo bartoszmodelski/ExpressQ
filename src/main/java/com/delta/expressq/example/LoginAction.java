@@ -37,6 +37,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
 		}
 	}
 
+	//Setters and getters for variables
 	public String getUserName() {
 		return userName;
 	}
