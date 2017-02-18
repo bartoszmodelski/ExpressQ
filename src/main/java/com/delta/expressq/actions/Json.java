@@ -1,4 +1,4 @@
-package com.delta.expressq.example;
+package com.delta.expressq.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

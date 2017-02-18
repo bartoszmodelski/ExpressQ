@@ -1,4 +1,4 @@
-package com.delta.expressq.example;
+package com.delta.expressq.actions;
 import com.delta.expressq.database.ConnectionManager;
 import com.opensymphony.xwork2.ActionSupport;
 

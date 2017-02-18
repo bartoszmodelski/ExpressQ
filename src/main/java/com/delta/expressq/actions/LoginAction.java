@@ -1,4 +1,4 @@
-package com.delta.expressq.example;
+package com.delta.expressq.actions;
 
 import java.util.Map;
 

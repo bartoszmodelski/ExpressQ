@@ -1,4 +1,4 @@
-package com.delta.expressq.example;
+package com.delta.expressq.interceptors;
 
 import java.util.Map;
 import com.opensymphony.xwork2.ActionInvocation;
