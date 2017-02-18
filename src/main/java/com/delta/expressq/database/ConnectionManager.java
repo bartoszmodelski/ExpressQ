@@ -2,14 +2,8 @@ package com.delta.expressq.database;
 
 import java.sql.*;
 import java.util.*;
-//Remove this if we don't need BigInteger or BigDecimal support
-import java.math.*;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import java.lang.*;
-
 import com.delta.expressq.util.*;
 
 public class ConnectionManager {

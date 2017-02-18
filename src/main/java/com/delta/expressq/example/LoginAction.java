@@ -8,7 +8,6 @@ import com.delta.expressq.database.ConnectionManager;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class LoginAction extends ActionSupport implements SessionAware {
-
 	private static final long serialVersionUID = 1L;
 	private String userName;
 	private String password;
