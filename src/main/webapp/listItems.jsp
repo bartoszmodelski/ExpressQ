@@ -11,7 +11,7 @@
 <body>
 	<!-- action<> for testing purposes, delete when later -->
 	<h1>Struts <logic:iterate> Venues</h1>
-	<s:form method = "POST" action="purchase">
+	<s:form method = "POST" action="summary">
 		<s:iterator value="items">
 			<h2><s:property value="key" /></h2>
 				<s:iterator value="value">
@@ -23,13 +23,13 @@
 						<s:iterator value="value">
 							<tr>
 								<td>
-									<s:property value="key"/>
+									<s:property value="name"/>
 								</td>
 								<td>
-									&pound;<s:property value="value"/>
+									&pound;<s:property value="price"/>
 								</td>
 								<td>
-									<s:textfield name = "%{key}" value = "0"/>
+									<s:textfield name = "order['%{ID}']" value = "0"/>
 								</td>
 							</tr>
 						</s:iterator>

@@ -8,6 +8,10 @@ import java.math.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.lang.*;
+
+import com.delta.expressq.util.*;
+
 public class ConnectionManager {
 	// JDBC driver name and database URL
 	// CHANGE FOR DEPLOYMENT
@@ -226,11 +230,11 @@ public class ConnectionManager {
 
 	
 	
-	public static void setItems(Map<String, Map<String, Map<String, Double>>> items, String venueID) {
+	public static void setItems(Map<String, Map<String, ArrayList<Item>>> items, String venueID) {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT Item.Name AS ItemName, Item.Price as ItemPrice, Section.SectionID, "
+			pstmt = conn.prepareStatement("SELECT Item.ItemID AS ItemID, Item.Name AS ItemName, Item.Price as ItemPrice, Section.SectionID, "
 					+ " Section.Description AS SectionName, "
 					+ " Menu.MenuID, Menu.VenueID, Menu.Description AS MenuName " 
 					+ "FROM Menu, Section, Item " 
@@ -243,13 +247,19 @@ public class ConnectionManager {
 			while(rs.next()){
 				String menuName = rs.getString("MenuName");
 				if (!items.containsKey(menuName))
-					items.put(menuName, new HashMap<String, Map<String, Double>>());
+					items.put(menuName, new HashMap<String, ArrayList<Item>>());
 				
 				String sectionName = rs.getString("SectionName");
 				if (!items.get(menuName).containsKey(sectionName))
-					items.get(menuName).put(sectionName, new HashMap<String, Double>());
+					items.get(menuName).put(sectionName, new ArrayList<Item>());
 				
-				items.get(menuName).get(sectionName).put(rs.getString("ItemName"), rs.getDouble("ItemPrice"));
+				items.get(menuName).get(sectionName).add(
+														new Item(
+															rs.getDouble("ItemPrice"),
+															rs.getString("ItemName"),
+															rs.getInt("ItemID")
+															)
+														);
 
 			}	
 			rs.close();
@@ -274,6 +284,39 @@ public class ConnectionManager {
 		} catch(SQLException sqle) {
 			System.out.println("SQL query failed: " + sqle.getMessage());
 		}
+	}
+	
+	public static ArrayList<Item> getItemsByIDs(ArrayList<Integer> ids) {
+		//to avoid sending unprepared statements (query had one hardcoded Item)
+		ArrayList<Item> items = new ArrayList<Item>();
+		if (ids.size () == 0)
+			return items;
+		
+		//System.out.println(ids.toString());
+		
+		Connection conn = getConnection();
+		StringBuilder query = new StringBuilder("SELECT Item.ItemID as ID, Item.Name AS Name, Item.Price as Price FROM Item WHERE Item.ItemID = ? ");
+
+		for (int i = 1; i < ids.size(); i++) {
+			query.append("OR Item.ItemID = ? ");
+		}
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(query.toString());
+			for (int i = 0; i < ids.size(); i++) {
+				pstmt.setInt(i + 1, ids.get(i));
+			}
+			//System.out.println(pstmt);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while (rs.next())
+				items.add(new Item(rs.getDouble("Price"), rs.getString("Name"), rs.getInt("ID")));
+			
+		} catch(SQLException sqle) {
+			System.out.println("SQL query failed: " + sqle.getMessage());
+		} 
+		
+		return items;
 	}
 }
 

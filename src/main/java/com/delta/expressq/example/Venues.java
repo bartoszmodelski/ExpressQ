@@ -1,10 +1,10 @@
 package com.delta.expressq.example;
 
-import java.util.ArrayList;
 import com.delta.expressq.database.ConnectionManager;
-import com.opensymphony.xwork2.ActionSupport;
+import com.delta.expressq.util.*;
 import java.util.*;
 
+import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -13,7 +13,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 public class Venues extends ActionSupport implements ServletRequestAware {
 	private HttpServletRequest request;
 	private Map<String, Integer> venues = new HashMap<String, Integer>();
-	private Map<String, Map<String, Map<String, Double>>> items = new HashMap<String, Map<String, Map<String, Double>>>();
+	private Map<String, Map<String, ArrayList<Item>>> items = new HashMap<String, Map<String, ArrayList<Item>>>();
 	public String id = null;
 
 	public String execute() throws Exception{
@@ -22,7 +22,9 @@ public class Venues extends ActionSupport implements ServletRequestAware {
 			return "listVenues";
 		} 
 		ConnectionManager.setItems(items, id);
-		System.out.println(items.toString());
+		
+		//System.out.println(items.toString());
+		
 		return "listItems";
 	}
 	
@@ -31,7 +33,7 @@ public class Venues extends ActionSupport implements ServletRequestAware {
 		return venues;
 	}
 	
-	public Map<String, Map<String, Map<String, Double>>> getItems() {
+	public Map<String, Map<String, ArrayList<Item>>> getItems() {
 		return items;
 	}
 	
