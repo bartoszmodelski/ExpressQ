@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="true"/>
+    <package name="default" namespace="/" extends="struts-default">
+		
+		<interceptors>
+			<interceptor class="com.delta.expressq.interceptors.LoginInterceptor" name="loginInterceptor">
+			</interceptor>
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="loginInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		
+		<global-results>
+			<result name="login">login.jsp</result>
+		</global-results>
+		
+		<action name="login">
+			<result>login.jsp</result>
+		</action>
+		
+		<action name="summary" class="com.delta.expressq.actions.Summary" method="execute">
+			<result name="success">summary.jsp</result>
+		</action>
+
+		<action name="registration">
+			<result>registration.jsp</result>
+		</action>
+
+		<action name="email">
+			<result>Email.jsp</result>
+		</action>
+
+		<action name="emailer" class="com.delta.expressq.actions.Emailer" method="execute">
+			<result name="success">/login.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="confirm">
+			<result>confirmation.jsp</result>
+		</action>
+
+		<action name="conf" class="com.delta.expressq.actions.ConfirmAction">
+			<result name="success" type="redirect">confirmedAction</result>
+			<result name="fail">confirmation.jsp</result>
+		</action>
+
+		<action name="confirmedAction" class="com.delta.expressq.actions.ConfirmAction" method="qrCode">
+			<result name="success">orderconfirmed.jsp</result>
+		</action>
+		
+		<action name="venues" class="com.delta.expressq.actions.Venues" method="execute">
+			<result name="listVenues">listVenues.jsp</result>
+			<result name="listItems">listItems.jsp</result>
+		</action>
+
+		<action name="reg" class ="com.delta.expressq.actions.Registration">
+			<result name="success">login.jsp</result>
+			<result name="existed">exists.jsp</result>
+		</action>
+
+		<!-- login action -->
+		<action name="loginUser" class="com.delta.expressq.actions.LoginAction" method="login">
+			<result name="success" type="redirect">homeAction.action</result>
+			<result name="login">login.jsp</result>
+		</action>	
+
+		<!-- home link action, change to website front page perhaps? -->
+		<action name="homeAction" class="com.delta.expressq.actions.LoginAction" method="home">
+			<interceptor-ref name="loginStack" />
+			<result name="success">home.jsp</result>
+		</action>
+		
+		<!-- logout action -->
+		<action name="logout" class="com.delta.expressq.actions.LoginAction" method="logout">
+			<result name="success">login.jsp</result>
+		</action>
+		
+		<action name="json" class="com.delta.expressq.actions.Json" method="execute">
+			<result name="success">json/success.jsp</result>
+			<result name="error">json/error.jsp</result>
+		</action>		
+		
+	</package>
+</struts>

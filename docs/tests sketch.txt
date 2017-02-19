@@ -1,0 +1,25 @@
+Automatic:
+
+	1. Test every subpage if live.
+	2. Check if no hyperlink/redirect from any subpage is dead.
+	3. JDBC:
+		1) Attempt at creating multiple accounts with random data.
+		2) Check presence and details of each.
+		3) Attempt at deleting those accounts.
+		4) Check presence of each.
+	4. Registration: 
+		- creating account;
+		- wrong inputs to test boundary cases, equivalence classes. 
+	5. Login: 
+		- one positive for logging in;
+		- wrong inputs to test boundary cases.
+
+		
+Manual:
+	1. Registration:
+		- sending e-mail.
+	2. Project:
+		- stress testing (issue multiple request from multiple computers running xx threads);
+		- overall UX.
+	3. Desing:
+		- design's responsiveness.

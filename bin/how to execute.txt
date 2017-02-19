@@ -1,0 +1,27 @@
+1. Execute following commands in directory containing this file to compile, test and run locally (127.0.0.1:8080): 
+
+	mvn package 
+	java -jar target/dependency/webapp-runner.jar target/*.war
+
+
+2. For Heroku deployment:
+2.1 Credentials:
+	e-mail: timlucar@norih.com (unaccessible temp. mailbox)
+	login:	deltateam
+	pass:	DeltaTeam123
+
+2.2 Execute following commands only for the first time, to configure Heroku:
+	heroku
+	<you should be asked for e-mail and password, provide them>
+	git remote add heroku https://git.heroku.com/cryptic-stream-13853.git
+	
+2.3 Anytime you want to actually deploy app: 
+	git add .
+	git commit -m "Comment"
+	git push heroku master
+	heroku open
+
+2.4 If wanted to create own heroku account & server:
+	git remotes rm heroku   	<deleting remote to current heroku>
+	heroku create --stack cedar    	<use --stack cedar, shit's not written anywhere except web-app runner github, but won't work otherwise>
+	<new remote should be already added to git, check with git remote -v and continue as in 2.3>  
