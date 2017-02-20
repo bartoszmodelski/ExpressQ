@@ -20,6 +20,10 @@
 			<result name="login">login.jsp</result>
 		</global-results>
 		
+		<action name="index">
+            <result >/index.jsp</result>
+		</action>
+		
 		<action name="login">
 			<result>login.jsp</result>
 		</action>
