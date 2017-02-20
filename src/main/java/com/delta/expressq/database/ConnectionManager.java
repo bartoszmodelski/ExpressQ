@@ -10,10 +10,10 @@ public class ConnectionManager {
 	// JDBC driver name and database URL
 	// CHANGE FOR DEPLOYMENT
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_URL = "jdbc:mysql://sql8.freesqldatabase.com/sql8158754";
+	private static final String DB_URL = "jdbc:mysql://us-cdbr-iron-east-04.cleardb.net/heroku_ce661b81b9c9192";
 	// Database credentials
-	private static final String DB_USER = "sql8158754";
-	private static final String DB_PASS = "CXcct8XvGL";
+	private static final String DB_USER = "b02576368bd1b5";
+	private static final String DB_PASS = "6d1d4ae1";
 	private static Connection conn = null;
 
 	// Method controlling connections to the database
