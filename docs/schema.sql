@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: us-cdbr-iron-east-04.cleardb.net
--- Generation Time: Feb 22, 2017 at 02:16 PM
+-- Generation Time: Feb 22, 2017 at 06:00 PM
 -- Server version: 5.5.46-log
 -- PHP Version: 5.3.28
 
@@ -71,7 +71,28 @@ CREATE TABLE IF NOT EXISTS `itemquantity` (
   UNIQUE KEY `ListID` (`ListID`),
   KEY `ItemID` (`ItemID`),
   KEY `TransactionID` (`TransactionID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=152 ;
+
+--
+-- Dumping data for table `itemquantity`
+--
+
+INSERT INTO `itemquantity` (`ListID`, `ItemID`, `Quantity`, `TransactionID`) VALUES
+(2, 12, 2, 12),
+(12, 2, 1, 52),
+(22, 42, 3, 52),
+(32, 12, 2, 52),
+(42, 52, 4, 52),
+(52, 32, 1, 62),
+(62, 2, 1, 62),
+(72, 52, 1, 62),
+(82, 22, 3, 72),
+(92, 2, 123, 72),
+(102, 52, 2, 82),
+(112, 62, 3, 82),
+(122, 2, 1, 92),
+(132, 12, 2, 92),
+(142, 22, 3, 92);
 
 -- --------------------------------------------------------
 
@@ -143,22 +164,29 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   `TotalPrice` float NOT NULL,
   `Time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 - confirmed, 1 - processed, 2 - ready, 3 - collected',
-  `CollectionTime` date NOT NULL DEFAULT '0000-00-00',
+  `CollectionTime` time NOT NULL DEFAULT '00:00:00',
+  `wordsKey` varchar(300) NOT NULL DEFAULT '',
   PRIMARY KEY (`TransactionID`),
   UNIQUE KEY `TransactionID` (`TransactionID`),
   KEY `UserID` (`UserID`),
   KEY `VenueID` (`VenueID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=102 ;
 
 --
 -- Dumping data for table `transaction`
 --
 
-INSERT INTO `transaction` (`TransactionID`, `UserID`, `VenueID`, `TotalPrice`, `Time`, `Status`, `CollectionTime`) VALUES
-(1, 1, 1, 32, '2017-02-10 21:39:35', 0, '0000-00-00'),
-(2, 2, 22, 22.3, '2017-02-22 00:08:48', 0, '0000-00-00'),
-(12, 1, 22, 22.3, '2017-02-22 00:51:06', 0, '0000-00-00'),
-(32, 1, 22, 22.3, '2017-02-22 00:55:02', 0, '0000-00-00');
+INSERT INTO `transaction` (`TransactionID`, `UserID`, `VenueID`, `TotalPrice`, `Time`, `Status`, `CollectionTime`, `wordsKey`) VALUES
+(1, 1, 1, 32, '2017-02-10 21:39:35', 0, '00:00:00', ''),
+(2, 2, 22, 22.3, '2017-02-22 00:08:48', 0, '00:00:00', ''),
+(12, 1, 22, 22.3, '2017-02-22 00:51:06', 0, '00:00:00', ''),
+(32, 1, 22, 22.3, '2017-02-22 00:55:02', 0, '00:00:00', ''),
+(42, 1, 22, 7, '2017-02-22 14:17:36', 0, '00:00:00', ''),
+(52, 1, 22, 37, '2017-02-22 14:28:11', 0, '00:00:00', ''),
+(62, 1, 22, 27, '2017-02-22 14:36:56', 0, '00:00:00', ''),
+(72, 1, 22, 16, '2017-02-22 14:49:06', 0, '00:00:00', ''),
+(82, 1, 22, 3, '2017-02-22 14:59:17', 0, '00:00:00', ''),
+(92, 1, 22, 26, '2017-02-22 17:38:44', 0, '00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -185,8 +213,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`UserID`, `Fname`, `Lname`, `email`, `Username`, `Password`) VALUES
 (1, 'Matthew', 'Brighty', 'matthew.brighty@gmail.com', 'matt', 'test'),
-(2, 'test', 'test', 'test', 'test', 'test'),
-(3, 'Grant', 'Christie', 'grant@test.com', 'grantusername', 'grantpass');
+(2, 'test', 'test', 'test', 'test', 'test');
 
 -- --------------------------------------------------------
 
