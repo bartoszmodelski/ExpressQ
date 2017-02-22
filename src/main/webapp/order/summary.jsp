@@ -5,7 +5,7 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 <t:wrapper>
     <jsp:attribute name="title">
-		Error
+		Summary
 	</jsp:attribute>
     <jsp:attribute name="navbar">
 		<jsp:include page="../partials/navbar.jsp" />
@@ -27,7 +27,8 @@
 			<td colspan="3"></td><td>grand sum</td>
 			</table>
 			<br><h3>Specify time of collection</h3>
-			<jsp:include page="selects.jsp"/>
+			<br>
+			<jsp:include page="selects.jsp"/> - (strongly advised when ordering any not off-the-shelf items)
 			<br>
 			<br><h3>Confirm your order</h3>
 			<s:submit value="Confirm Order"/>

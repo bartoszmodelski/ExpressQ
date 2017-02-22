@@ -12,12 +12,28 @@ import com.delta.expressq.record.*;
 public class ConfirmOrder extends ActionSupport implements SessionAware {
 	public Map<String, String> itemsToOrder = new HashMap<String, String>();
 	public List<Item> items = new ArrayList<Item>();
-	public Order order = new Order();
 	private Map<String, Object> session;
 	private int transactionID;
+	private String hour, minute;
 	
-	public String execute() {
-		transactionID = ActiveRecord.confirmOrder(session.get("loginId").toString());
+	public String execute() {		
+		String username = session.get("loginId").toString();
+		if ((hour != "unspecified") && (minute != "unspecified")) {
+			int hourConverted;
+			int minuteConverted;
+			System.out.println("ConfirmOrder.java: values should be compared against hardcoded hours/times, right now 912:244 goes through.");
+			try {
+				hourConverted = Integer.parseInt(hour);
+				minuteConverted = Integer.parseInt(minute);
+				
+				
+				ActiveRecord.getOrder(username).setCollectionTime(hourConverted, minuteConverted);
+				ActiveRecord.getOrder(username).setKeywords(KeywordsGenerator.getKeywords());
+			} catch (Exception e) {
+				System.out.println("Failed to convert. Back to normal path of execution: " + e.getMessage());
+			}
+		}
+		transactionID = ActiveRecord.confirmOrder(username);
 		return SUCCESS;
 	}
 	
@@ -27,6 +43,22 @@ public class ConfirmOrder extends ActionSupport implements SessionAware {
 	
 	public void setTransactionID(int transactionID) {
 		this.transactionID = transactionID;
+	}
+	
+	public void setHour(String hour) {
+		this.hour = hour;
+	}
+	
+	public String getHour() {
+		return hour;
+	}
+	
+	public void setMinute(String minute) {
+		this.minute = minute;
+	}
+	
+	public String getMinute() {
+		return minute;
 	}
 	
 	public void setSession(Map<String, Object> session) {

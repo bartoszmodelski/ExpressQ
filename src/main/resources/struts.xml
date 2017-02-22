@@ -73,6 +73,7 @@
 		</action>
 		
 	    <action name="confirmOrder" class="com.delta.expressq.actions.ConfirmOrder">
+			<interceptor-ref name="loginStack" />
 			<result name="success">order/confirmed.jsp</result>
 			<result name="fail">order/summary.jsp</result>
 		</action>		

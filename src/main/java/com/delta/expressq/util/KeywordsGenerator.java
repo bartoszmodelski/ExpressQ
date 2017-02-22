@@ -16,7 +16,7 @@ public class KeywordsGenerator {
 		randomGenerator = new Random();
 		
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("nouns.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\nouns.txt"));
 			String line = br.readLine();
 
 			while (line != null) {
@@ -24,7 +24,7 @@ public class KeywordsGenerator {
 				line = br.readLine();
 			}
 			
-			br = new BufferedReader(new FileReader("adjectives.txt"));
+			br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\adjectives.txt"));
 			line = br.readLine();
 
 			while (line != null) {
@@ -41,6 +41,6 @@ public class KeywordsGenerator {
 		if ((adjectives == null) || (nouns == null) || (randomGenerator == null))
 			setup();
 		
-		return adjectives.get(randomGenerator.nextInt(adjectives.size())) + nouns.get(randomGenerator.nextInt(nouns.size()));
+		return adjectives.get(randomGenerator.nextInt(adjectives.size())) + " " + nouns.get(randomGenerator.nextInt(nouns.size()));
 	}
 }

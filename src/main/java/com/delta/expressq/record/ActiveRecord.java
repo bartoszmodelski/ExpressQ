@@ -19,12 +19,13 @@ public class ActiveRecord {
 			return null;
 		
 		Order order = orders.get(user);
-		if (order.timeFromTimestamp() > 900000)
-			return null;
+		//if (order.timeFromTimestamp() > 900000)
+			//return null;
 		return order;
 	}
 	
 	public static int confirmOrder(String user) {
+		System.out.println("IMPLEMENT: ActiveRecord.confirmOrder: ORDER HAS TO BE DELETED HERE!!!");
 		return ConnectionManager.newOrder(user, orders.get(user));
 	}
 }

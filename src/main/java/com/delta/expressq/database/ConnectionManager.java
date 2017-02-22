@@ -340,12 +340,15 @@ public class ConnectionManager {
 			conn.setAutoCommit(false);
 			
 			//add transaction
-			pstmt = conn.prepareStatement("INSERT into transaction (UserID, VenueID, TotalPrice, Status) " 
-											+ " VALUES ((SELECT UserID FROM user WHERE Username = ?), ?, ?, 0)", 
+			pstmt = conn.prepareStatement("INSERT into transaction (UserID, VenueID, TotalPrice, Status, CollectionTime, Keywords) " 
+											+ " VALUES ((SELECT UserID FROM user WHERE Username = ?), ?, ?, 0, ?, ?)", 
 											Statement.RETURN_GENERATED_KEYS);
 		    pstmt.setString(1, user);
 		    pstmt.setInt(2, order.getVenue());
 		    pstmt.setDouble(3, order.getTotal());
+			pstmt.setString(4, order.getCollectionTime());
+			pstmt.setString(5, order.getKeywords());
+			System.out.println(order.getKeywords());
 		    pstmt.executeUpdate();		    
 			
 			//Obtain transaction id

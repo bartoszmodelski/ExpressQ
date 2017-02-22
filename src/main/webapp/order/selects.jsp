@@ -2,7 +2,7 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-				<select = "hour">
+				<select name = "hour">
 					<option value="unspecified"></option>
 					<% for(int i = 8; i < 13; i += 1) { %>
 							<option value="<%=i%>"><%=i%></option>
@@ -12,7 +12,7 @@
 					<% } %>
 				</select>
 				:
-				<select = "minute">
+				<select name = "minute">
 					<option value="unspecified"></option>
 					<% for(int i = 0; i < 60; i += 5) { %>
 							<option value="<%=i%>"><%=i%></option>

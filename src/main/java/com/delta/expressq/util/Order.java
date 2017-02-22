@@ -7,6 +7,9 @@ public class Order {
 	public Map<Item, Integer> itemsAndQuantities;
 	public Timestamp timestamp = null; 
 	public int venueID = -1;
+	private int hour = 0;
+	private int minute = 0;
+	private String keywords = "";
 	
 	public Order() {
 		itemsAndQuantities = new HashMap<Item, Integer>();
@@ -19,6 +22,27 @@ public class Order {
 		}
 		return total;
 	}
+	
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+	
+	public String getKeywords() {
+		return keywords;
+	}
+	
+	public void setCollectionTime(int hour, int minute) {
+		this.hour = hour;
+		this.minute = minute;
+	}
+	
+	
+	public String getCollectionTime() {
+		if ((hour == 0) || (minute == 0)) 
+			return "00:00:00";
+		return Integer.toString(hour) + ":" + Integer.toString(minute) + ":00";
+	}
+	
 	
 	public Order(Map<Item, Integer> itemsAndQuantities) {
 		setItemsAndQuantities(itemsAndQuantities);
