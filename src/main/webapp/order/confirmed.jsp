@@ -10,8 +10,8 @@
 <script type="text/javascript" src="qrcode.js"></script>
 <h1>Order Placed</h1>	
 <p>Please bring the QR code to the store to collect your order.</p>
-<p>Last Order Number was: <s:property value="lastOrder"/></p>
-<span style="color:white" id="lastOrder"><s:property value="lastOrder" /></span>
+<p>Last Order Number was: <s:property value="transactionID"/></p>
+<span style="color:white" id="lastOrder"><s:property value="transactionID" /></span>
 <div id="qrcode"></div>
 <script type="text/javascript">
 	var id = lastOrder.innerHTML;

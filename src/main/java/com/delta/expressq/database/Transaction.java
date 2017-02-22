@@ -6,14 +6,14 @@ public class Transaction{
     public int venueID;
     public float total;
     public String date;
-    public boolean issued;
+    public int status;
 
-    Transaction(int tID, int uID, int vID, float p, String d, boolean issued){
+    Transaction(int tID, int uID, int vID, float p, String d, int status){
         this.transactionID = tID;
         this.userID = uID;
         this.venueID = vID;
         this.total = p;
         this.date = d;
-		this.issued = issued;
+		this.status = status;
     }
 }

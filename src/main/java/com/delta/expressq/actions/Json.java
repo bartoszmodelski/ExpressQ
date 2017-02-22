@@ -43,7 +43,9 @@ public class Json extends ActionSupport implements ServletRequestAware {
 		if (username.equals(""))
 			return ERROR;
 		
-		HashMap hmap = ConnectionManager.getItemsInTransaction(trans.userID);
+		HashMap hmap = ConnectionManager.getItemsInTransaction(Integer.parseInt(transactionID));
+		System.out.println(hmap.toString());
+		
 		if (hmap == null)
 			return ERROR;
 		
@@ -63,7 +65,7 @@ public class Json extends ActionSupport implements ServletRequestAware {
         	obj.put("username", username);
         	obj.put("price", trans.total);
         	obj.put("date", trans.date);
-        	obj.put("issued", trans.issued);
+        	obj.put("status", trans.status);
 			obj.put("success", 1);
 			
 			JSONObject obj2 = new JSONObject();

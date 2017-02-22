@@ -24,7 +24,7 @@ public class ActiveRecord {
 		return order;
 	}
 	
-	public static void confirmOrder(String user) {
-		ConnectionManager.newOrder(user, orders.get(user));
+	public static int confirmOrder(String user) {
+		return ConnectionManager.newOrder(user, orders.get(user));
 	}
 }

@@ -14,10 +14,19 @@ public class ConfirmOrder extends ActionSupport implements SessionAware {
 	public List<Item> items = new ArrayList<Item>();
 	public Order order = new Order();
 	private Map<String, Object> session;
+	private int transactionID;
 	
 	public String execute() {
-		ActiveRecord.confirmOrder(session.get("loginId").toString());
+		transactionID = ActiveRecord.confirmOrder(session.get("loginId").toString());
 		return SUCCESS;
+	}
+	
+	public int getTransactionID() {
+		return transactionID;
+	}
+	
+	public void setTransactionID(int transactionID) {
+		this.transactionID = transactionID;
 	}
 	
 	public void setSession(Map<String, Object> session) {

@@ -76,7 +76,7 @@
 		</action>
 		
 	    <action name="confirmOrder" class="com.delta.expressq.actions.ConfirmOrder">
-			<result name="success" type="redirect">confirmed</result>
+			<result name="success">order/confirmed.jsp</result>
 			<result name="fail">order/summary.jsp</result>
 		</action>
 
