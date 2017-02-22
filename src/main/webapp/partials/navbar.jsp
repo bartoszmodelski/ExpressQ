@@ -3,9 +3,11 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">ExpressQ</a>
+      <a class="navbar-brand" href="/">ExpressQ</a>
     </div>
     <ul class="nav navbar-nav">
+      <li><a href="<s:url action="index"/>">Welcome</a></li>
+      <li><a href="<s:url action="homeAction"/>">Home</a></li>
       <li><a href="<s:url action="login"/>">Login</a></li>
       <li><a href="<s:url action="registration"/>">Register</a></li>
       <li><a href="<s:url action="venues"/>">Venues</a></li>

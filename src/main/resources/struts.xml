@@ -51,7 +51,7 @@
 		
 		<!-- login action -->
 		<action name="loginUser" class="com.delta.expressq.actions.LoginAction" method="login">
-			<result name="success" type="redirect">homeAction.action</result>
+			<result name="success" type="redirect">homeAction</result>
 			<result name="login">login.jsp</result>
 		</action>	
 
