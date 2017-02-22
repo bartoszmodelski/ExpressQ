@@ -17,7 +17,7 @@ public class KeywordsGenerator {
 		
 		try {
 			System.out.println(System.getProperty("user.dir"));
-			BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\nouns.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/nouns.txt"));
 			String line = br.readLine();
 
 			while (line != null) {
@@ -25,7 +25,7 @@ public class KeywordsGenerator {
 				line = br.readLine();
 			}
 			
-			br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\adjectives.txt"));
+			br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/adjectives.txt"));
 			line = br.readLine();
 
 			while (line != null) {
