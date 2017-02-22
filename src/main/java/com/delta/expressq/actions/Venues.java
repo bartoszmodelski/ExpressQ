@@ -11,11 +11,11 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 
 
 public class Venues extends ActionSupport implements ServletRequestAware {
-	private HttpServletRequest request;
-	private Map<String, Integer> venues = new HashMap<String, Integer>();
-	private Map<String, Map<String, ArrayList<Item>>> items = new HashMap<String, Map<String, ArrayList<Item>>>();
+	public HttpServletRequest request;
+	public Map<String, Integer> venues = new HashMap<String, Integer>();
+	public Map<String, Map<String, ArrayList<Item>>> items = new HashMap<String, Map<String, ArrayList<Item>>>();
 	public String id = null;
-
+	
 	public String execute() throws Exception{
 		if (id == null) {
 			ConnectionManager.setVenues(venues);
@@ -28,6 +28,13 @@ public class Venues extends ActionSupport implements ServletRequestAware {
 		return "listItems";
 	}
 	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
 	
 	public Map<String, Integer> getMap(){
 		return venues;

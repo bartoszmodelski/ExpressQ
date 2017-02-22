@@ -29,7 +29,7 @@
 									&pound;<s:property value="price"/>
 								</td>
 								<td>
-									<s:textfield name = "order['%{ID}']" value = "0"/>
+									<s:textfield name = "itemsToOrder['%{ID}']" value = "0"/>
 								</td>
 							</tr>
 						</s:iterator>
@@ -37,6 +37,7 @@
 				</s:iterator>
 		</s:iterator>
 		<s:submit value = "Purchase!"/>
+		<input type="hidden" name="venue" value="${id}">
 	</s:form>
 </body>
 </html>

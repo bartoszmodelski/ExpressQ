@@ -3,7 +3,6 @@ package com.delta.expressq.actions;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
-
 import com.delta.expressq.database.ConnectionManager;
 import com.opensymphony.xwork2.ActionSupport;
 

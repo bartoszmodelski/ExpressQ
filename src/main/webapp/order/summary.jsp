@@ -11,8 +11,11 @@
 <body>
 	<h1>Please Confirm Your Order</h1>
 	<s:actionerror />
-	<s:form method = "POST" action="conf">
-		<s:submit value="Confirm Order" onclick="myFunction()"/>
+	<s:form method = "POST" action="confirmOrder">
+		<s:iterator value="order.itemsAndQuantities">
+			<br><s:property value="key.name"/>-<s:property value="key.price"/>-<s:property value="value"/>
+		</s:iterator>
+		<s:submit value="Confirm Order"/>
 	</s:form>
 </body>
 </html>
