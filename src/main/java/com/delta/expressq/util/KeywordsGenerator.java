@@ -16,6 +16,7 @@ public class KeywordsGenerator {
 		randomGenerator = new Random();
 		
 		try {
+			System.out.println(System.getProperty("user.dir"));
 			BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\nouns.txt"));
 			String line = br.readLine();
 
