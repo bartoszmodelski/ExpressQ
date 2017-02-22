@@ -9,7 +9,7 @@ public class ActiveRecord {
 	public static void setOrderForUser(String user, Order order) {
 		orders.put(user, order);
 		
-		System.out.println(order.getVenue());
+		System.out.println("Venue: " + Integer.toString(order.getVenue()));
 		System.out.println("User: " + user);
 	}
 	
