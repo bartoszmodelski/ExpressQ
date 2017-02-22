@@ -13,8 +13,8 @@
 	</jsp:attribute>
     <jsp:body>	
 		<h3>Login below:</h3>
-		<br><s:actionmessage />
-		<br><s:actionerror />
+		<s:actionmessage />
+		<s:actionerror />
 		<br><s:form id="idLoginForm" action="loginUser">
 			<s:textfield name="userName" placeholder="Username" label="Username" />
 			<s:password name="password" placeholder="Password" label="Password" />

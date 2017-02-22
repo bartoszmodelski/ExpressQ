@@ -19,14 +19,14 @@ public class LoginAction extends ActionSupport implements SessionAware {
 	//log out user
 	public String logout() {
 		session.remove("loginId");
-		addActionMessage("You Have Been Logged Out");//for testing delete later
+		addActionMessage("<br>You have been logged out.");//for testing delete later
 		return SUCCESS;
 	}
 
 	//authenticate and login user
 	public String login() {
 		if (ConnectionManager.checkCredentials(userName, password) == false) {
-			addActionError("Please Enter Valid Username or Password");//for testing delete later
+			addActionError("<br>Please enter valid username and password.");//for testing delete later
 			return LOGIN;		
 
 		} else {
