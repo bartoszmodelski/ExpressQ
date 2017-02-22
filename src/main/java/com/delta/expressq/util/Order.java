@@ -12,6 +12,14 @@ public class Order {
 		itemsAndQuantities = new HashMap<Item, Integer>();
 	}
 	
+	public double getTotal() {
+		double total = 0;
+		for (Item i: itemsAndQuantities.keySet()) {
+			total += i.getPrice();
+		}
+		return total;
+	}
+	
 	public Order(Map<Item, Integer> itemsAndQuantities) {
 		setItemsAndQuantities(itemsAndQuantities);
 	}

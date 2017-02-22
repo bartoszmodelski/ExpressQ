@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: us-cdbr-iron-east-04.cleardb.net
--- Generation Time: Feb 20, 2017 at 05:35 PM
+-- Generation Time: Feb 22, 2017 at 02:16 PM
 -- Server version: 5.5.46-log
 -- PHP Version: 5.3.28
 
@@ -137,25 +137,28 @@ INSERT INTO `section` (`SectionID`, `MenuID`, `Description`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `transaction` (
-  `TransactionID` int(11) NOT NULL,
+  `TransactionID` int(11) NOT NULL AUTO_INCREMENT,
   `UserID` int(11) NOT NULL,
   `VenueID` int(11) NOT NULL,
   `TotalPrice` float NOT NULL,
   `Time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 - confirmed, 1 - processed, 2 - ready, 3 - collected',
-  `CollectionTime` date NOT NULL,
+  `CollectionTime` date NOT NULL DEFAULT '0000-00-00',
   PRIMARY KEY (`TransactionID`),
   UNIQUE KEY `TransactionID` (`TransactionID`),
   KEY `UserID` (`UserID`),
   KEY `VenueID` (`VenueID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
 
 --
 -- Dumping data for table `transaction`
 --
 
 INSERT INTO `transaction` (`TransactionID`, `UserID`, `VenueID`, `TotalPrice`, `Time`, `Status`, `CollectionTime`) VALUES
-(1, 1, 1, 32, '2017-02-10 21:39:35', 0, '0000-00-00');
+(1, 1, 1, 32, '2017-02-10 21:39:35', 0, '0000-00-00'),
+(2, 2, 22, 22.3, '2017-02-22 00:08:48', 0, '0000-00-00'),
+(12, 1, 22, 22.3, '2017-02-22 00:51:06', 0, '0000-00-00'),
+(32, 1, 22, 22.3, '2017-02-22 00:55:02', 0, '0000-00-00');
 
 -- --------------------------------------------------------
 

@@ -2,6 +2,7 @@ package com.delta.expressq.record;
 
 import java.util.*;
 import com.delta.expressq.util.*;
+import com.delta.expressq.database.*;
 
 public class ActiveRecord {
 	private static Map<String, Order> orders = new HashMap<String, Order>();
@@ -24,6 +25,6 @@ public class ActiveRecord {
 	}
 	
 	public static void confirmOrder(String user) {
-		//manipualte db
+		ConnectionManager.newOrder(user, orders.get(user));
 	}
 }
