@@ -15,6 +15,7 @@ public class ConfirmOrder extends ActionSupport implements SessionAware {
 	private Map<String, Object> session;
 	private int transactionID;
 	private String hour, minute;
+	public String keywords = "";
 	
 	public String execute() {		
 		String username = session.get("loginId").toString();
@@ -26,9 +27,9 @@ public class ConfirmOrder extends ActionSupport implements SessionAware {
 				hourConverted = Integer.parseInt(hour);
 				minuteConverted = Integer.parseInt(minute);
 				
-				
+				keywords = KeywordsGenerator.getKeywords();
 				ActiveRecord.getOrder(username).setCollectionTime(hourConverted, minuteConverted);
-				ActiveRecord.getOrder(username).setKeywords(KeywordsGenerator.getKeywords());
+				ActiveRecord.getOrder(username).setKeywords(keywords);
 			} catch (Exception e) {
 				System.out.println("Failed to convert. Back to normal path of execution: " + e.getMessage());
 			}
@@ -51,6 +52,10 @@ public class ConfirmOrder extends ActionSupport implements SessionAware {
 	
 	public String getHour() {
 		return hour;
+	}
+	
+	public String getKeywords() {
+		return keywords;
 	}
 	
 	public void setMinute(String minute) {

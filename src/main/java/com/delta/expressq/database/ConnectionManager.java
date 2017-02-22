@@ -348,7 +348,6 @@ public class ConnectionManager {
 		    pstmt.setDouble(3, order.getTotal());
 			pstmt.setString(4, order.getCollectionTime());
 			pstmt.setString(5, order.getKeywords());
-			System.out.println(order.getKeywords());
 		    pstmt.executeUpdate();		    
 			
 			//Obtain transaction id

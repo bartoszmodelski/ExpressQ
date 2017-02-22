@@ -69,6 +69,7 @@
 		<!-- show summary of order -->
 		<action name="summary" class="com.delta.expressq.actions.Summary" method="execute">
 			<interceptor-ref name="loginStack" />
+			<result name="login" type="redirect">login</result>
 			<result name="success">order/summary.jsp</result>
 		</action>
 		
