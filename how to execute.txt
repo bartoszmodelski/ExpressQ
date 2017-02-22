@@ -22,7 +22,7 @@
 	heroku open
 
 2.4 If wanted to create own heroku account & server:
-	git remotes rm heroku   	<deleting remote to current heroku>
+	git remote rm heroku   	<deleting remote to current heroku>
 	heroku create --stack cedar    	<use --stack cedar, shit's not written anywhere except web-app runner github, but won't work otherwise>
 	<new remote should be already added to git, check with git remote -v and continue as in 2.3> 
 	heroku addons:create cleardb:ignite   <mysql> 

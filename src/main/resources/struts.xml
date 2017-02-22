@@ -16,23 +16,10 @@
 			</interceptor-stack>
 		</interceptors>
 		
-		<global-results>
-			<result name="login">login.jsp</result>
-		</global-results>
-		
 		<action name="index">
             <result >/index.jsp</result>
 		</action>
-		
-		<action name="login">
-			<result>login.jsp</result>
-		</action>		
-		
-
-		<action name="registration">
-			<result>registration.jsp</result>
-		</action>
-
+	
 		<action name="email">
 			<result>email.jsp</result>
 		</action>
@@ -47,11 +34,21 @@
 			<result name="listItems">list/items.jsp</result>
 		</action>
 
-		<action name="reg" class ="com.delta.expressq.actions.Registration">
+		<!-- registration -->
+		<action name="registration">
+			<result>registration.jsp</result>
+		</action>
+		
+		<action name="reg" class="com.delta.expressq.actions.Registration">
 			<result name="success">login.jsp</result>
 			<result name="existed">exists.jsp</result>
 		</action>
 
+		<!-- login -->
+		<action name="login">
+			<result>login.jsp</result>
+		</action>	
+		
 		<!-- login action -->
 		<action name="loginUser" class="com.delta.expressq.actions.LoginAction" method="login">
 			<result name="success" type="redirect">homeAction.action</result>
@@ -78,12 +75,7 @@
 	    <action name="confirmOrder" class="com.delta.expressq.actions.ConfirmOrder">
 			<result name="success">order/confirmed.jsp</result>
 			<result name="fail">order/summary.jsp</result>
-		</action>
-
-		<action name="confirmed" class="com.delta.expressq.actions.ConfirmAction" method="qrCode">
-			<result name="success">order/confirmed.jsp</result>
-		</action>
-		
+		</action>		
 		
 		<!-- json -->
 		<action name="json" class="com.delta.expressq.actions.Json" method="execute">
