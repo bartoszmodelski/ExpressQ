@@ -418,15 +418,14 @@ public class ConnectionManager {
 					 }
 	}
 
-	public static Map EditUser(String fid, Map userDetails) {
+	public static Map EditUser(String selectedID, Map userDetails) {
 		Connection conn = getConnection();
 		PreparedStatement stmt = null;
 		try{
 			stmt = conn.prepareStatement("SELECT * FROM user WHERE UserID=?");
-			int k = Integer.parseInt(fid);
+			int k = Integer.parseInt(selectedID);
 			stmt.setInt(1, k);
 			ResultSet rs = stmt.executeQuery();
-			List myList = new ArrayList();
 			while (rs.next()){
 				userDetails.put("UserID", rs.getInt("UserID"));
 				userDetails.put("Username", rs.getString("Username"));

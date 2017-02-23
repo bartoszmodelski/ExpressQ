@@ -15,7 +15,7 @@ public class AdminAction extends ActionSupport implements ServletRequestAware, A
 	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private List users = new ArrayList();
-	public String arrayDeletionSelection[], deleteSelection, fid;
+	public String arrayDeletionSelection[], deleteSelection, selectedID;
 	Map userDetails;
 
 	public String Display(){
@@ -31,8 +31,8 @@ public class AdminAction extends ActionSupport implements ServletRequestAware, A
 	}
 	
 	public String Edit(){
-		fid = request.getParameter("fid");
-		ConnectionManager.EditUser(fid, userDetails);
+		selectedID = request.getParameter("selectedID");
+		ConnectionManager.EditUser(selectedID, userDetails);
 		System.out.println(userDetails);
 		return SUCCESS;
 	}
@@ -54,16 +54,17 @@ public class AdminAction extends ActionSupport implements ServletRequestAware, A
 		return deleteSelection;
 	}
 	
-	public void setDeleteSelection(String fid){
-		this.fid = fid;
-	}
-	
-	public String getfid(){
-		return fid;
-	}
-	
-	public void setfid(String deleteSelection){
+	public void setDeleteSelection(String deleteSelection){
 		this.deleteSelection = deleteSelection;
+	}
+	
+	
+	public String getSelectedID(){
+		return selectedID;
+	}
+	
+	public void setSelectedID(String selectedID){
+		this.selectedID = selectedID;
 	}
 	
 	public void setApplication(Map userDetails){

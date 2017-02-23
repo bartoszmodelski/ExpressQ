@@ -10,7 +10,7 @@ document.fom.submit();
 }
 function editr(val)
 {
-document.fom.action="edit.action?fid="+val;
+document.fom.action="edit.action?selectedID="+val;
 document.fom.submit();
 }
 </script>
