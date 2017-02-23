@@ -2,16 +2,21 @@ package com.delta.expressq.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import com.delta.expressq.database.ConnectionManager;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class AdminAction extends ActionSupport implements ServletRequestAware{
+public class AdminAction extends ActionSupport implements ServletRequestAware, ApplicationAware{
 	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private List users = new ArrayList();
-	public String arrayDeletionSelection[], deleteSelection;
+	public String arrayDeletionSelection[], deleteSelection, fid;
+	Map userDetails;
 
 	public String Display(){
 		ConnectionManager.DisplayUsers(users);
@@ -26,7 +31,9 @@ public class AdminAction extends ActionSupport implements ServletRequestAware{
 	}
 	
 	public String Edit(){
-		ConnectionManager.EditUser();
+		fid = request.getParameter("fid");
+		ConnectionManager.EditUser(fid, userDetails);
+		System.out.println(userDetails);
 		return SUCCESS;
 	}
 	
@@ -47,8 +54,19 @@ public class AdminAction extends ActionSupport implements ServletRequestAware{
 		return deleteSelection;
 	}
 	
-	public void setDeleteSelection(String deleteSelection){
+	public void setDeleteSelection(String fid){
+		this.fid = fid;
+	}
+	
+	public String getfid(){
+		return fid;
+	}
+	
+	public void setfid(String deleteSelection){
 		this.deleteSelection = deleteSelection;
 	}
 	
+	public void setApplication(Map userDetails){
+		this.userDetails = userDetails;
+	}
 }

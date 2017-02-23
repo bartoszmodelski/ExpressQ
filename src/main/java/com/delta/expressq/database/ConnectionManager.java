@@ -418,8 +418,27 @@ public class ConnectionManager {
 					 }
 	}
 
-	public static void EditUser() {
-		// TODO Auto-generated method stub
-
+	public static Map EditUser(String fid, Map userDetails) {
+		Connection conn = getConnection();
+		PreparedStatement stmt = null;
+		try{
+			stmt = conn.prepareStatement("SELECT * FROM user WHERE UserID=?");
+			int k = Integer.parseInt(fid);
+			stmt.setInt(1, k);
+			ResultSet rs = stmt.executeQuery();
+			List myList = new ArrayList();
+			while (rs.next()){
+				userDetails.put("UserID", rs.getInt("UserID"));
+				userDetails.put("Username", rs.getString("Username"));
+				userDetails.put("Fname", rs.getString("Fname"));
+				userDetails.put("Lname", rs.getString("Lname"));
+				userDetails.put("email", rs.getString("email"));
+			}
+			stmt.close();
+			conn.close();
+		}catch(Exception e){
+			 e.printStackTrace();
+		}
+		return userDetails;
 	}
 }
