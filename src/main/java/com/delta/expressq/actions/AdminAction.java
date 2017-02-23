@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import com.delta.expressq.database.ConnectionManager;
+import com.delta.expressq.util.User;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class AdminAction extends ActionSupport implements ServletRequestAware, ApplicationAware{
@@ -17,6 +18,7 @@ public class AdminAction extends ActionSupport implements ServletRequestAware, A
 	private List users = new ArrayList();
 	public String arrayDeletionSelection[], deleteSelection, selectedID;
 	Map userDetails;
+	User user = new User();
 
 	public String Display(){
 		ConnectionManager.DisplayUsers(users);
@@ -26,14 +28,24 @@ public class AdminAction extends ActionSupport implements ServletRequestAware, A
 
 	public String Delete(){
 		arrayDeletionSelection = request.getParameterValues("deleteSelection");//get values from jsp to pass into connection manager
-		ConnectionManager.DeleteUsers(arrayDeletionSelection);
-		return SUCCESS;
+		if (arrayDeletionSelection == null){
+			return ERROR;
+		}
+		else{
+			ConnectionManager.DeleteUsers(arrayDeletionSelection);
+			return SUCCESS;
+		}
 	}
 	
 	public String Edit(){
 		selectedID = request.getParameter("selectedID");
 		ConnectionManager.EditUser(selectedID, userDetails);
-		System.out.println(userDetails);
+		//System.out.println(userDetails);
+		return SUCCESS;
+	}
+	
+	public String UpdateUserDetails(){
+		ConnectionManager.UpdateUser(user);
 		return SUCCESS;
 	}
 	
@@ -69,5 +81,13 @@ public class AdminAction extends ActionSupport implements ServletRequestAware, A
 	
 	public void setApplication(Map userDetails){
 		this.userDetails = userDetails;
+	}
+	
+	public User getUser(){
+		return user;
+	}
+	
+	public void setUser(User user){
+		this.user = user;
 	}
 }

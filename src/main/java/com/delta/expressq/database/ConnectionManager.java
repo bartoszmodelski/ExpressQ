@@ -440,4 +440,23 @@ public class ConnectionManager {
 		}
 		return userDetails;
 	}
+
+	public static void UpdateUser(User user) {
+		Connection conn = getConnection();
+		PreparedStatement stmt = null;
+		try{
+			stmt = conn.prepareStatement("UPDATE user set Username=?, Fname=?, Lname=?, email=? WHERE UserID=?");
+			stmt.setString(1, user.getUsername());
+			stmt.setString(2, user.getFname());
+			stmt.setString(3, user.getLname());
+			stmt.setString(4, user.getemail());
+			stmt.setInt(5, user.getUserID());
+			stmt.executeUpdate();
+			conn.commit();
+			stmt.close();
+			conn.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }

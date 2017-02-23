@@ -2,7 +2,7 @@ package com.delta.expressq.util;
 
 public class User {
 	private int UserID;
-	private String Username, Fname, Lname, email, Password;
+	public String Username, Fname, Lname, email, Password;
 
 	public int getUserID(){
 		return UserID;

@@ -12,7 +12,7 @@
 
 <b>Update Details</b>
 
-<s:form action="updates">
+<s:form action="update">
 	<s:textfield label="UserID" value="%{#application.UserID}" name="User.UserID" readonly="true"/>
 	<s:textfield label="Username" value="%{#application.Username}" name="User.Username" />
 	<s:textfield label="Forename" value="%{#application.Fname}" name="User.Fname" />

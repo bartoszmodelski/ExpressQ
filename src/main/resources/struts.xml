@@ -95,6 +95,7 @@
 
     <action name="del" class="com.delta.expressq.actions.AdminAction" method="Delete">
       <result name="success">/deletesuccess.jsp</result>
+      <result name="error">/error.jsp</result>
     </action>
 
     <action name="insert" class="com.delta.expressq.actions.AdminAction" method="Insert">
@@ -105,5 +106,8 @@
       <result name ="success">edituser.jsp</result>
     </action>
 
+	<action name="update" class="com.delta.expressq.actions.AdminAction" method="UpdateUserDetails">
+		<result name="success" type="redirect">view</result>
+	</action>
 	</package>
 </struts>
