@@ -42,6 +42,7 @@
 			<s:submit value = "Purchase!"/>
 			<input type="hidden" name="venue" value="${id}">
 		</s:form>
+		</logic:iterate>
     </jsp:body>
 </t:wrapper>
 

@@ -16,5 +16,6 @@
 		<s:iterator value="Map">
 			<p><a href="/venues?id=<s:property value="value"/>"><s:property value="key"/></a></b></p>
 		</s:iterator>
+		</logic:iterate>
     </jsp:body>
 </t:wrapper>
