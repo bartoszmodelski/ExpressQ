@@ -104,6 +104,7 @@
 
     <action name="edit" class="com.delta.expressq.actions.AdminAction" method="Edit">
       <result name ="success">edituser.jsp</result>
+      <result name="error">/error.jsp</result>
     </action>
 
 	<action name="update" class="com.delta.expressq.actions.AdminAction" method="UpdateUserDetails">

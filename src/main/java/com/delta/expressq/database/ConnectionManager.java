@@ -378,6 +378,11 @@ public class ConnectionManager {
 
 	}
 
+	/**
+	 * This retrieves the data from the user table and passes it back into AdminAction so all the users' details can be displayed on screen
+	 * @param users List that holds the values of each record in the user table.
+	 * @return users is returned if the query is successful, otherwise it returns null.
+	 */
 	public static List DisplayUsers(List users) {
 		Connection conn = getConnection();
 		Statement stmt = null;
@@ -402,6 +407,10 @@ public class ConnectionManager {
 		return null;
 	}
 
+	/**
+	 * This method receives an array of UserIDs that have been chosen to be deleted from the database. It loops through the array of IDs and with each loop it executes the delete query. 
+	 * @param arrayDeletionSelection Holds the UserIDs that have been selected for deletion 
+	 */
 	public static void DeleteUsers(String[] arrayDeletionSelection) {
 		Connection conn = getConnection();
 		PreparedStatement stmt = null;
@@ -417,7 +426,14 @@ public class ConnectionManager {
 							 e.printStackTrace();
 					 }
 	}
-
+	
+	/**
+	 * This method has a UserID passed into it via selectedID. This value is used to execute an SQL query which retrieves the needed values from that 
+	 * record and returns them via the Map userDetails.
+	 * @param selectedID This holds the UserID value of the User that has been selected to be edited. 
+	 * @param userDetails This maps the the labels with the relevant details from the database.
+	 * @return userDetails
+	 */
 	public static Map EditUser(String selectedID, Map userDetails) {
 		Connection conn = getConnection();
 		PreparedStatement stmt = null;
@@ -438,9 +454,15 @@ public class ConnectionManager {
 		}catch(Exception e){
 			 e.printStackTrace();
 		}
+		System.out.println(userDetails);
 		return userDetails;
 	}
-
+	
+	/**
+	 * This method takes in the new values that have requested to be updated in the database and performs the necessary SQL query to 
+	 * perform this task.
+	 * @param user Holds the new values that will be inserted into the relevant user record.
+	 */
 	public static void UpdateUser(User user) {
 		Connection conn = getConnection();
 		PreparedStatement stmt = null;
@@ -459,4 +481,27 @@ public class ConnectionManager {
 			e.printStackTrace();
 		}
 	}
+	
+	public static boolean checkUserExists(String UserID) {
+		  Connection conn = getConnection();
+		  // Using prepared statement to prevent SQL injection
+		  PreparedStatement pstmt = null;
+		  try {
+		    // Query returning a user with matching username
+		    pstmt = conn.prepareStatement("SELECT * FROM User WHERE UserID = ?");
+		    pstmt.setString(1, UserID);
+		    ResultSet rs = pstmt.executeQuery();
+		    // Check whether a matching user was returned.
+		    if (rs.next()) {
+		      rs.close();
+		      conn.close();
+		      return true;
+		    }
+		    rs.close();
+		    conn.close();
+		  } catch (SQLException sqle) {
+		    System.out.println("SQL query failed: " + sqle.getMessage());
+		  }
+		  return false;
+		}
 }

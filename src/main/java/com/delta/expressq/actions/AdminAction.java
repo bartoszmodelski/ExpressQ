@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import com.delta.expressq.database.ConnectionManager;
@@ -39,9 +40,14 @@ public class AdminAction extends ActionSupport implements ServletRequestAware, A
 	
 	public String Edit(){
 		selectedID = request.getParameter("selectedID");
-		ConnectionManager.EditUser(selectedID, userDetails);
-		//System.out.println(userDetails);
-		return SUCCESS;
+		if (ConnectionManager.checkUserExists(selectedID) == true){
+			ConnectionManager.EditUser(selectedID, userDetails);
+			//System.out.println(userDetails);
+			MapUtils.debugPrint(System.out, "myMap", userDetails);
+			return SUCCESS;
+		}else{
+			return ERROR;
+		}
 	}
 	
 	public String UpdateUserDetails(){
