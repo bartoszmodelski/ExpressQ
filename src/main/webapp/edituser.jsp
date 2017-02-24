@@ -8,9 +8,7 @@
 <a href="<s:url action="view.action"/>">Display Users</a>
 <br><br>
 
-<%--   This is -- <s:property value="#application.a" /> --%>
-
-<b>Update Details</b>
+<h3>Update Details</h3>
 
 <s:form action="update">
 	<s:textfield label="UserID" value="%{#application.UserID}" name="User.UserID" readonly="true"/>
