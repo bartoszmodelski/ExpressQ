@@ -12,19 +12,32 @@ public class LoginAction extends ActionSupport implements SessionAware {
 	private String password;
 	private Map<String, Object> session;
 
+	/**
+	 * Used to redirect the user to the home page after they have logged in.
+	 * @return SUCCESS
+	 */
 	public String home() {
 		return SUCCESS;
 	}
 
+	/**
+	 * Removes the logged in user from the session.
+	 * @return SUCCESS
+	 */
 	public String logout() {
 		session.remove("loginId");
 		addActionMessage("<br>You have been logged out.");//for testing delete later
 		return SUCCESS;
 	}
 
+	/**
+	 * This method calls checkCredentials from connectionManager to validate the login details provided by the user. 
+	 * If they do match it creates a new session and maps the user's username to it. If not it displays an error message.
+	 * @return LOGIN redirect if the credentials do not match. SUCCESS if they do.
+	 */
 	public String login() {
 		if (ConnectionManager.checkCredentials(userName, password) == false) {
-			addActionError("<br>Please enter valid username and password.");//for testing delete later
+			addActionError("Please enter valid username and password.");//for testing delete later
 			return LOGIN;		
 
 		} else {

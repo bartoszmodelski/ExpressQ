@@ -31,6 +31,12 @@ public class ConnectionManager {
 	}
 
 	// Add APIKey parameter later
+	/**
+	 * Checks if the login details provided by the user are correct.
+	 * @param username The username to be checked
+	 * @param password The password to be checked
+	 * @return true if the username and password exist in the same record. false if they do not.
+	 */
 	public static boolean checkCredentials(String username, String password) {
 		Connection conn = getConnection();
 		// Using prepared statement to prevent SQL injection
@@ -454,7 +460,6 @@ public class ConnectionManager {
 		}catch(Exception e){
 			 e.printStackTrace();
 		}
-		System.out.println(userDetails);
 		return userDetails;
 	}
 	
@@ -482,6 +487,11 @@ public class ConnectionManager {
 		}
 	}
 	
+	/**
+	 * Checks if a user exists in the database given a UserID
+	 * @param UserID Holds the value of the UserID passed in from the calling action.
+	 * @return true if the user exists. false if the user does not exist.
+	 */
 	public static boolean checkUserExists(String UserID) {
 		  Connection conn = getConnection();
 		  // Using prepared statement to prevent SQL injection
