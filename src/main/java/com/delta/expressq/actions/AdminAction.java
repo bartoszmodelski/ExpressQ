@@ -64,7 +64,7 @@ public class AdminAction extends ActionSupport implements ServletRequestAware, A
 	 * @return SUCCESS
 	 */
 	public String UpdateUserDetails(){
-		ConnectionManager.UpdateUser(user);
+		ConnectionManager.AdminUpdateUser(user);
 		return SUCCESS;
 	}
 	

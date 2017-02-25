@@ -122,5 +122,11 @@
 		<result name ="success">userprofile.jsp</result>
 		<result name="login" type="redirect">login</result>
 	</action>
+	
+	<!--Action for saving customer profile changes-->
+	<action name ="UserUpdate" class="com.delta.expressq.actions.UserProfileAction" method="Update">
+		<result name ="success" type="redirect">homeAction</result>
+	</action>
+	
 	</package>
 </struts>

@@ -468,7 +468,7 @@ public class ConnectionManager {
 	 * perform this task.
 	 * @param user Holds the new values that will be inserted into the relevant user record.
 	 */
-	public static void UpdateUser(User user) {
+	public static void AdminUpdateUser(User user) {
 		Connection conn = getConnection();
 		PreparedStatement stmt = null;
 		try{
@@ -541,5 +541,24 @@ public class ConnectionManager {
 			 e.printStackTrace();
 		}
 		return userDetails;		
+	}
+
+	public static void UserUpdate(User user) {
+		Connection conn = getConnection();
+		PreparedStatement stmt = null;
+		try{
+			stmt = conn.prepareStatement("UPDATE user set Password=?, Fname=?, Lname=?, email=? WHERE Username=?");
+			stmt.setString(1, user.getPassword());
+			stmt.setString(2, user.getFname());
+			stmt.setString(3, user.getLname());
+			stmt.setString(4, user.getemail());
+			stmt.setString(5, user.getUsername());
+			stmt.executeUpdate();
+			conn.commit();
+			stmt.close();
+			conn.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }
