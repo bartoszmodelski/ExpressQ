@@ -52,7 +52,7 @@ public class AdminAction extends ActionSupport implements ServletRequestAware, A
 	public String Edit(){
 		selectedID = request.getParameter("selectedID");
 		if (ConnectionManager.checkUserExists(selectedID) == true){
-			ConnectionManager.EditUser(selectedID, userDetails);
+			ConnectionManager.AdminEditUser(selectedID, userDetails);
 			return SUCCESS;
 		}else{
 			return ERROR;

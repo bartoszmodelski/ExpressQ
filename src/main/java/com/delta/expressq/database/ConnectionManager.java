@@ -435,12 +435,12 @@ public class ConnectionManager {
 	
 	/**
 	 * This method has a UserID passed into it via selectedID. This value is used to execute an SQL query which retrieves the needed values from that 
-	 * record and returns them via the Map userDetails.
+	 * record and returns them via the Map userDetails. To be used by the admin only.
 	 * @param selectedID This holds the UserID value of the User that has been selected to be edited. 
 	 * @param userDetails This maps the the labels with the relevant details from the database.
 	 * @return userDetails
 	 */
-	public static Map EditUser(String selectedID, Map userDetails) {
+	public static Map AdminEditUser(String selectedID, Map userDetails) {
 		Connection conn = getConnection();
 		PreparedStatement stmt = null;
 		try{
@@ -514,4 +514,32 @@ public class ConnectionManager {
 		  }
 		  return false;
 		}
+	
+	/**
+	 * This is used to retrieve the details of a user given a username. This is only to be used by the customer user.
+	 * @param username Holds the value of the username whose details we wish to retrieve.
+	 * @param userDetails This maps the the labels with the relevant details from the database.
+	 * @return
+	 */
+	public static Map UserEdit(String username, Map userDetails) {
+		Connection conn = getConnection();
+		PreparedStatement stmt = null;
+		try{
+			stmt = conn.prepareStatement("SELECT * FROM user WHERE Username=?");
+			stmt.setString(1, username);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()){
+				userDetails.put("Username", rs.getString("Username"));
+				userDetails.put("Password", rs.getString("Password"));
+				userDetails.put("Fname", rs.getString("Fname"));
+				userDetails.put("Lname", rs.getString("Lname"));
+				userDetails.put("email", rs.getString("email"));
+			}
+			stmt.close();
+			conn.close();
+		}catch(Exception e){
+			 e.printStackTrace();
+		}
+		return userDetails;		
+	}
 }

@@ -92,25 +92,35 @@
       <result name="success">/display.jsp</result>
       <result name="error">/error.jsp</result>
     </action>
-
+	
+	<!-- Delete User(s) -->
     <action name="del" class="com.delta.expressq.actions.AdminAction" method="Delete">
       <result name="success">/deletesuccess.jsp</result>
       <result name="error">/error.jsp</result>
     </action>
 
+	<!-- Insert New User -->
     <action name="insert" class="com.delta.expressq.actions.AdminAction" method="Insert">
       <result>registration.jsp</result>
     </action>
 
+	<!-- Edit User Display-->
     <action name="edit" class="com.delta.expressq.actions.AdminAction" method="Edit">
       <result name ="success">edituser.jsp</result>
       <result name="error">/error.jsp</result>
     </action>
-
+	
+	<!-- Save Edited Changes -->
 	<action name="update" class="com.delta.expressq.actions.AdminAction" method="UpdateUserDetails">
 		<result name="success" type="redirect">view</result>
 	</action>
 	<!--End of AdminAction Actions-->
 	
+	<!--User Profile Action-->
+	<action name ="profile" class="com.delta.expressq.actions.UserProfileAction">
+		<interceptor-ref name="loginStack" />
+		<result name ="success">userprofile.jsp</result>
+		<result name="login" type="redirect">login</result>
+	</action>
 	</package>
 </struts>
