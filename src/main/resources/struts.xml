@@ -110,5 +110,7 @@
 	<action name="update" class="com.delta.expressq.actions.AdminAction" method="UpdateUserDetails">
 		<result name="success" type="redirect">view</result>
 	</action>
+	<!--End of AdminAction Actions-->
+	
 	</package>
 </struts>
