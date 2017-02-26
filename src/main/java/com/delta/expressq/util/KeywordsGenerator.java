@@ -10,14 +10,18 @@ public class KeywordsGenerator {
 	private static ArrayList<String> nouns;
 	private static Random randomGenerator;
 	
+	private static String nouns = System.getProperty("user.dir") + "/nouns.txt";
+	private static String adjectives = System.getProperty("user.dir") + "/adjectives.txt";
+	
+	
 	private static void setup() {
 		adjectives = new ArrayList<String>();
 		nouns = new ArrayList<String>();
 		randomGenerator = new Random();
 		
 		try {
-			System.out.println(System.getProperty("user.dir"));
-			BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/nouns.txt"));
+			
+			BufferedReader br = new BufferedReader(new FileReader(nouns));
 			String line = br.readLine();
 
 			while (line != null) {
@@ -25,7 +29,7 @@ public class KeywordsGenerator {
 				line = br.readLine();
 			}
 			
-			br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/adjectives.txt"));
+			br = new BufferedReader(new FileReader(adjectives));
 			line = br.readLine();
 
 			while (line != null) {
