@@ -404,6 +404,7 @@ public class ConnectionManager {
 				user.setemail(rs.getString("email"));
 				user.setUsername(rs.getString("Username"));
 				user.setPassword(rs.getString("Password"));
+				user.setAdmin(rs.getInt("Admin"));
 				users.add(user);
 			}
 			return users;
