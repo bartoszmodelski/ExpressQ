@@ -564,4 +564,29 @@ public class ConnectionManager {
 			e.printStackTrace();
 		}
 	}
+
+	//CHANGE THIS ONCE JDBC FIXED
+	public static boolean checkBusinessCredentials(String userName, String password) {
+		Connection conn = getConnection();
+		// Using prepared statement to prevent SQL injection
+		PreparedStatement pstmt = null;
+		try {
+			// Query returning a user with matching username and password.
+			pstmt = conn.prepareStatement("SELECT * FROM venue WHERE Name = ? and Password = ?");
+			pstmt.setString(1, userName);
+			pstmt.setString(2, password);
+			ResultSet rs = pstmt.executeQuery();
+			// Check whether a matching user was returned.
+			if (rs.next()) {
+				rs.close();
+				conn.close();
+				return true;
+			}
+			rs.close();
+			conn.close();
+		} catch (SQLException sqle) {
+			System.out.println("SQL query failed: " + sqle.getMessage());
+		}
+		return false;
+	}
 }

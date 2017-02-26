@@ -34,7 +34,7 @@ public class LoginAction extends ActionSupportWithSession {
 	 * @return LOGIN redirect if the credentials do not match. SUCCESS if they do.
 	 */
 	public String login() {
-		if (ConnectionManager.checkCredentials(userName, password) == false) {
+		if ((ConnectionManager.checkCredentials(userName, password) == false)&&(ConnectionManager.checkBusinessCredentials(userName, password) == false)) {
 			addActionError("Please enter valid username and password.");//for testing delete later
 			return LOGIN;		
 
