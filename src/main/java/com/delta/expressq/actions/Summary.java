@@ -9,11 +9,10 @@ import java.util.*;
 import com.delta.expressq.util.*;
 import com.delta.expressq.record.*;
 
-public class Summary extends ActionSupport implements SessionAware {
+public class Summary extends ActionSupportWithSession {
 	public Map<String, String> itemsToOrder = new HashMap<String, String>();
 	public List<Item> items = new ArrayList<Item>();
 	public Order order = new Order();
-	private Map<String, Object> session;
 	private String venue = new String();
 	
 	public String execute() {
@@ -82,11 +81,4 @@ public class Summary extends ActionSupport implements SessionAware {
            this.itemsToOrder = itemsToOrder;
     }
 	
-	public Map<String, Object> getSession() {
-		return session;
-	}
-
-	public void setSession(Map<String, Object> map) {
-		this.session = map;
-	}
 }

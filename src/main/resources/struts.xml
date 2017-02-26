@@ -33,6 +33,10 @@
 			<result name="listVenues">list/venues.jsp</result>
 			<result name="listItems">list/items.jsp</result>
 		</action>
+		
+		<action name="exampleOfSession" class="com.delta.expressq.actions.ExampleOfSession" method="execute">
+			<result name="success">exampleOfSession.jsp</result>
+		</action>
 
 		<!-- registration -->
 		<action name="registration">

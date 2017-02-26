@@ -2,7 +2,7 @@ package com.delta.expressq.actions;
 import com.delta.expressq.database.ConnectionManager;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class Registration extends ActionSupport {
+public class Registration extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
 	private String Uname, Pass, PassConf, Email, Fname, Lname;
 

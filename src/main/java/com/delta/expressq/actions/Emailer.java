@@ -9,7 +9,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class Emailer extends ActionSupport {
+public class Emailer extends ActionSupportWithSession {
 
 	private static final long serialVersionUID = 1L;
 	private String from = "expressQDelta@gmail.com";

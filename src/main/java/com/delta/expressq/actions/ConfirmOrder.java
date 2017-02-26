@@ -9,10 +9,9 @@ import java.util.*;
 import com.delta.expressq.util.*;
 import com.delta.expressq.record.*;
 
-public class ConfirmOrder extends ActionSupport implements SessionAware {
+public class ConfirmOrder extends ActionSupportWithSession {
 	public Map<String, String> itemsToOrder = new HashMap<String, String>();
 	public List<Item> items = new ArrayList<Item>();
-	private Map<String, Object> session;
 	private int transactionID;
 	private String hour, minute;
 	public String keywords = "";
@@ -64,13 +63,5 @@ public class ConfirmOrder extends ActionSupport implements SessionAware {
 	
 	public String getMinute() {
 		return minute;
-	}
-	
-	public void setSession(Map<String, Object> session) {
-		this.session = session;
-	}
-	
-	public Map<String, Object> getSession() {
-		return session;
 	}
 }

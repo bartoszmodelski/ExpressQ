@@ -8,9 +8,8 @@ import com.delta.expressq.database.ConnectionManager;
 import com.delta.expressq.util.User;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class UserProfileAction extends ActionSupport implements SessionAware, ApplicationAware {
+public class UserProfileAction extends ActionSupportWithSession implements ApplicationAware {
 	private static final long serialVersionUID = 1L;
-	private Map<String, Object> session;
 	private String username;
 	Map userDetails;
 	User user = new User();
@@ -33,14 +32,7 @@ public class UserProfileAction extends ActionSupport implements SessionAware, Ap
 	public void Edit(){
 
 	}
-	
-	public void setSession(Map<String, Object> session) {
-		this.session = session;
-	}
-	
-	public Map<String, Object> getSession() {
-		return session;
-	}
+
 
 	public void setApplication(Map userDetails){
 		this.userDetails = userDetails;

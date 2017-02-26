@@ -22,7 +22,7 @@ import org.json.JSONObject;
 		<s:property value="%{#action.name}" />*/
 
 
-public class Json extends ActionSupport implements ServletRequestAware {
+public class Json extends ActionSupportWithSession implements ServletRequestAware {
 	private HttpServletRequest request;
 	public String name = "";
 	public String APIpass = "";
