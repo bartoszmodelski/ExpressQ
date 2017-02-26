@@ -37,7 +37,7 @@ public class LoginActionTest extends StrutsTestCase{
 	 * Tests that when /login is called the login page is presented to the user
 	 */
 	public void testGetLoginPage() {
-		ActionMapping mapping = getActionMapping("/login");
+		ActionMapping mapping = getActionMapping("/login.action");
 		assertNotNull(mapping);
         assertEquals("/", mapping.getNamespace());
         assertEquals("login", mapping.getName());

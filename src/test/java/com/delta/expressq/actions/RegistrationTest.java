@@ -1,20 +1,22 @@
 package com.delta.expressq.actions;
 
 import org.apache.struts2.StrutsTestCase;
-import com.opensymphony.xwork2.Action;
+import org.apache.struts2.dispatcher.mapper.ActionMapping;
 import com.opensymphony.xwork2.ActionProxy;
 
 public class RegistrationTest extends StrutsTestCase{
-	public void testGetters() throws Exception {
-        /**
-         * Test registration getters
-         */
+	/**
+	 * Tests that a user cannot be registered if it exists
+	 * @throws Exception
+	 */
+	public void testExistedRegistration() throws Exception {
+
         request.setParameter("Uname", "TestUsername");
         request.setParameter("Fname", "TestFname");
         request.setParameter("Lname", "TestLname");
         request.setParameter("Email", "TestEmail");
         request.setParameter("Pass", "TestPass");
-        request.setParameter("PassConf", "TestPassConf");
+        request.setParameter("PassConf", "TestPass");
 
         ActionProxy proxy = getActionProxy("/reg");
         assertNotNull(proxy);
@@ -23,12 +25,20 @@ public class RegistrationTest extends StrutsTestCase{
         assertNotNull(RegAction);
  
         String result = proxy.execute();
-        assertEquals(Action.SUCCESS, result);
         assertEquals("TestUsername", RegAction.getUname());
         assertEquals("TestFname", RegAction.getFname());
         assertEquals("TestLname", RegAction.getLname());
         assertEquals("TestEmail", RegAction.getEmail());
         assertEquals("TestPass", RegAction.getPass());
-        assertEquals("TestPassConf", RegAction.getPassConf());
+        assertEquals("TestPass", RegAction.getPassConf());
+        assertEquals("Result returned from executing the action was not existed but it should have been.", "existed", result);
+
     }
+	
+	public void testGetRegisterPage() {
+		ActionMapping mapping = getActionMapping("/registration.action");
+		assertNotNull(mapping);
+        assertEquals("/", mapping.getNamespace());
+        assertEquals("registration", mapping.getName());
+	}
 }
