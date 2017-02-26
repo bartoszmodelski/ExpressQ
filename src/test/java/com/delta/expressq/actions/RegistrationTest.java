@@ -1,13 +1,11 @@
 package com.delta.expressq.actions;
 
 import org.apache.struts2.StrutsTestCase;
-import org.apache.struts2.dispatcher.mapper.ActionMapping;
-
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionProxy;
 
 public class RegistrationTest extends StrutsTestCase{
-	public void testGetActionProxy() throws Exception {
+	public void testGetters() throws Exception {
         /**
          * Test registration getters
          */
