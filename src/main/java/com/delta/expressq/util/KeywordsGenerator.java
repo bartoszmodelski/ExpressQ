@@ -10,8 +10,8 @@ public class KeywordsGenerator {
 	private static ArrayList<String> nouns;
 	private static Random randomGenerator;
 	
-	private static String nouns = System.getProperty("user.dir") + "/nouns.txt";
-	private static String adjectives = System.getProperty("user.dir") + "/adjectives.txt";
+	private static String nounsPath = System.getProperty("user.dir") + "/nouns.txt";
+	private static String adjectivesPath = System.getProperty("user.dir") + "/adjectives.txt";
 	
 	
 	private static void setup() {
@@ -21,7 +21,7 @@ public class KeywordsGenerator {
 		
 		try {
 			
-			BufferedReader br = new BufferedReader(new FileReader(nouns));
+			BufferedReader br = new BufferedReader(new FileReader(nounsPath));
 			String line = br.readLine();
 
 			while (line != null) {
@@ -29,7 +29,7 @@ public class KeywordsGenerator {
 				line = br.readLine();
 			}
 			
-			br = new BufferedReader(new FileReader(adjectives));
+			br = new BufferedReader(new FileReader(adjectivesPath));
 			line = br.readLine();
 
 			while (line != null) {
