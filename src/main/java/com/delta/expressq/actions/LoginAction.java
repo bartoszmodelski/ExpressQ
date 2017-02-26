@@ -1,9 +1,6 @@
 package com.delta.expressq.actions;
 
-import java.util.Map;
-
 import com.delta.expressq.database.ConnectionManager;
-import com.opensymphony.xwork2.ActionSupport;
 
 public class LoginAction extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
