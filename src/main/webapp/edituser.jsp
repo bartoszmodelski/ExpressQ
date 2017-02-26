@@ -16,6 +16,7 @@
 	<s:textfield label="Forename" value="%{#application.Fname}" name="User.Fname" />
 	<s:textfield label="Surname" value="%{#application.Lname}" name="User.Lname" />
 	<s:textfield label="Email" value="%{#application.email}" name="User.email" />
+	<s:textfield label="Admin" value="%{#application.Admin}" name="User.Admin" />
 	<s:submit value="Update" />
 </s:form>
 </body>

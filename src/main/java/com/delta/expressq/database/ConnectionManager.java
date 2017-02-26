@@ -455,6 +455,7 @@ public class ConnectionManager {
 				userDetails.put("Fname", rs.getString("Fname"));
 				userDetails.put("Lname", rs.getString("Lname"));
 				userDetails.put("email", rs.getString("email"));
+				userDetails.put("Admin", rs.getString("Admin"));
 			}
 			stmt.close();
 			conn.close();
@@ -473,12 +474,13 @@ public class ConnectionManager {
 		Connection conn = getConnection();
 		PreparedStatement stmt = null;
 		try{
-			stmt = conn.prepareStatement("UPDATE user set Username=?, Fname=?, Lname=?, email=? WHERE UserID=?");
+			stmt = conn.prepareStatement("UPDATE user set Username=?, Fname=?, Lname=?, email=?, Admin=? WHERE UserID=?");
 			stmt.setString(1, user.getUsername());
 			stmt.setString(2, user.getFname());
 			stmt.setString(3, user.getLname());
 			stmt.setString(4, user.getemail());
-			stmt.setInt(5, user.getUserID());
+			stmt.setInt(5, user.getAdmin());
+			stmt.setInt(6, user.getUserID());
 			stmt.executeUpdate();
 			conn.commit();
 			stmt.close();
