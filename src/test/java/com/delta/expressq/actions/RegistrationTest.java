@@ -35,6 +35,9 @@ public class RegistrationTest extends StrutsTestCase{
 
     }
 	
+	/**
+	 * Tests that registration action maps as expected
+	 */
 	public void testGetRegisterPage() {
 		ActionMapping mapping = getActionMapping("/registration.action");
 		assertNotNull(mapping);
