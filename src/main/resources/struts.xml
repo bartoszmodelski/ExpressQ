@@ -21,7 +21,7 @@
 		</action>
 
 		<action name="email">
-			<result>email.jsp</result>
+			<result>Email.jsp</result>
 		</action>
 
 		<action name="emailer" class="com.delta.expressq.actions.Emailer" method="execute">
