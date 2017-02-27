@@ -41,7 +41,7 @@ public class ConnectionManager {
      */
     public static boolean checkCredentials(String username, String password) {
         // Using prepared statement to prevent SQL injection
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         try {
             // Query returning a user with matching username and password.
             pstmt = conn.prepareStatement("SELECT * FROM User WHERE Username = ? and Password = ?");
@@ -61,7 +61,7 @@ public class ConnectionManager {
     }
 
     public static String getUsername(int userID) {
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT Username FROM User WHERE UserID = ?");
             pstmt.setInt(1, userID);
@@ -80,7 +80,7 @@ public class ConnectionManager {
 
     // Gets a venue and returns it as a venue object.
     public static Venue getVenue(int venueID) {
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT * FROM Venue WHERE VenueID = ?");
             pstmt.setInt(1, venueID);
@@ -103,7 +103,7 @@ public class ConnectionManager {
 
     // Gets a transaction and returns it as a transaction object.
     public static Transaction getTransaction(String name, String APIpass, int transactionID) {
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT TransactionID, UserID, Transaction.VenueID, TotalPrice, Time, Status "
                     + "FROM Transaction, Venue "
@@ -133,7 +133,7 @@ public class ConnectionManager {
     }
 
     public static HashMap getItemsInTransaction(int transactionID) {
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         HashMap<String, Integer> hmap = new HashMap<String, Integer>();
         try {
             pstmt = conn.prepareStatement("SELECT Name, Quantity "
@@ -158,7 +158,7 @@ public class ConnectionManager {
 
     public static boolean checkUserName(String username) {
         // Using prepared statement to prevent SQL injection
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         try {
             // Query returning a user with matching username
             pstmt = conn.prepareStatement("SELECT * FROM User WHERE Username = ?");
@@ -178,7 +178,7 @@ public class ConnectionManager {
 
     public static boolean writeUser(String username, String password, String email, String fname, String lname) {
         // Using prepared statement to prevent SQL injection
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("INSERT into User (Fname, Lname, email, Username, Password) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, fname);
@@ -198,7 +198,7 @@ public class ConnectionManager {
 
     // Get the venueID
     public static int getVenueID(String name) {
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT * FROM Venue WHERE Name = ?");
             pstmt.setString(1, name);
@@ -216,7 +216,7 @@ public class ConnectionManager {
 
 
     public static void setItems(Map<String, Map<String, ArrayList<Item>>> items, String venueID) {
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT Item.ItemID AS ItemID, Item.Name AS ItemName, Item.Price as ItemPrice, Section.SectionID, "
                     + " Section.Description AS SectionName, "
@@ -254,7 +254,7 @@ public class ConnectionManager {
     }
 
     public static void setVenues(Map<String, Integer> venues) {
-        Statement stmt = null;
+        Statement stmt;
         try {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT Name, VenueID FROM Venue");
@@ -300,7 +300,7 @@ public class ConnectionManager {
     }
 
     public static int getLastTransactionID() {
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT *FROM `Transaction`ORDER BY `TransactionID` DESC LIMIT 0 , 1");
             ResultSet rs = pstmt.executeQuery();
@@ -387,34 +387,6 @@ public class ConnectionManager {
 		}
 		return null;
 	}
-    /**
-     * This retrieves the data from the user table and passes it back into AdminAction so all the users' details can be displayed on screen
-     *
-     * @param users List that holds the values of each record in the user table.
-     * @return users is returned if the query is successful, otherwise it returns null.
-     */
-    public static List DisplayUsers(List users) {
-        Statement stmt = null;
-        try {
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM user");
-            User user = null;
-            while (rs.next()) {
-                user = new User();
-                user.setUserID(rs.getInt("UserID"));
-                user.setFname(rs.getString("Fname"));
-                user.setLname(rs.getString("Lname"));
-                user.setemail(rs.getString("email"));
-                user.setUsername(rs.getString("Username"));
-                user.setPassword(rs.getString("Password"));
-                users.add(user);
-            }
-            return users;
-        } catch (SQLException se) {
-            System.out.println("SQL query failed.");
-        }
-        return null;
-    }
 
 	/**
 	 * This method receives an array of UserIDs that have been chosen to be deleted from the database. It loops through the array of IDs and with each loop it executes the delete query. 
@@ -422,7 +394,7 @@ public class ConnectionManager {
 	 */
 	public static void DeleteUsers(String[] arrayDeletionSelection) {
 
-		PreparedStatement stmt = null;
+		PreparedStatement stmt;
 			try{
 				for(int i=0; i<arrayDeletionSelection.length;i++){ //loops through the checked boxes for deletion
 					stmt = conn.prepareStatement("DELETE FROM user WHERE UserID=?");
@@ -445,7 +417,7 @@ public class ConnectionManager {
 	 */
 	public static Map AdminEditUser(String selectedID, Map userDetails) {
 
-		PreparedStatement stmt = null;
+		PreparedStatement stmt;
 		try{
 			stmt = conn.prepareStatement("SELECT * FROM user WHERE UserID=?");
 			int k = Integer.parseInt(selectedID);
@@ -473,7 +445,7 @@ public class ConnectionManager {
 	 */
 	public static void AdminUpdateUser(User user) {
 
-		PreparedStatement stmt = null;
+		PreparedStatement stmt;
 		try{
 			stmt = conn.prepareStatement("UPDATE user set Username=?, Fname=?, Lname=?, email=?, Admin=? WHERE UserID=?");
 			stmt.setString(1, user.getUsername());
@@ -499,7 +471,7 @@ public class ConnectionManager {
 	public static boolean checkUserExists(String UserID) {
 
 		  // Using prepared statement to prevent SQL injection
-		  PreparedStatement pstmt = null;
+		  PreparedStatement pstmt;
 		  try {
 		    // Query returning a user with matching username
 		    pstmt = conn.prepareStatement("SELECT * FROM User WHERE UserID = ?");
@@ -525,7 +497,7 @@ public class ConnectionManager {
 	 */
 	public static Map UserEdit(String username, Map userDetails) {
 		Connection conn = getConnection();
-		PreparedStatement stmt = null;
+		PreparedStatement stmt;
 		try{
 			stmt = conn.prepareStatement("SELECT * FROM user WHERE Username=?");
 			stmt.setString(1, username);
@@ -538,7 +510,6 @@ public class ConnectionManager {
 				userDetails.put("email", rs.getString("email"));
 			}
 			stmt.close();
-			conn.close();
 		}catch(Exception e){
 			 e.printStackTrace();
 		}
@@ -547,7 +518,7 @@ public class ConnectionManager {
 
 	public static void UserUpdate(User user) {
 		Connection conn = getConnection();
-		PreparedStatement stmt = null;
+		PreparedStatement stmt;
 		try{
 			stmt = conn.prepareStatement("UPDATE user set Password=?, Fname=?, Lname=?, email=? WHERE Username=?");
 			stmt.setString(1, user.getPassword());
@@ -558,7 +529,6 @@ public class ConnectionManager {
 			stmt.executeUpdate();
 			conn.commit();
 			stmt.close();
-			conn.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -568,7 +538,7 @@ public class ConnectionManager {
 	public static boolean checkBusinessCredentials(String userName, String password) {
 		Connection conn = getConnection();
 		// Using prepared statement to prevent SQL injection
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmt;
 		try {
 			// Query returning a user with matching username and password.
 			pstmt = conn.prepareStatement("SELECT * FROM venue WHERE Name = ? and Password = ?");
@@ -578,11 +548,9 @@ public class ConnectionManager {
 			// Check whether a matching user was returned.
 			if (rs.next()) {
 				rs.close();
-				conn.close();
 				return true;
 			}
 			rs.close();
-			conn.close();
 		} catch (SQLException sqle) {
 			System.out.println("SQL query failed: " + sqle.getMessage());
 		}
