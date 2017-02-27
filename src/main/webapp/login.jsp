@@ -11,14 +11,15 @@
     <jsp:attribute name="navbar">
 		<jsp:include page="partials/navbar.jsp" />
 	</jsp:attribute>
-    <jsp:body>	
-		<h3>Login below:</h3>
+    <jsp:body>
+        <link rel="stylesheet" href="css/login.css" type="text/css">
 		<s:actionmessage />
 		<s:actionerror />
-		<br><s:form id="idLoginForm" action="loginUser">
-			<s:textfield name="userName" placeholder="Username" label="Username" />
-			<s:password name="password" placeholder="Password" label="Password" />
-			<s:submit value="Submit" />
+		<br><s:form id="idLoginForm" action="loginUser" cssClass="form-signin">
+			<h2 class="form-signin-heading">Login below:</h2>
+			<s:textfield name="userName" placeholder="Username" label="Username" cssClass="form-control" />
+			<s:password name="password" placeholder="Password" label="Password" cssClass="form-control" />
+			<s:submit type="button" cssClass="btn btn-lg btn-primary btn-block" value="Submit" />
 		</s:form>
     </jsp:body>
 </t:wrapper>
