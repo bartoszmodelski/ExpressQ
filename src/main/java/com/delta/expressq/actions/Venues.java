@@ -3,9 +3,6 @@ package com.delta.expressq.actions;
 import com.delta.expressq.database.ConnectionManager;
 import com.delta.expressq.util.*;
 import java.util.*;
-
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
@@ -22,10 +19,12 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 			return "listVenues";
 		} 
 		ConnectionManager.setItems(items, id);
-		
 		//System.out.println(items.toString());
-		
-		return "listItems";
+		if(items.toString() == "{}") { //can be better
+			return ERROR;
+		}else{
+			return "listItems";
+		}
 	}
 	
 	public String getId() {

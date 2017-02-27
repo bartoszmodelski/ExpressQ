@@ -32,6 +32,7 @@
 		<action name="venues" class="com.delta.expressq.actions.Venues" method="execute">
 			<result name="listVenues">list/venues.jsp</result>
 			<result name="listItems">list/items.jsp</result>
+			<result name="error">error.jsp</result>
 		</action>
 		
 		<action name="exampleOfSession" class="com.delta.expressq.actions.ExampleOfSession" method="execute">
