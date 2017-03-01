@@ -21,4 +21,4 @@
 		
 5. Welcome page needs remapped
 6. Tests can currently be written for: login, registration
-7. After logining in user should be redirected to previously visited page. 
+7. After logining in user should be redirected to previously visited page. (URL stored in session data)
