@@ -22,7 +22,7 @@ public class ConnectionManager {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             conn.setAutoCommit(true);
-        } catch (SQLException se) {
+        } catch (SQLException sqle) {
             System.out.println("Couldn't connect to database.");
         } catch (ClassNotFoundException ex) {
             System.out.println("Driver not found.");
@@ -39,7 +39,7 @@ public class ConnectionManager {
      * @param password The password to be checked
      * @return true if the username and password exist in the same record. false if they do not.
      */
-    public static boolean checkCredentials(String username, String password) {
+    public static boolean checkCredentials(String username, String password) throws ConnectionManagerException {
         // Using prepared statement to prevent SQL injection
         PreparedStatement pstmt;
         try {
@@ -55,12 +55,12 @@ public class ConnectionManager {
             }
             rs.close();
         } catch (SQLException sqle) {
-            System.out.println("SQL query failed: " + sqle.getMessage());
+            throw new ConnectionManagerException(sqle);
         }
         return false;
     }
 
-    public static String getUsername(int userID) {
+    public static String getUsername(int userID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT Username FROM User WHERE UserID = ?");
@@ -73,13 +73,13 @@ public class ConnectionManager {
             }
             rs.close();
         } catch (SQLException sqle) {
-            System.out.println("SQL query failed: " + sqle.getMessage());
+            throw new ConnectionManagerException(sqle);
         }
         return "";
     }
 
     // Gets a venue and returns it as a venue object.
-    public static Venue getVenue(int venueID) {
+    public static Venue getVenue(int venueID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT * FROM Venue WHERE VenueID = ?");
@@ -95,14 +95,14 @@ public class ConnectionManager {
                 rs.close();
                 return rVenue;
             }
-        } catch (SQLException se) {
-            System.out.println("SQL query failed.");
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
         }
         return null;
     }
 
     // Gets a transaction and returns it as a transaction object.
-    public static Transaction getTransaction(String name, String APIpass, int transactionID) {
+    public static Transaction getTransaction(String name, String APIpass, int transactionID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT TransactionID, UserID, Transaction.VenueID, TotalPrice, Time, Status "
@@ -126,13 +126,13 @@ public class ConnectionManager {
                 rs.close();
                 return transaction;
             }
-        } catch (SQLException se) {
-            System.out.println("SQL query failed. " + se.getMessage());
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
         }
         return null;
     }
 
-    public static HashMap getItemsInTransaction(int transactionID) {
+    public static HashMap getItemsInTransaction(int transactionID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         HashMap<String, Integer> hmap = new HashMap<String, Integer>();
         try {
@@ -150,13 +150,13 @@ public class ConnectionManager {
 
             return hmap;
 
-        } catch (SQLException se) {
-            System.out.println("SQL query failed. " + se.getMessage());
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
         }
         return null;
     }
 
-    public static boolean checkUserName(String username) {
+    public static boolean checkUserName(String username) throws ConnectionManagerException {
         // Using prepared statement to prevent SQL injection
         PreparedStatement pstmt;
         try {
@@ -171,12 +171,12 @@ public class ConnectionManager {
             }
             rs.close();
         } catch (SQLException sqle) {
-            System.out.println("SQL query failed: " + sqle.getMessage());
+            throw new ConnectionManagerException(sqle);
         }
         return false;
     }
 
-    public static boolean writeUser(String username, String password, String email, String fname, String lname) {
+    public static boolean writeUser(String username, String password, String email, String fname, String lname) throws ConnectionManagerException {
         // Using prepared statement to prevent SQL injection
         PreparedStatement pstmt;
         try {
@@ -191,13 +191,13 @@ public class ConnectionManager {
             tableKeys.next();
             int autoGeneratedID = tableKeys.getInt(1);
         } catch (SQLException sqle) {
-            System.out.println("SQL query failed: " + sqle.getMessage());
+            throw new ConnectionManagerException(sqle);
         }
         return false;
     }
 
     // Get the venueID
-    public static int getVenueID(String name) {
+    public static int getVenueID(String name) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT * FROM Venue WHERE Name = ?");
@@ -208,14 +208,14 @@ public class ConnectionManager {
                 rs.close();
                 return venueID;
             }
-        } catch (SQLException se) {
-            System.out.println("SQL query failed.");
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
         }
         return 0;
     }
 
 
-    public static void setItems(Map<String, Map<String, ArrayList<Item>>> items, String venueID) {
+    public static void setItems(Map<String, Map<String, ArrayList<Item>>> items, String venueID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT Item.ItemID AS ItemID, Item.Name AS ItemName, Item.Price as ItemPrice, Section.SectionID, "
@@ -249,11 +249,11 @@ public class ConnectionManager {
             rs.close();
 
         } catch (SQLException sqle) {
-            System.out.println("SQL query failed: " + sqle.getMessage());
+            throw new ConnectionManagerException(sqle);
         }
     }
 
-    public static void setVenues(Map<String, Integer> venues) {
+    public static void setVenues(Map<String, Integer> venues) throws ConnectionManagerException {
         Statement stmt;
         try {
             stmt = conn.createStatement();
@@ -263,7 +263,7 @@ public class ConnectionManager {
             }
             rs.close();
         } catch (SQLException sqle) {
-            System.out.println("SQL query failed: " + sqle.getMessage());
+            throw new ConnectionManagerException(sqle);
         }
     }
 
@@ -299,7 +299,7 @@ public class ConnectionManager {
         return items;
     }
 
-    public static int getLastTransactionID() {
+    public static int getLastTransactionID() throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement("SELECT *FROM `Transaction`ORDER BY `TransactionID` DESC LIMIT 0 , 1");
@@ -309,13 +309,13 @@ public class ConnectionManager {
                 rs.close();
                 return transactionID;
             }
-        } catch (SQLException se) {
-            System.out.println("SQL query failed.");
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
         }
         return 0;
     }
 
-    public static int newOrder(String user, Order order) {
+    public static int newOrder(String user, Order order) throws ConnectionManagerException {
         PreparedStatement pstmt;
         int transactionID = -1;
         try {
@@ -351,209 +351,213 @@ public class ConnectionManager {
             //commit transaction (database transaction, not financial)
             conn.commit();
         } catch (SQLException sqle) {
-            System.out.println("SQL query failed: " + sqle.getMessage());
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            throw new ConnectionManagerException(sqle);
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
         }
         return transactionID;
 
     }
 
-	/**
-	 * This retrieves the data from the user table and passes it back into AdminAction so all the users' details can be displayed on screen
-	 * @param users List that holds the values of each record in the user table.
-	 * @return users is returned if the query is successful, otherwise it returns null.
-	 */
-	public static List DisplayUsers(List users) {
-		Statement stmt;
-		try{
-			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM user");
-			User user;
-			while (rs.next()){
-				user = new User();
-				user.setUserID(rs.getInt("UserID"));
-				user.setFname(rs.getString("Fname"));
-				user.setLname(rs.getString("Lname"));
-				user.setemail(rs.getString("email"));
-				user.setUsername(rs.getString("Username"));
-				user.setPassword(rs.getString("Password"));
-				user.setAdmin(rs.getInt("Admin"));
-				users.add(user);
-			}
-			return users;
-		}catch (SQLException se) {
-			System.out.println("SQL query failed.");
-		}
-		return null;
-	}
+    /**
+     * This retrieves the data from the user table and passes it back into AdminAction so all the users' details can be displayed on screen
+     *
+     * @param users List that holds the values of each record in the user table.
+     * @return users is returned if the query is successful, otherwise it returns null.
+     */
+    public static List DisplayUsers(List users) throws ConnectionManagerException {
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM user");
+            User user;
+            while (rs.next()) {
+                user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setFname(rs.getString("Fname"));
+                user.setLname(rs.getString("Lname"));
+                user.setemail(rs.getString("email"));
+                user.setUsername(rs.getString("Username"));
+                user.setPassword(rs.getString("Password"));
+                user.setAdmin(rs.getInt("Admin"));
+                users.add(user);
+            }
+            return users;
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+        return null;
+    }
 
-	/**
-	 * This method receives an array of UserIDs that have been chosen to be deleted from the database. It loops through the array of IDs and with each loop it executes the delete query. 
-	 ** @param arrayDeletionSelection Holds the UserIDs that have been selected for deletion
-	 */
-	public static void DeleteUsers(String[] arrayDeletionSelection) {
+    /**
+     * This method receives an array of UserIDs that have been chosen to be deleted from the database. It loops through the array of IDs and with each loop it executes the delete query.
+     * * @param arrayDeletionSelection Holds the UserIDs that have been selected for deletion
+     */
+    public static void DeleteUsers(String[] arrayDeletionSelection) throws ConnectionManagerException {
 
-		PreparedStatement stmt;
-			try{
-				for(int i=0; i<arrayDeletionSelection.length;i++){ //loops through the checked boxes for deletion
-					stmt = conn.prepareStatement("DELETE FROM user WHERE UserID=?");
-					int k = Integer.parseInt(arrayDeletionSelection[i]);
-					stmt.setInt(1,k);
-					stmt.executeUpdate();
-					conn.commit();
-				}
-			}        catch(Exception e){
-							 e.printStackTrace();
-					 }
-	}
+        PreparedStatement stmt;
+        try {
+            for (int i = 0; i < arrayDeletionSelection.length; i++) { //loops through the checked boxes for deletion
+                stmt = conn.prepareStatement("DELETE FROM user WHERE UserID=?");
+                int k = Integer.parseInt(arrayDeletionSelection[i]);
+                stmt.setInt(1, k);
+                stmt.executeUpdate();
+                conn.commit();
+            }
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
 
-	/**
-	 * This method has a UserID passed into it via selectedID. This value is used to execute an SQL query which retrieves the needed values from that
-	 * record and returns them via the Map userDetails.To be used by the admin only.
-	 ** @param selectedID This holds the UserID value of the User that has been selected to be edited.
-	 * @param userDetails This maps the the labels with the relevant details from the database.
-	 * @return userDetails
-	 */
-	public static Map AdminEditUser(String selectedID, Map userDetails) {
+    /**
+     * This method has a UserID passed into it via selectedID. This value is used to execute an SQL query which retrieves the needed values from that
+     * record and returns them via the Map userDetails.To be used by the admin only.
+     * * @param selectedID This holds the UserID value of the User that has been selected to be edited.
+     *
+     * @param userDetails This maps the the labels with the relevant details from the database.
+     * @return userDetails
+     */
+    public static Map AdminEditUser(String selectedID, Map userDetails) throws ConnectionManagerException {
 
-		PreparedStatement stmt;
-		try{
-			stmt = conn.prepareStatement("SELECT * FROM user WHERE UserID=?");
-			int k = Integer.parseInt(selectedID);
-			stmt.setInt(1, k);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()){
-				userDetails.put("UserID", rs.getInt("UserID"));
-				userDetails.put("Username", rs.getString("Username"));
-				userDetails.put("Fname", rs.getString("Fname"));
-				userDetails.put("Lname", rs.getString("Lname"));
-				userDetails.put("email", rs.getString("email"));
-			userDetails.put("Admin", rs.getString("Admin"));}
-			stmt.close();
+        PreparedStatement stmt;
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM user WHERE UserID=?");
+            int k = Integer.parseInt(selectedID);
+            stmt.setInt(1, k);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                userDetails.put("UserID", rs.getInt("UserID"));
+                userDetails.put("Username", rs.getString("Username"));
+                userDetails.put("Fname", rs.getString("Fname"));
+                userDetails.put("Lname", rs.getString("Lname"));
+                userDetails.put("email", rs.getString("email"));
+                userDetails.put("Admin", rs.getString("Admin"));
+            }
+            stmt.close();
 
-		}catch(Exception e){
-			 e.printStackTrace();
-		}
-		return userDetails;
-	}
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+        return userDetails;
+    }
 
-	/**
-	 * This method takes in the new values that have requested to be updated in the database and performs the necessary SQL query to
-	 * perform this task.
-	 ** @param user Holds the new values that will be inserted into the relevant user record.
-	 */
-	public static void AdminUpdateUser(User user) {
+    /**
+     * This method takes in the new values that have requested to be updated in the database and performs the necessary SQL query to
+     * perform this task.
+     * * @param user Holds the new values that will be inserted into the relevant user record.
+     */
+    public static void AdminUpdateUser(User user) throws ConnectionManagerException {
 
-		PreparedStatement stmt;
-		try{
-			stmt = conn.prepareStatement("UPDATE user set Username=?, Fname=?, Lname=?, email=?, Admin=? WHERE UserID=?");
-			stmt.setString(1, user.getUsername());
-			stmt.setString(2, user.getFname());
-			stmt.setString(3, user.getLname());
-			stmt.setString(4, user.getemail());
-			stmt.setInt(5, user.getAdmin());
-			stmt.setInt(6,user.getUserID());
-			stmt.executeUpdate();
-			conn.commit();
-			stmt.close();
+        PreparedStatement stmt;
+        try {
+            stmt = conn.prepareStatement("UPDATE user set Username=?, Fname=?, Lname=?, email=?, Admin=? WHERE UserID=?");
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getFname());
+            stmt.setString(3, user.getLname());
+            stmt.setString(4, user.getemail());
+            stmt.setInt(5, user.getAdmin());
+            stmt.setInt(6, user.getUserID());
+            stmt.executeUpdate();
+            conn.commit();
+            stmt.close();
 
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
 
-	/**
-	 * Checks if a user exists in the database given a UserID
-	 ** @param UserID Holds the value of the UserID passed in from the calling action.
-	 * @return true if the user exists. false if the user does not exist.
-	 */
-	public static boolean checkUserExists(String UserID) {
+    /**
+     * Checks if a user exists in the database given a UserID
+     * * @param UserID Holds the value of the UserID passed in from the calling action.
+     *
+     * @return true if the user exists. false if the user does not exist.
+     */
+    public static boolean checkUserExists(String UserID) throws ConnectionManagerException {
 
-		  // Using prepared statement to prevent SQL injection
-		  PreparedStatement pstmt;
-		  try {
-		    // Query returning a user with matching username
-		    pstmt = conn.prepareStatement("SELECT * FROM User WHERE UserID = ?");
-		    pstmt.setString(1, UserID);
-		    ResultSet rs = pstmt.executeQuery();
-		    // Check whether a matching user was returned.
-		    if (rs.next()) {
-		      rs.close();
+        // Using prepared statement to prevent SQL injection
+        PreparedStatement pstmt;
+        try {
+            // Query returning a user with matching username
+            pstmt = conn.prepareStatement("SELECT * FROM User WHERE UserID = ?");
+            pstmt.setString(1, UserID);
+            ResultSet rs = pstmt.executeQuery();
+            // Check whether a matching user was returned.
+            if (rs.next()) {
+                rs.close();
 
-		      return true;
-		    }
-		    rs.close();
+                return true;
+            }
+            rs.close();
 
-		  } catch (SQLException sqle) {
-		    System.out.println("SQL query failed: " + sqle.getMessage());
-		  }
-		  return false;
-		}/**
-	 * This is used to retrieve the details of a user given a username. This is only to be used by the customer user.
-	 * @param username Holds the value of the username whose details we wish to retrieve.
-	 * @param userDetails This maps the the labels with the relevant details from the database.
-	 * @return
-	 */
-	public static Map UserEdit(String username, Map userDetails) {
-		Connection conn = getConnection();
-		PreparedStatement stmt;
-		try{
-			stmt = conn.prepareStatement("SELECT * FROM user WHERE Username=?");
-			stmt.setString(1, username);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()){
-				userDetails.put("Username", rs.getString("Username"));
-				userDetails.put("Password", rs.getString("Password"));
-				userDetails.put("Fname", rs.getString("Fname"));
-				userDetails.put("Lname", rs.getString("Lname"));
-				userDetails.put("email", rs.getString("email"));
-			}
-			stmt.close();
-		}catch(Exception e){
-			 e.printStackTrace();
-		}
-		return userDetails;
-	}
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+        return false;
+    }
 
-	public static void UserUpdate(User user) {
-		Connection conn = getConnection();
-		PreparedStatement stmt;
-		try{
-			stmt = conn.prepareStatement("UPDATE user set Password=?, Fname=?, Lname=?, email=? WHERE Username=?");
-			stmt.setString(1, user.getPassword());
-			stmt.setString(2, user.getFname());
-			stmt.setString(3, user.getLname());
-			stmt.setString(4, user.getemail());
-			stmt.setString(5, user.getUsername());
-			stmt.executeUpdate();
-			conn.commit();
-			stmt.close();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+    /**
+     * This is used to retrieve the details of a user given a username. This is only to be used by the customer user.
+     *
+     * @param username    Holds the value of the username whose details we wish to retrieve.
+     * @param userDetails This maps the the labels with the relevant details from the database.
+     * @return
+     */
+    public static Map UserEdit(String username, Map userDetails) throws ConnectionManagerException {
+        PreparedStatement stmt;
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM user WHERE Username=?");
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                userDetails.put("Username", rs.getString("Username"));
+                userDetails.put("Password", rs.getString("Password"));
+                userDetails.put("Fname", rs.getString("Fname"));
+                userDetails.put("Lname", rs.getString("Lname"));
+                userDetails.put("email", rs.getString("email"));
+            }
+            stmt.close();
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+        return userDetails;
+    }
 
-	//CHANGE THIS ONCE JDBC FIXED
-	public static boolean checkBusinessCredentials(String userName, String password) {
-		Connection conn = getConnection();
-		// Using prepared statement to prevent SQL injection
-		PreparedStatement pstmt;
-		try {
-			// Query returning a user with matching username and password.
-			pstmt = conn.prepareStatement("SELECT * FROM venue WHERE Name = ? and Password = ?");
-			pstmt.setString(1, userName);
-			pstmt.setString(2, password);
-			ResultSet rs = pstmt.executeQuery();
-			// Check whether a matching user was returned.
-			if (rs.next()) {
-				rs.close();
-				return true;
-			}
-			rs.close();
-		} catch (SQLException sqle) {
-			System.out.println("SQL query failed: " + sqle.getMessage());
-		}
-		return false;
-	}
+    public static void UserUpdate(User user) throws ConnectionManagerException {
+        PreparedStatement stmt;
+        try {
+            stmt = conn.prepareStatement("UPDATE user set Password=?, Fname=?, Lname=?, email=? WHERE Username=?");
+            stmt.setString(1, user.getPassword());
+            stmt.setString(2, user.getFname());
+            stmt.setString(3, user.getLname());
+            stmt.setString(4, user.getemail());
+            stmt.setString(5, user.getUsername());
+            stmt.executeUpdate();
+            conn.commit();
+            stmt.close();
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
+
+    //CHANGE THIS ONCE JDBC FIXED
+    public static boolean checkBusinessCredentials(String userName, String password) throws ConnectionManagerException {
+        // Using prepared statement to prevent SQL injection
+        PreparedStatement pstmt;
+        try {
+            // Query returning a user with matching username and password.
+            pstmt = conn.prepareStatement("SELECT * FROM venue WHERE Name = ? and Password = ?");
+            pstmt.setString(1, userName);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+            // Check whether a matching user was returned.
+            if (rs.next()) {
+                rs.close();
+                return true;
+            }
+            rs.close();
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+        return false;
+    }
 }
