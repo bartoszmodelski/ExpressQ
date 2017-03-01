@@ -1,7 +1,7 @@
 package com.delta.expressq.actions;
 
 
-import com.delta.expressq.database.ConnectionManager;
+import com.delta.expressq.database.*;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ActionContext;
 import org.apache.struts2.interceptor.SessionAware;
@@ -33,7 +33,11 @@ public class ConfirmOrder extends ActionSupportWithSession {
 				System.out.println("Failed to convert. Back to normal path of execution: " + e.getMessage());
 			}
 		}
-		transactionID = ActiveRecord.confirmOrder(username);
+		try {
+			transactionID = ActiveRecord.confirmOrder(username);		
+		} catch (ConnectionManagerException e) {
+			return "db_error";
+		}
 		return SUCCESS;
 	}
 	

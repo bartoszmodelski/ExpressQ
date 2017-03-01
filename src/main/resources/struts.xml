@@ -15,7 +15,12 @@
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
 		</interceptors>
-
+				
+		<global-results>
+			<result name="db_error">errors/db.jsp</result>
+			<result name="error">errors/general.jsp</result>
+		</global-results>
+		
 		<action name="index">
             <result >/index.jsp</result>
 		</action>
@@ -26,13 +31,11 @@
 
 		<action name="emailer" class="com.delta.expressq.actions.Emailer" method="execute">
 			<result name="success">/login.jsp</result>
-			<result name="error">/error.jsp</result>
 		</action>
 
 		<action name="venues" class="com.delta.expressq.actions.Venues" method="execute">
 			<result name="listVenues">list/venues.jsp</result>
 			<result name="listItems">list/items.jsp</result>
-			<result name="error">error.jsp</result>
 		</action>
 		
 		<action name="exampleOfSession" class="com.delta.expressq.actions.ExampleOfSession" method="execute">
@@ -59,6 +62,7 @@
 			<result name="success" type="redirect">homeAction</result>
 			<result name="login">login.jsp</result>
 		</action>
+
 
 		<!-- home link action, change to website front page perhaps? -->
 		<action name="homeAction" class="com.delta.expressq.actions.LoginAction" method="home">
@@ -95,13 +99,11 @@
     <!-- AdminAction Actions -->
     <action name="view" class="com.delta.expressq.actions.AdminAction" method="Display">
       <result name="success">/display.jsp</result>
-      <result name="error">/error.jsp</result>
     </action>
 	
 	<!-- Delete User(s) -->
     <action name="del" class="com.delta.expressq.actions.AdminAction" method="Delete">
       <result name="success">/deletesuccess.jsp</result>
-      <result name="error">/error.jsp</result>
     </action>
 
 	<!-- Insert New User -->
@@ -112,7 +114,6 @@
 	<!-- Edit User Display-->
     <action name="edit" class="com.delta.expressq.actions.AdminAction" method="Edit">
       <result name ="success">edituser.jsp</result>
-      <result name="error">/error.jsp</result>
     </action>
 	
 	<!-- Save Edited Changes -->

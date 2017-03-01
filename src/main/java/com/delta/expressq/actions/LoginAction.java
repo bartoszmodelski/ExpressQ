@@ -1,6 +1,6 @@
 package com.delta.expressq.actions;
 
-import com.delta.expressq.database.ConnectionManager;
+import com.delta.expressq.database.*;
 
 public class LoginAction extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
@@ -21,7 +21,7 @@ public class LoginAction extends ActionSupportWithSession {
 	 */
 	public String logout() {
 		session.remove("loginId");
-		addActionMessage("<br>You have been logged out.");//for testing delete later
+		addActionMessage("You have been logged out.");//for testing delete later
 		return SUCCESS;
 	}
 
@@ -31,13 +31,18 @@ public class LoginAction extends ActionSupportWithSession {
 	 * @return LOGIN redirect if the credentials do not match. SUCCESS if they do.
 	 */
 	public String login() {
-		if ((ConnectionManager.checkCredentials(userName, password) == false)&&(ConnectionManager.checkBusinessCredentials(userName, password) == false)) {
-			addActionError("Please enter valid username and password.");//for testing delete later
-			return LOGIN;		
+		try {
+			if ((ConnectionManager.checkCredentials(userName, password) == false)
+					&&	(ConnectionManager.checkBusinessCredentials(userName, password) == false)) {
+				addActionError("Please enter valid username and password.");//for testing delete later
+				return LOGIN;		
 
-		} else {
-			session.put("loginId", userName);
-			return SUCCESS;
+			} else {
+				session.put("loginId", userName);
+				return SUCCESS;
+			}
+		} catch (ConnectionManagerException e) {
+			return "db_error";
 		}
 	}
 

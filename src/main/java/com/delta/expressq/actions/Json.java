@@ -35,25 +35,27 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 		if (name.isEmpty() || APIpass.isEmpty() || transactionID.isEmpty())
 			return ERROR;
 		
-		Transaction trans = ConnectionManager.getTransaction(name, APIpass, Integer.parseInt(transactionID));
-		if (trans == null)
+		try {
+			Transaction trans = ConnectionManager.getTransaction(name, APIpass, Integer.parseInt(transactionID));
+			if (trans == null)
+				return ERROR;
+			
+			String username = ConnectionManager.getUsername(trans.userID);
+			if (username.equals(""))
+				return ERROR;
+			
+			HashMap hmap = ConnectionManager.getItemsInTransaction(Integer.parseInt(transactionID));
+			System.out.println(hmap.toString());
+			
+			if (hmap == null)
+				return ERROR;
+			
+			
+			if (!setJSON(trans, username, hmap))
+				return ERROR;
+		} catch (ConnectionManagerException e) {
 			return ERROR;
-		
-		String username = ConnectionManager.getUsername(trans.userID);
-		if (username.equals(""))
-			return ERROR;
-		
-		HashMap hmap = ConnectionManager.getItemsInTransaction(Integer.parseInt(transactionID));
-		System.out.println(hmap.toString());
-		
-		if (hmap == null)
-			return ERROR;
-		
-		
-		if (!setJSON(trans, username, hmap))
-			return ERROR;
-		
-		
+		}
 		return SUCCESS;
 	}
 		

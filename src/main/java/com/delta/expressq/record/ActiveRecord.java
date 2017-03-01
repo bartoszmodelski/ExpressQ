@@ -24,7 +24,7 @@ public class ActiveRecord {
 		return order;
 	}
 	
-	public static int confirmOrder(String user) {
+	public static int confirmOrder(String user) throws ConnectionManagerException {
 		System.out.println("IMPLEMENT: ActiveRecord.confirmOrder: ORDER HAS TO BE DELETED HERE!!!");
 		return ConnectionManager.newOrder(user, orders.get(user));
 	}

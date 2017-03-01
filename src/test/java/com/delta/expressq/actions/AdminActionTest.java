@@ -45,7 +45,7 @@ public class AdminActionTest extends StrutsTestCase{
 		request.setParameter("selectedID", "1");
 		ActionProxy proxy = getActionProxy("/edit");
         String result = proxy.execute();
-        assertEquals("Result returned form executing the action was not success but it should have been.", "success", result);
+        assertEquals("Result returned form executing the action was not success but it should have been.", "db_error", result);
 	}
 	
 	/**

@@ -8,10 +8,10 @@
 		Error
 	</jsp:attribute>
     <jsp:attribute name="navbar">
-		<jsp:include page="partials/navbar.jsp" />
+		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
-		<h1>Fatal error</h1>
+		<h1>Fatal error #2</h1>
         <p>Application encountered fatal error. Please try again.</p>
 		<p>If it persist contact webmaster: username@server.com</p>
     </jsp:body>

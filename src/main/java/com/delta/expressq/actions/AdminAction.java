@@ -4,7 +4,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import com.delta.expressq.database.ConnectionManager;
+import com.delta.expressq.database.*;
 import com.delta.expressq.util.User;
 
 public class AdminAction extends ActionSupportWithSession implements ServletRequestAware, ApplicationAware {
@@ -21,7 +21,11 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	 * @return SUCCESS 
 	 */
 	public String Display(){
-		ConnectionManager.DisplayUsers(users);
+		try {
+			ConnectionManager.DisplayUsers(users);
+		} catch (ConnectionManagerException e) {
+			return "db_error";
+		}
 		request.setAttribute("disp", users);
 		return SUCCESS;
 	}
@@ -36,9 +40,12 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 		arrayDeletionSelection = request.getParameterValues("deleteSelection");//get values from jsp to pass into connection manager
 		if (arrayDeletionSelection == null){
 			return ERROR;//maybe change to a redirect with appropriate actionmessage.
-		}
-		else{
-			ConnectionManager.DeleteUsers(arrayDeletionSelection);
+		} else {
+			try {
+				ConnectionManager.DeleteUsers(arrayDeletionSelection);
+			} catch (ConnectionManagerException e) {
+				return "db_error";
+			}	
 			return SUCCESS;
 		}
 	}
@@ -50,11 +57,15 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	 */
 	public String Edit(){
 		selectedID = request.getParameter("selectedID");
-		if (ConnectionManager.checkUserExists(selectedID) == true){
-			ConnectionManager.AdminEditUser(selectedID, userDetails);
-			return SUCCESS;
-		}else{
-			return ERROR;
+		try {
+			if (ConnectionManager.checkUserExists(selectedID) == true) {
+				ConnectionManager.AdminEditUser(selectedID, userDetails);
+				return SUCCESS;
+			} else {
+				return ERROR;
+			}
+		} catch (ConnectionManagerException e) {
+			return "db_error";
 		}
 	}
 	
@@ -63,7 +74,12 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	 * @return SUCCESS
 	 */
 	public String UpdateUserDetails(){
-		ConnectionManager.AdminUpdateUser(user);
+		try {
+			ConnectionManager.AdminUpdateUser(user);
+		} catch (ConnectionManagerException e) {
+			System.out.println(e.getMessage());
+			return "db_error";
+		}
 		return SUCCESS;
 	}
 	

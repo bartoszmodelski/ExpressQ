@@ -4,7 +4,7 @@ import java.util.Map;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.SessionAware;
 
-import com.delta.expressq.database.ConnectionManager;
+import com.delta.expressq.database.*;
 import com.delta.expressq.util.User;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -16,7 +16,11 @@ public class UserProfileAction extends ActionSupportWithSession implements Appli
 
 	public String execute(){	
 		username = session.get("loginId").toString();
-		ConnectionManager.UserEdit(username, userDetails);
+		try {
+			ConnectionManager.UserEdit(username, userDetails);		
+		} catch (ConnectionManagerException e) {
+			return "db_error";
+		}
 		return SUCCESS;
 	}
 	
@@ -25,7 +29,11 @@ public class UserProfileAction extends ActionSupportWithSession implements Appli
 	 * @return SUCCESS
 	 */
 	public String Update(){
-		ConnectionManager.UserUpdate(user);
+		try {
+			ConnectionManager.UserUpdate(user);
+		} catch (ConnectionManagerException e) {
+			return "db_error";
+		}
 		return SUCCESS;
 	}
 	
