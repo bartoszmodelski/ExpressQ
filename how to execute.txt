@@ -1,6 +1,7 @@
 1. Execute following commands in directory containing this file to compile, test and run locally (127.0.0.1:8080): 
 
-	mvn package 
+	to run without tests: mvn package -Dmaven.test.skip=true 
+	to run with tests : mvn package 
 	java -jar target/dependency/webapp-runner.jar target/*.war
 
 

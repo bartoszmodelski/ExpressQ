@@ -6,7 +6,6 @@ import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import com.delta.expressq.database.ConnectionManager;
 import com.delta.expressq.util.User;
-import com.opensymphony.xwork2.ActionSupport;
 
 public class AdminAction extends ActionSupportWithSession implements ServletRequestAware, ApplicationAware {
 	private static final long serialVersionUID = 1L;

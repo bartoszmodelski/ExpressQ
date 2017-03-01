@@ -18,6 +18,14 @@
 	<br><br>
 	<table>
 		<form name="userDisplay" method="post">
+					<tr>
+						<th></th>
+						<th>Username</th>
+						<th>Forename</th>
+						<th>Surname</th>
+						<th>Email</th>
+						<th>Admin Permission</th>
+					</tr>
 			<%
 			List userList = (List)request.getAttribute("disp");
 			if(userList != null){	 
@@ -29,6 +37,7 @@
 					String Fname = user.getFname();
 					String Lname = user.getLname();
 					String email = user.getemail();
+					int Admin = user.getAdmin();
 					%>
 					<tr>
 						<td><input type="checkbox" value="<%= UserID %>" name= "deleteSelection"></td>
@@ -36,6 +45,7 @@
 						<td><%= Fname %></td>
 						<td><%= Lname %></td>
 						<td><%= email %></td>
+						<td><%= Admin %></td>
 						<td><a href="javascript:editUser('<%= UserID %>')">Edit User</a></td>
 					</tr>
 					<%

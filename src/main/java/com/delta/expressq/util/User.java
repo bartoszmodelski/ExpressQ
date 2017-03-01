@@ -1,7 +1,7 @@
 package com.delta.expressq.util;
 
 public class User {
-	private int UserID;
+	public int UserID, Admin;
 	public String Username, Fname, Lname, email, Password;
 
 	public int getUserID(){
@@ -50,5 +50,13 @@ public class User {
 	
 	public void setemail(String email){
 		this.email = email;
+	}
+	
+	public int getAdmin(){
+		return Admin;
+	}
+	
+	public void setAdmin(int Admin){
+		this.Admin = Admin;
 	}
 }
