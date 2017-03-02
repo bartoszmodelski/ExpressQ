@@ -7,7 +7,7 @@ public class Transaction{
     public float total;
     public String date;
     public int status;
-
+	
     Transaction(int tID, int uID, int vID, float p, String d, int status){
         this.transactionID = tID;
         this.userID = uID;

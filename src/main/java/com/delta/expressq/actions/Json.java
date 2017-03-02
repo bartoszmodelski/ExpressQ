@@ -10,6 +10,7 @@ import com.delta.expressq.database.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,14 +28,23 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 	public String name = "";
 	public String APIpass = "";
 	public String transactionID = "";
+	public String minutes = "";
 	public String json = "";
 	
 	
 	public String execute() {
 		//HttpServletRequest request = ServletActionContext.getRequest();
-		if (name.isEmpty() || APIpass.isEmpty() || transactionID.isEmpty())
-			return ERROR;
 		
+		if (!name.isEmpty() && !APIpass.isEmpty() && !transactionID.isEmpty()) {
+			return getOneTransaction(name, APIpass, transactionID);
+		} else if (!name.isEmpty() && !APIpass.isEmpty() && !minutes.isEmpty()) {
+			return getUpcomingTransactions(name, APIpass, minutes);
+		} else {
+			return ERROR;
+		}
+	}
+	
+	public String getOneTransaction(String name, String APIpass, String transactionID) {
 		try {
 			Transaction trans = ConnectionManager.getTransaction(name, APIpass, Integer.parseInt(transactionID));
 			if (trans == null)
@@ -45,21 +55,41 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 				return ERROR;
 			
 			HashMap hmap = ConnectionManager.getItemsInTransaction(Integer.parseInt(transactionID));
-			System.out.println(hmap.toString());
-			
 			if (hmap == null)
 				return ERROR;
 			
-			
-			if (!setJSON(trans, username, hmap))
+			if (!setJSONWithOne(trans, username, hmap))
 				return ERROR;
-		} catch (ConnectionManagerException e) {
+		} catch (Exception e) {
 			return ERROR;
 		}
 		return SUCCESS;
 	}
 		
-	public boolean setJSON(Transaction trans, String username, HashMap<String, Integer> hmap) {
+	public String getUpcomingTransactions(String name, String APIpass, String minutes) {
+		try {
+			List<Integer> IDs = ConnectionManager.getIDsOfUpcomingTransactions(name, APIpass, Integer.parseInt(minutes));
+			if (!setJSONWithMany(IDs))
+				return ERROR;
+		} catch (Exception e) {
+			return ERROR;
+		}
+		return SUCCESS;			
+	}
+		
+	public boolean setJSONWithMany(List<Integer> IDs) {
+		JSONObject obj = new JSONObject();
+        try {							
+			obj.put("ids", IDs);
+        } catch (JSONException exception) {
+			return false;
+        }
+		
+		json = obj.toString();
+		return true;
+	}
+		
+	public boolean setJSONWithOne(Transaction trans, String username, HashMap<String, Integer> hmap) {
 		JSONObject obj = new JSONObject();
    
         try {
@@ -77,8 +107,6 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 			
 			obj.put("items", obj2);			
         } catch (JSONException exception) {
-        	System.out.println("Fatal error: JSONObject could not be created.");
-        	System.out.println(exception.getMessage());
 			return false;
         }
 		

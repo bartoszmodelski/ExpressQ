@@ -140,6 +140,35 @@ public class ConnectionManager {
         }
         return null;
     }
+	
+	public static List<Integer> getIDsOfUpcomingTransactions(String name, String APIpass, int minutes) throws ConnectionManagerException {
+		PreparedStatement pstmt;
+		List<Integer> ids = new ArrayList<Integer>();
+        try {
+			if (conn.isClosed())
+				conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT TransactionID " 
+                    + " FROM Transaction, Venue " 
+                    + " WHERE Venue.VenueID = Transaction.VenueID " 
+					+ " AND CAST(Transaction.Time AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE) " 
+					+ " AND CollectionTime < CAST((DATE_ADD(CURRENT_TIMESTAMP, INTERVAL ? minute)) AS TIME) " 
+					+ " AND Status = 0 " 
+                    + " AND Venue.Name =  ? " 
+                    + " AND Venue.APIpass =  ?");
+            pstmt.setInt(1, minutes);
+            pstmt.setString(2, name);
+            pstmt.setString(3, APIpass);
+            ResultSet rs = pstmt.executeQuery();
+			
+            while (rs.next()) {
+                ids.add(rs.getInt("TransactionID"));         
+            }
+			rs.close();
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+        return ids;
+	}
 
     public static HashMap getItemsInTransaction(int transactionID) throws ConnectionManagerException {
         PreparedStatement pstmt;
@@ -516,10 +545,9 @@ public class ConnectionManager {
             pstmt = conn.prepareStatement("SELECT * FROM User WHERE UserID = ?");
             pstmt.setString(1, UserID);
             ResultSet rs = pstmt.executeQuery();
-            // Check whether a matching user was returned.
+			
             if (rs.next()) {
                 rs.close();
-
                 return true;
             }
             rs.close();
