@@ -462,7 +462,6 @@ public class ConnectionManager {
                 int k = Integer.parseInt(arrayDeletionSelection[i]);
                 stmt.setInt(1, k);
                 stmt.executeUpdate();
-                conn.commit();
             }
         } catch (Exception ex) {
             throw new ConnectionManagerException(ex);
@@ -599,7 +598,6 @@ public class ConnectionManager {
             stmt.setString(4, user.getemail());
             stmt.setString(5, user.getUsername());
             stmt.executeUpdate();
-            conn.commit();
             stmt.close();
         } catch (Exception ex) {
             throw new ConnectionManagerException(ex);
