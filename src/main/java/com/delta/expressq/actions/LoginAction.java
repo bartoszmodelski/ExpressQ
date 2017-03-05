@@ -47,7 +47,9 @@ public class LoginAction extends ActionSupportWithSession {
 			}
 		} catch (ConnectionManagerException e) {
 			return "db_error";
-		}
+		} catch(IllegalArgumentException ee){
+			return "login";
+		} 
 	}
 
 	//Setters and getters for variables

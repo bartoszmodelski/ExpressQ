@@ -635,6 +635,7 @@ public class ConnectionManager {
 				conn = getConnection();
             pstmt = conn.prepareStatement("SELECT password FROM User WHERE userName = ?");
             pstmt.setString(1, userName);
+            System.out.println(pstmt);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 String password = rs.getString("password");
@@ -646,6 +647,6 @@ public class ConnectionManager {
         } catch (SQLException sqle) {
             throw new ConnectionManagerException(sqle);
         }
-        return "";
+        return "fail";
 	}
 }
