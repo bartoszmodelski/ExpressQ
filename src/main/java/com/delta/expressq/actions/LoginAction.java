@@ -5,7 +5,7 @@ import com.delta.expressq.util.BCrypt;
 
 public class LoginAction extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
-	private String userName, password, hash_password;
+	private String userName, password;
 
 	/**
 	 * Used to redirect the user to the home page after they have logged in.
@@ -37,7 +37,7 @@ public class LoginAction extends ActionSupportWithSession {
 				return LOGIN;		
 
 			} */
-			if (BCrypt.checkpw(password, ConnectionManager.getHash(userName)) == false) {
+			if (BCrypt.checkpw(password, ConnectionManager.getPassword(userName)) == false) {
 				addActionError("Please enter valid username and password.");
 				return LOGIN;
 			}

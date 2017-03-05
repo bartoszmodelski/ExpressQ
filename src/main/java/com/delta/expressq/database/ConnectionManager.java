@@ -83,31 +83,6 @@ public class ConnectionManager {
         return "";
     }
 
-    // Gets a venue and returns it as a venue object.
-    public static Venue getVenue(int venueID) throws ConnectionManagerException {
-        PreparedStatement pstmt;
-        try {
-			if (conn.isClosed())
-				conn = getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Venue WHERE VenueID = ?");
-            pstmt.setInt(1, venueID);
-            ResultSet rs = pstmt.executeQuery();
-            // Check whether a transaction was returned.
-            while (rs.next()) {
-                String name = rs.getString("Name");
-                String address = rs.getString("Address");
-                int phoneNumber = rs.getInt("PhoneNumber");
-                boolean acceptingOrders = rs.getBoolean("AcceptingOrders");
-                Venue rVenue = new Venue(venueID, name, address, phoneNumber, acceptingOrders);
-                rs.close();
-                return rVenue;
-            }
-        } catch (SQLException sqle) {
-            throw new ConnectionManagerException(sqle);
-        }
-        return null;
-    }
-
     // Gets a transaction and returns it as a transaction object.
     public static Transaction getTransaction(String name, String APIpass, int transactionID) throws ConnectionManagerException {
         PreparedStatement pstmt;
@@ -628,7 +603,7 @@ public class ConnectionManager {
         return false;
     }
 
-	public static String getHash(String userName) throws ConnectionManagerException {
+	public static String getPassword(String userName) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
 			if (conn.isClosed())
