@@ -602,7 +602,12 @@ public class ConnectionManager {
         }
         return false;
     }
-
+	/**
+	 * Retrieves the password of a user given the username.
+	 * @param userName userName is passed in to get the relevant password.
+	 * @return the password linked to the username being used to try to login. If the username does not exist it returns fail
+	 * @throws ConnectionManagerException
+	 */
 	public static String getPassword(String userName) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
