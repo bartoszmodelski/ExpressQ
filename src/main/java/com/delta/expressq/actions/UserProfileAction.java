@@ -2,11 +2,9 @@ package com.delta.expressq.actions;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.ApplicationAware;
-import org.apache.struts2.interceptor.SessionAware;
 
 import com.delta.expressq.database.*;
 import com.delta.expressq.util.User;
-import com.opensymphony.xwork2.ActionSupport;
 
 public class UserProfileAction extends ActionSupportWithSession implements ApplicationAware {
 	private static final long serialVersionUID = 1L;

@@ -3,7 +3,7 @@ package com.delta.expressq.util;
 public class User {
 	public int UserID, Admin;
 	public String Username, Fname, Lname, email, Password;
-
+	public String salt = BCrypt.gensalt(12);
 	public int getUserID(){
 		return UserID;
 	}
@@ -41,7 +41,7 @@ public class User {
 	}
 	
 	public void setPassword(String Password){
-		this.Password = Password;
+		this.Password = BCrypt.hashpw(Password, salt);	
 	}
 	
 	public String getemail(){

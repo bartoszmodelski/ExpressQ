@@ -20,7 +20,7 @@
 	<s:form action="UserUpdate" onsubmit="return validateForm()">
 		<s:textfield label="Username" value="%{#application.Username}" name="User.Username" readonly="true"/>
 		<s:textfield label="Password" value="%{#application.Password}" name="User.Password" type="Password"/>
-		<s:textfield label="Confirm Password" value="hello" name="PasswordConf" type="Password"/>
+		<s:textfield label="Confirm Password" value="" name="PasswordConf" type="Password"/>
 		<s:textfield label="Forename" value="%{#application.Fname}" name="User.Fname" />
 		<s:textfield label="Surname" value="%{#application.Lname}" name="User.Lname" />
 		<s:textfield label="Email" value="%{#application.email}" name="User.email" />
