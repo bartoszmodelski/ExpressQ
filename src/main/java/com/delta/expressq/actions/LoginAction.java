@@ -1,11 +1,11 @@
 package com.delta.expressq.actions;
 
 import com.delta.expressq.database.*;
+import com.delta.expressq.util.BCrypt;
 
 public class LoginAction extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
-	private String userName;
-	private String password;
+	private String userName, password, hash_password;
 
 	/**
 	 * Used to redirect the user to the home page after they have logged in.
@@ -32,12 +32,16 @@ public class LoginAction extends ActionSupportWithSession {
 	 */
 	public String login() {
 		try {
-			if ((ConnectionManager.checkCredentials(userName, password) == false)
-					&&	(ConnectionManager.checkBusinessCredentials(userName, password) == false)) {
+			/*if ((ConnectionManager.checkCredentials(userName, password) == false) &&	(ConnectionManager.checkBusinessCredentials(userName, password) == false)) {
 				addActionError("Please enter valid username and password.");//for testing delete later
 				return LOGIN;		
 
-			} else {
+			} */
+			if (BCrypt.checkpw(password, ConnectionManager.getHash(userName)) == false) {
+				addActionError("Please enter valid username and password.");
+				return LOGIN;
+			}
+			else {
 				session.put("loginId", userName);
 				return SUCCESS;
 			}

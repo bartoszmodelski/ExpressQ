@@ -1,11 +1,11 @@
 package com.delta.expressq.actions;
 import com.delta.expressq.database.ConnectionManager;
-import com.opensymphony.xwork2.ActionSupport;
+import com.delta.expressq.util.BCrypt;
 
 public class Registration extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
 	private String Uname, Pass, PassConf, Email, Fname, Lname;
-
+	
 	//Setters and getters for registration variables
 	public String getUname(){
 		return Uname;}
@@ -55,12 +55,13 @@ public class Registration extends ActionSupportWithSession {
 	 * If it does already exits then it returns the result existed. If the username does not already exist then the new user details are written to the database.
 	 */
 	public String execute()throws Exception{
-		//if the username already exists in the system inform the user. otherwise add the user details to the database
-		if (ConnectionManager.checkUserName(Uname) == true) {
+		String salt = BCrypt.gensalt(12);
+		String hashed_password = BCrypt.hashpw(Pass, salt);		
+		if (ConnectionManager.checkUserName(Uname) == true) { //if the username already exists in the system inform the user. otherwise add the user details to the database
 			return "existed";		
 		}
 		else{
-			ConnectionManager.writeUser(Uname, Pass, Email, Fname, Lname);
+			ConnectionManager.writeUser(Uname, hashed_password, Email, Fname, Lname);
 			return "success";
 		}
 

@@ -23,3 +23,4 @@
 7. After logining in user should be redirected to previously visited page. (URL stored in session data)
 8. Change admin permission edit field to checkbox (edituser.jsp)
 9. Database error (errors/db.jsp) should be reworked.
+10. delete unused jdbc methods

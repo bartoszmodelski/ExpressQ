@@ -39,7 +39,7 @@ public class ConnectionManager {
      * @param password The password to be checked
      * @return true if the username and password exist in the same record. false if they do not.
      */
-    public static boolean checkCredentials(String username, String password) throws ConnectionManagerException {
+    public static boolean checkCredentials(String username, String password) throws ConnectionManagerException {//NO LONGER USED
 
         PreparedStatement pstmt;
         try {
@@ -627,4 +627,25 @@ public class ConnectionManager {
         }
         return false;
     }
+
+	public static String getHash(String userName) throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        try {
+			if (conn.isClosed())
+				conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT password FROM User WHERE userName = ?");
+            pstmt.setString(1, userName);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String password = rs.getString("password");
+                rs.close();
+                System.out.println(password);
+                return password;
+            }
+            rs.close();
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+        return "";
+	}
 }
