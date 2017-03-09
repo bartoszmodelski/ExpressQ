@@ -12,7 +12,7 @@ public class LoginActionTest extends StrutsTestCase{
 	 */
 	public void testLoginSuccess() throws Exception{
 		request.setParameter("userName", "hash");
-		request.setParameter("password", "hashed");
+		request.setParameter("password", "test");
 		ActionProxy proxy = getActionProxy("/loginUser");
 		LoginAction loginAction = (LoginAction) proxy.getAction();
         String result = proxy.execute();
@@ -38,7 +38,7 @@ public class LoginActionTest extends StrutsTestCase{
 	 */
 	public void testLoginFailPassword() throws Exception{
 		request.setParameter("userName", "hash");
-		request.setParameter("password", "test");
+		request.setParameter("password", "testfail");
 		ActionProxy proxy = getActionProxy("/loginUser");
         String result = proxy.execute();	
         assertEquals("Result returned form executing the action was not login but it should have been.", "login", result);
