@@ -80,6 +80,7 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 	public boolean setJSONWithMany(List<Integer> IDs) {
 		JSONObject obj = new JSONObject();
         try {							
+			obj.put("success", 1);
 			obj.put("ids", IDs);
         } catch (JSONException exception) {
 			return false;
@@ -98,6 +99,9 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
         	obj.put("price", trans.total);
         	obj.put("date", trans.date);
         	obj.put("status", trans.status);
+			obj.put("collection", trans.collection);
+			obj.put("username", trans.username);
+			obj.put("keywords", trans.keywords);
 			obj.put("success", 1);
 			
 			JSONObject obj2 = new JSONObject();
@@ -107,6 +111,7 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 			
 			obj.put("items", obj2);			
         } catch (JSONException exception) {
+			System.out.println(exception.getMessage());
 			return false;
         }
 		

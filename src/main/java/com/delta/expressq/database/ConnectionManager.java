@@ -3,6 +3,7 @@ package com.delta.expressq.database;
 import java.sql.*;
 import java.util.*;
 import java.util.HashMap;
+import java.sql.Time;
 import java.util.Map;
 
 import com.delta.expressq.util.*;
@@ -87,12 +88,13 @@ public class ConnectionManager {
         try {
 			
 			conn = getConnection();
-            pstmt = conn.prepareStatement("SELECT TransactionID, UserID, Transaction.VenueID, TotalPrice, Time, Status "
-                    + "FROM Transaction, Venue "
+			pstmt = conn.prepareStatement("SELECT User.Username, TransactionID, User.UserID, Keywords, Transaction.VenueID, TotalPrice, Time, CollectionTime, Status "
+                    + "FROM Transaction, Venue, User "
                     + "WHERE TransactionId = ? "
                     + "AND Venue.VenueID = Transaction.VenueID "
                     + "AND Venue.Name =  ? "
-                    + "AND Venue.APIpass =  ? ");
+                    + "AND Venue.APIpass =  ? "
+					+ "AND Transaction.UserID = User.UserID ");
             pstmt.setInt(1, transactionID);
             pstmt.setString(2, name);
             pstmt.setString(3, APIpass);
@@ -104,11 +106,15 @@ public class ConnectionManager {
                 float total = rs.getFloat("TotalPrice");
                 String date = rs.getTimestamp("Time").toString();
                 int status = rs.getInt("Status");
-                Transaction transaction = new Transaction(transactionID, userID, venueID, total, date, status);
+				Time collection = rs.getTime("CollectionTime");
+				String keywords = rs.getString("Keywords");
+				String username = rs.getString("Username");
+                Transaction transaction = new Transaction(transactionID, userID, venueID, total, date, status, keywords, collection, username);
                 rs.close();
                 return transaction;
             }
         } catch (SQLException sqle) {
+			System.out.println(sqle.getMessage());
             throw new ConnectionManagerException(sqle);
         }
         return null;
@@ -118,8 +124,7 @@ public class ConnectionManager {
 		PreparedStatement pstmt;
 		List<Integer> ids = new ArrayList<Integer>();
         try {
-			
-				conn = getConnection();
+			conn = getConnection();
             pstmt = conn.prepareStatement("SELECT TransactionID " 
                     + " FROM Transaction, Venue " 
                     + " WHERE Venue.VenueID = Transaction.VenueID " 
@@ -300,8 +305,7 @@ public class ConnectionManager {
         }
 
         try {
-			
-				conn = getConnection();
+			conn = getConnection();
             PreparedStatement pstmt = conn.prepareStatement(query.toString());
             for (int i = 0; i < ids.size(); i++) {
                 pstmt.setInt(i + 1, ids.get(i));
@@ -461,8 +465,7 @@ public class ConnectionManager {
 
         PreparedStatement stmt;
         try {
-			
-				conn = getConnection();
+			conn = getConnection();
             stmt = conn.prepareStatement("UPDATE user set Username=?, Fname=?, Lname=?, email=?, Admin=? WHERE UserID=?");
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getFname());
