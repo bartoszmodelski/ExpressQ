@@ -60,6 +60,9 @@ public class Registration extends ActionSupportWithSession {
 		if (ConnectionManager.checkUserName(Uname) == true) { //if the username already exists in the system inform the user. otherwise add the user details to the database
 			return "existed";		
 		}
+		else if (ConnectionManager.checkEmail(Email) == true){
+			return "existed";
+		}
 		else{
 			ConnectionManager.writeUser(Uname, hashed_password, Email, Fname, Lname);
 			return "success";

@@ -24,3 +24,4 @@
 8. Change admin permission edit field to checkbox (edituser.jsp)
 9. Database error (errors/db.jsp) should be reworked.
 10. delete unused jdbc methods
+11. i've made a right meal of checking if the username and/or email exist and would like to improve it if there is time.

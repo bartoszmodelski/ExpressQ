@@ -606,4 +606,25 @@ public class ConnectionManager {
         }
         return "fail";
 	}
+
+	public static boolean checkEmail(String email) throws ConnectionManagerException {
+        // Using prepared statement to prevent SQL injection
+        PreparedStatement pstmt;
+        try {
+			conn = getConnection();
+            // Query returning a user with matching username
+            pstmt = conn.prepareStatement("SELECT * FROM User WHERE Email = ?");
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            // Check whether a matching user was returned.
+            if (rs.next()) {
+                rs.close();
+                return true;
+            }
+            rs.close();
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+        return false;
+	}
 }

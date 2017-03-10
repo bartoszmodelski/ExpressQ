@@ -12,7 +12,7 @@
 <h2>ExpressQ Registration Status</h2>
 <font color="red" size="5">
 <b>
-User Exists Already!
+Username or Email Exists Already!
 </b>
 </font>
 </body>
