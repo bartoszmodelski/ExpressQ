@@ -1,7 +1,7 @@
 <%@taglib uri="/struts-tags" prefix="s"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!-- Navigation -->
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse navbar-static-top">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">ExpressQ</a>
@@ -13,5 +13,5 @@
       <li><a href="<s:url action="registration"/>">Register</a></li>
       <li><a href="<s:url action="venues"/>">Venues</a></li>
     </ul>
-  </div><!-- container-fluid -->
+  </div>
 </nav>

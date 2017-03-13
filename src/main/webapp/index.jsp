@@ -11,12 +11,15 @@
     <jsp:body>
         <div class="container">
             <div class="row text-center">
-                <h1>ExpressQ</h1>
-                <p class="lead">Generic boilerplate marketing talk goes here</p>
-                <p>
-                    <a href="<s:url action="registration"/>" class="btn btn-lg btn-primary"
-                       role="button">Register</a>
-                </p>
+                <!-- Currently doesn't work -->
+                <!-- div class="vertical-center" -->
+                    <h1>ExpressQ</h1>
+                    <p class="lead">Generic boilerplate marketing talk goes here</p>
+                    <p>
+                        <a href="<s:url action="registration"/>" class="btn btn-lg btn-primary"
+                           role="button">Register</a>
+                    </p>
+                <!-- /div -->
             </div>
         </div>
         <link rel="stylesheet" href="css/cover.css">
