@@ -3,7 +3,7 @@ package com.delta.expressq.actions;
 import com.delta.expressq.database.*;
 import com.delta.expressq.util.BCrypt;
 
-public class BusinessLogin extends BusinessActionSupportWithSession {
+public class BusinessLogin extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
 	private String name, password;
 
