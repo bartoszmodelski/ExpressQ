@@ -12,7 +12,7 @@
 		<jsp:include page="partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>	
-		<h3>Login below:</h3>
+		<h3>SwiftQ Business Login</h3>
 		<s:actionmessage />
 		<s:actionerror />
 		<br><s:form id="idLoginForm" action="loginBusinessUser">

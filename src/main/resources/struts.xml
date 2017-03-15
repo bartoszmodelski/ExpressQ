@@ -146,5 +146,21 @@
 		<result name="existed">exists.jsp</result>
 	</action>
 	
+	<!-- login -->
+	<action name="businesslogin">
+		<result>businesslogin.jsp</result>
+	</action>
+
+	<!-- login action -->
+	<action name="loginBusinessUser" class="com.delta.expressq.actions.BusinessLogin" method="login">
+		<result name="success" type="redirect">homeAction</result>
+		<result name="login">login.jsp</result>
+	</action>
+	
+	<!-- logout action -->
+	<action name="businessLogout" class="com.delta.expressq.actions.BusinessLogin" method="logout">
+		<result name="success">businesslogin.jsp</result>
+	</action>
+	
 	</package>
 </struts>

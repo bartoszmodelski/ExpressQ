@@ -15,6 +15,10 @@
 		<s:if test="#session.containsKey('loginId')">
 			Hello <s:property value="%{#session['loginId']}"/>. <br><a href="<s:url action="logout"/>">LogOut</a>
 		</s:if>
+		<s:elseif test="#session.containsKey('businessId')">
+					Hello <s:property value="%{#session['businessId']}"/>. <br><a href="<s:url action="businessLogout"/>">LogOut</a>
+		
+		</s:elseif>
 		<s:else>
 			You ain't logged in m8. 
 		</s:else>

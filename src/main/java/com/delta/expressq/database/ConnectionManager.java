@@ -650,4 +650,24 @@ public class ConnectionManager {
         }
 		return false;
 	}
+	
+	public static String getBusinessPassword(String name) throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        try {
+			
+				conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT password FROM Venue WHERE name = ?");
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String password = rs.getString("password");
+                rs.close();
+                return password;
+            }
+            rs.close();
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+        return "fail";
+	}
 }
