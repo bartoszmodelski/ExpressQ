@@ -134,5 +134,17 @@
 		<result name ="success" type="redirect">homeAction</result>
 	</action>
 	
+	<!-- ////////////////////////////BUSINESS ACTIONS/////////////////////////////// -->
+	
+	<!--registration-->
+	<action name="businessregistration">
+		<result>businessregistration.jsp</result>
+	</action>
+
+	<action name="busreg" class="com.delta.expressq.actions.BusinessRegistration">
+		<result name="success">login.jsp</result>
+		<result name="existed">exists.jsp</result>
+	</action>
+	
 	</package>
 </struts>
