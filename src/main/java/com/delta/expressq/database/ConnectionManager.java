@@ -700,4 +700,20 @@ public class ConnectionManager {
             throw new ConnectionManagerException(sqle);
 		}
 	}
+
+    public static void DeleteMenus(String[] arrayDeletionSelection) throws ConnectionManagerException {
+        PreparedStatement stmt;
+        try {
+			conn = getConnection();
+            for (int i = 0; i < arrayDeletionSelection.length; i++) { //loops through the checked boxes for deletion
+                stmt = conn.prepareStatement("DELETE FROM menu WHERE menuid=?");
+                int k = Integer.parseInt(arrayDeletionSelection[i]);
+                System.out.println(k);
+                stmt.setInt(1, k);
+                stmt.executeUpdate();
+            }
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
 }

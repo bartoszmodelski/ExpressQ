@@ -14,10 +14,27 @@
 		<h1>Menus</h1>
 		<a href="<s:url action="NewMenu.action"/>">Add a Menu</a><br><br>
 		<h4>Your Menus</h4>
-		<logic:iterate>
-			<s:iterator value="Map">
-				<p><a href="/menus?id=<s:property value="value"/>"><s:property value="key"/></a></b></p>
-			</s:iterator>
-			</logic:iterate>
+			<table>
+				<form name="menuDisplay" method="post">
+				<tr>
+				<th></th>
+				<th>Menu</th>
+				</tr>
+				<logic:iterate>
+					<s:iterator value="Map">
+						<tr>
+						<td><input type="checkbox" value=<s:property value="value"/> name= "deleteSelection"></td>
+						<td><a href="/menus?id=<s:property value="value"/>"><s:property value="key"/></a></td>
+						</tr>
+					</s:iterator>
+				</logic:iterate>
+				<input type="button" value="Delete Selected Menus" onclick="deleteRecord();">	
+				</form>	
+			</table>
+			<script type="text/javascript">
+				function deleteRecord(){
+				document.menuDisplay.action="delmenu.action";
+				document.menuDisplay.submit();}
+			</script>
     </jsp:body>
 </t:wrapper>

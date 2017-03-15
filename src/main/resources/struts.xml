@@ -176,5 +176,10 @@
 		<result name ="success" type="redirect">businessmain</result>
 	</action>
 	
+	<!-- Delete Menu(s) -->
+    <action name="delmenu" class="com.delta.expressq.actions.BusinessAction" method="Delete">
+      <result name="success" type="redirect">businessmain</result>
+    </action>
+	
 	</package>
 </struts>

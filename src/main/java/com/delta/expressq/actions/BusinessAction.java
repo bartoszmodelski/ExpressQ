@@ -1,5 +1,6 @@
 package com.delta.expressq.actions;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,8 @@ import com.delta.expressq.database.ConnectionManagerException;
 
 public class BusinessAction extends ActionSupportWithSession implements ServletRequestAware, ApplicationAware {
 	public Map<String, Integer> menus = new HashMap<String, Integer>();
-	private String name, description;
+	private HttpServletRequest request;
+	private String name, description, arrayDeletionSelection[], deleteSelection;
 	private int venueid;
 
 	public String Display(){
@@ -37,17 +39,28 @@ public class BusinessAction extends ActionSupportWithSession implements ServletR
 		}
 		return SUCCESS;
 	}
-
-	@Override
-	public void setApplication(Map<String, Object> arg0) {
-		// TODO Auto-generated method stub
-		
+	
+	public String Delete(){
+		arrayDeletionSelection = request.getParameterValues("deleteSelection");//get values from jsp to pass into connection manager
+		System.out.println(Arrays.toString(arrayDeletionSelection));
+		if (arrayDeletionSelection == null){
+			return ERROR;//maybe change to a redirect with appropriate actionmessage.
+		} else {
+			try {
+				ConnectionManager.DeleteMenus(arrayDeletionSelection);
+			} catch (ConnectionManagerException e) {
+				return "db_error";
+			}	
+			return SUCCESS;
+		}
 	}
 
-	@Override
-	public void setServletRequest(HttpServletRequest arg0) {
-		// TODO Auto-generated method stub
-		
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+	
+	public HttpServletRequest getServletRequest(){
+		return request;
 	}
 	
 	public Map<String, Integer> getMap(){
@@ -68,6 +81,20 @@ public class BusinessAction extends ActionSupportWithSession implements ServletR
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public String getDeleteSelection(){
+		return deleteSelection;
+	}
+	
+	public void setDeleteSelection(String deleteSelection){
+		this.deleteSelection = deleteSelection;
+	}
+
+	@Override
+	public void setApplication(Map<String, Object> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
