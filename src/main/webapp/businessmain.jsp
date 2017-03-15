@@ -1,59 +1,23 @@
-<%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ page import="java.util.*" %>
-<html>
-<head>
-	<script type="text/javascript">
-	function deleteRecord(){
-		document.userDisplay.action="del.action";
-		document.userDisplay.submit();
-	}
-	function editUser(val){
-		document.userDisplay.action="edit.action?selectedID="+val;
-		document.userDisplay.submit();
-	}
-	</script>
-</head>
-<body>
-	<a href="<s:url action="NewMenu.action"/>">Add a Menu</a>
-	<br><br>
-	<table>
-		<form name="userDisplay" method="post">
-					<tr>
-						<th></th>
-						<th>Username</th>
-						<th>Forename</th>
-						<th>Surname</th>
-						<th>Email</th>
-						<th>Admin Permission</th>
-					</tr>
-			<%
-			List userList = (List)request.getAttribute("disp");
-			if(userList != null){	 
-				Iterator it = userList.iterator();	 
-				while(it.hasNext()){		 
-					com.delta.expressq.util.User user = (com.delta.expressq.util.User)it.next();
-					int UserID = user.getUserID();
-					String UserName = user.getUsername();
-					String Fname = user.getFname();
-					String Lname = user.getLname();
-					String email = user.getemail();
-					int Admin = user.getAdmin();
-					%>
-					<tr>
-						<td><input type="checkbox" value="<%= UserID %>" name= "deleteSelection"></td>
-						<td><%= UserName %></td>
-						<td><%= Fname %></td>
-						<td><%= Lname %></td>
-						<td><%= email %></td>
-						<td><%= Admin %></td>
-						<td><a href="javascript:editUser('<%= UserID %>')">Edit User</a></td>
-					</tr>
-					<%
-				}
-			} 
-			%>
-			<input type="button" value="Delete Selected Users" onclick="deleteRecord();">		 
-		</form>
-	</table>
-</body> 
-</html>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<t:wrapper>
+    <jsp:attribute name="title">
+		Menus
+	</jsp:attribute>
+    <jsp:attribute name="navbar">
+		<jsp:include page="/partials/navbar.jsp" />
+	</jsp:attribute>
+    <jsp:body>
+		<h1>Menus</h1>
+		<a href="<s:url action="NewMenu.action"/>">Add a Menu</a><br><br>
+		<h4>Your Menus</h4>
+		<logic:iterate>
+			<s:iterator value="Map">
+				<p><a href="/menus?id=<s:property value="value"/>"><s:property value="key"/></a></b></p>
+			</s:iterator>
+			</logic:iterate>
+    </jsp:body>
+</t:wrapper>

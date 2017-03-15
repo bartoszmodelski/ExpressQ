@@ -654,8 +654,7 @@ public class ConnectionManager {
 	public static String getBusinessPassword(String name) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
-			
-				conn = getConnection();
+			conn = getConnection();
             pstmt = conn.prepareStatement("SELECT password FROM Venue WHERE name = ?");
             pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
@@ -684,5 +683,21 @@ public class ConnectionManager {
             throw new ConnectionManagerException(sqle);
         }
 		return false;
+	}
+
+	public static void setMenus(Map<String, Integer> menus, int venueID) throws ConnectionManagerException {
+		PreparedStatement pstmt;
+		try {
+			conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT name, menuid FROM menu WHERE venueid = ?");
+            pstmt.setInt(1, venueID);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                menus.put(rs.getString("name"), rs.getInt("menuid"));
+            }
+            rs.close();
+		}catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+		}
 	}
 }

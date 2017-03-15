@@ -1,5 +1,6 @@
 package com.delta.expressq.actions;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +12,16 @@ import com.delta.expressq.database.ConnectionManager;
 import com.delta.expressq.database.ConnectionManagerException;
 
 public class BusinessAction extends ActionSupportWithSession implements ServletRequestAware, ApplicationAware {
+	public Map<String, Integer> menus = new HashMap<String, Integer>();
 	private String name, description;
 	private int venueid;
-	
+
 	public String Display(){
+		try {
+			ConnectionManager.setMenus(menus, ConnectionManager.getVenueID(session.get("businessId").toString()));
+		} catch (ConnectionManagerException e) {
+			e.printStackTrace();
+		}
 		return SUCCESS;
 	}
 
@@ -24,8 +31,7 @@ public class BusinessAction extends ActionSupportWithSession implements ServletR
 	
 	public String InsertMenu(){
 		try {
-			venueid = ConnectionManager.getVenueID(session.get("businessId").toString());
-			ConnectionManager.InsertMenu(venueid, name, description);
+			ConnectionManager.InsertMenu(ConnectionManager.getVenueID(session.get("businessId").toString()), name, description);
 		} catch (ConnectionManagerException e) {
 			e.printStackTrace();
 		}
@@ -42,6 +48,10 @@ public class BusinessAction extends ActionSupportWithSession implements ServletR
 	public void setServletRequest(HttpServletRequest arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Map<String, Integer> getMap(){
+		return menus;
 	}
 	
 	public String getName(){
