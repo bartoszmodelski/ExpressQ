@@ -5,6 +5,12 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 
 <t:wrapper>
+    <jsp:attribute name="title">
+		Add New Menu
+	</jsp:attribute>
+	    <jsp:attribute name="navbar">
+		<jsp:include page="partials/navbar.jsp" />
+	</jsp:attribute>
 	<jsp:body>
 		<h3>Add a Menu</h3>
 		<s:form name="menu" method = "POST" action="InsertMenu" onsubmit="return validateForm()">
