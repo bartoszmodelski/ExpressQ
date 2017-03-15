@@ -164,5 +164,17 @@
 		<result name="success">businesslogin.jsp</result>
 	</action>
 	
+	<action name ="businessmain" class="com.delta.expressq.actions.BusinessAction" method="Display">
+	      <result name="success">/businessmain.jsp</result>
+	</action>
+	
+	<action name ="NewMenu" class="com.delta.expressq.actions.BusinessAction" method="NewMenu">
+	      <result>newmenu.jsp</result>
+	</action>
+	
+	<action name ="InsertMenu" class="com.delta.expressq.actions.BusinessAction" method="InsertMenu">
+		<result name ="success" type="redirect">businessmain</result>
+	</action>
+	
 	</package>
 </struts>

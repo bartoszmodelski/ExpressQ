@@ -670,4 +670,19 @@ public class ConnectionManager {
         }
         return "fail";
 	}
+
+	public static boolean InsertMenu(int venueid, String name, String description) throws ConnectionManagerException{
+		PreparedStatement pstmt;
+        try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement("INSERT into Menu (venueid, name, description) VALUES (?,?,?)");
+			pstmt.setInt(1, venueid);
+			pstmt.setString(2, name);
+			pstmt.setString(3, description);
+			pstmt.executeUpdate();
+        }catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+		return false;
+	}
 }
