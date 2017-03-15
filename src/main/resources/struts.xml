@@ -8,12 +8,14 @@
     <package name="default" namespace="/" extends="struts-default">
 
 		<interceptors>
-			<interceptor class="com.delta.expressq.interceptors.LoginInterceptor" name="loginInterceptor">
-			</interceptor>
+			<interceptor class="com.delta.expressq.interceptors.LoginInterceptor" name="loginInterceptor"/>
+			
 			<interceptor-stack name="loginStack">
 				<interceptor-ref name="loginInterceptor" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
+			
+			<interceptor class="com.delta.expressq.interceptors.BusinessInterceptor" name="businessInterceptor"/>
 		</interceptors>
 				
 		<global-results>
