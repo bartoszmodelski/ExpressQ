@@ -3,17 +3,18 @@ package com.delta.expressq.database;
 import java.sql.Time;
 
 public class Transaction{
-    public int transactionID;
-    public int userID;
-    public int venueID;
-    public float total;
-    public String date;
-    public int status;
-	public String keywords;
-	public Time collection;
-	public String username;
+    final public int transactionID;
+    final public int userID;
+    final public int venueID;
+    final public float total;
+    final public String date;
+    final public int status;
+	final public String keywords;
+	final public Time collection;
+	final public String fullname;
+	final public String username;
 	
-    Transaction(int tID, int uID, int vID, float p, String d, int status, String keywords, Time collection, String username){
+    Transaction(int tID, int uID, int vID, float p, String d, int status, String keywords, Time collection, String username, String fullname){
         this.transactionID = tID;
         this.userID = uID;
         this.venueID = vID;
@@ -23,5 +24,6 @@ public class Transaction{
 		this.keywords = keywords;
 		this.collection = collection;
 		this.username = username;
+		this.fullname = fullname;
     }
 }

@@ -99,11 +99,11 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
         	obj.put("price", trans.total);
         	obj.put("date", trans.date);
         	obj.put("status", trans.status);
-			obj.put("collection", trans.collection);
+			obj.put("collectionTime", trans.collection);
 			obj.put("username", trans.username);
 			obj.put("keywords", trans.keywords);
 			obj.put("success", 1);
-			
+			obj.put("fullname", trans.fullname);
 			JSONObject obj2 = new JSONObject();
 			for (Map.Entry<String, Integer> entry : hmap.entrySet()) {				
 				obj2.put(entry.getKey(), entry.getValue());   

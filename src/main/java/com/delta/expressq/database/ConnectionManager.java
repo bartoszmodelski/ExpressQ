@@ -40,6 +40,7 @@ public class ConnectionManager {
      * @param password The password to be checked
      * @return true if the username and password exist in the same record. false if they do not.
      */
+	 @Deprecated
     public static boolean checkCredentials(String username, String password) throws ConnectionManagerException {//NO LONGER USED
 
         PreparedStatement pstmt;
@@ -82,13 +83,20 @@ public class ConnectionManager {
         return "";
     }
 
-    // Gets a transaction and returns it as a transaction object.
+   /**
+	*	Method gets transaction object from database.
+	*	@param 		transactionID 	id of needed transaction
+	*	@param		name 			venue name
+	*	@param		APIpass 		venue password for mobile application
+	*	@returns 	details of needed transaction as transaction object
+	*/
     public static Transaction getTransaction(String name, String APIpass, int transactionID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
 			
 			conn = getConnection();
-			pstmt = conn.prepareStatement("SELECT User.Username, TransactionID, User.UserID, Keywords, Transaction.VenueID, TotalPrice, Time, CollectionTime, Status "
+			pstmt = conn.prepareStatement("SELECT User.Username, User.Fname, User.Lname, TransactionID, "
+					+ "User.UserID, Keywords, Transaction.VenueID, TotalPrice, Time, CollectionTime, Status "
                     + "FROM Transaction, Venue, User "
                     + "WHERE TransactionId = ? "
                     + "AND Venue.VenueID = Transaction.VenueID "
@@ -106,10 +114,11 @@ public class ConnectionManager {
                 float total = rs.getFloat("TotalPrice");
                 String date = rs.getTimestamp("Time").toString();
                 int status = rs.getInt("Status");
+				String fullname = rs.getString("Fname") + " " + rs.getString("Lname");
 				Time collection = rs.getTime("CollectionTime");
 				String keywords = rs.getString("Keywords");
 				String username = rs.getString("Username");
-                Transaction transaction = new Transaction(transactionID, userID, venueID, total, date, status, keywords, collection, username);
+                Transaction transaction = new Transaction(transactionID, userID, venueID, total, date, status, keywords, collection, username, fullname);
                 rs.close();
                 return transaction;
             }
@@ -120,19 +129,27 @@ public class ConnectionManager {
         return null;
     }
 	
+   /**
+	*	Method gets ids of upcoming transactions - paid goods, which will be collected within x minutes. 
+	*	@param 		minutes 		only show transactions planned within this time from now
+	*	@param		name 			venue name
+	*	@param		APIpass 		venue password for mobile application
+	*	@returns 	list of ids (integers)
+	*/
 	public static List<Integer> getIDsOfUpcomingTransactions(String name, String APIpass, int minutes) throws ConnectionManagerException {
 		PreparedStatement pstmt;
 		List<Integer> ids = new ArrayList<Integer>();
         try {
 			conn = getConnection();
             pstmt = conn.prepareStatement("SELECT TransactionID " 
-                    + " FROM Transaction, Venue " 
+                    + " FROM Transaction, Venue" 
                     + " WHERE Venue.VenueID = Transaction.VenueID " 
 					+ " AND CAST(Transaction.Time AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE) " 
 					+ " AND CollectionTime < CAST((DATE_ADD(CURRENT_TIMESTAMP, INTERVAL ? minute)) AS TIME) " 
 					+ " AND Status = 0 " 
                     + " AND Venue.Name =  ? " 
-                    + " AND Venue.APIpass =  ?");
+                    + " AND Venue.APIpass =  ?"
+					+ " AND CollectionTime <> CAST('00:00:00' AS TIME)"); //exclude ones with unset time
             pstmt.setInt(1, minutes);
             pstmt.setString(2, name);
             pstmt.setString(3, APIpass);
@@ -148,12 +165,16 @@ public class ConnectionManager {
         return ids;
 	}
 
+	/**
+	*	Method gets items and their quantities for given transaction.
+	*	@param 		transactionID 	id of transaction
+	*	@returns 	hashmap of item and quantity
+	*/
     public static HashMap getItemsInTransaction(int transactionID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         HashMap<String, Integer> hmap = new HashMap<String, Integer>();
         try {
-			
-				conn = getConnection();
+			conn = getConnection();
             pstmt = conn.prepareStatement("SELECT Name, Quantity "
                     + "FROM ItemQuantity, Item "
                     + "WHERE ItemQuantity.TransactionId = ? "
@@ -235,7 +256,11 @@ public class ConnectionManager {
         return 0;
     }
 
-
+   /**
+	*	Method fills provided data structure with items available at given venue.
+	*	@param 		items			datastructure for items
+	*	@param		venueID 		id of venue
+	*/
     public static void setItems(Map<String, Map<String, ArrayList<Item>>> items, String venueID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
@@ -275,6 +300,10 @@ public class ConnectionManager {
         }
     }
 
+   /**
+	*	Method fills provided data structure with pairs of venue name and its id.
+	*	@param 		venues 			map of String and Integer to be filled with names and ids
+	*/
     public static void setVenues(Map<String, Integer> venues) throws ConnectionManagerException {
         Statement stmt;
         try {
@@ -290,6 +319,11 @@ public class ConnectionManager {
         }
     }
 
+   /**
+	*	Method gets details of requested items.
+	*	@param 		ids				list of items' ids
+	*	@returns 	list of Item objects
+	*/
     public static ArrayList<Item> getItemsByIDs(List<Integer> ids) {
         //to avoid sending unprepared statements (query had one hardcoded Item)
         ArrayList<Item> items = new ArrayList<Item>();
@@ -324,12 +358,17 @@ public class ConnectionManager {
     }
 
 
+   /**
+	*	Method puts new order into database.
+	*	@param 		user			username of customer
+	*	@param		order			Order object containing order details
+	*	@returns 	id of just added transaction
+	*/
     public static int newOrder(String user, Order order) throws ConnectionManagerException {
         PreparedStatement pstmt;
         int transactionID = -1;
         try {
-			
-				conn = getConnection();
+			conn = getConnection();
             conn.setAutoCommit(false);
 
             //add transaction
@@ -543,8 +582,7 @@ public class ConnectionManager {
     public static void UserUpdate(User user) throws ConnectionManagerException {
         PreparedStatement stmt;
         try {
-			
-				conn = getConnection();
+			conn = getConnection();
             stmt = conn.prepareStatement("UPDATE user set Password=?, Fname=?, Lname=?, email=? WHERE Username=?");
             stmt.setString(1, user.getPassword());
             stmt.setString(2, user.getFname());
