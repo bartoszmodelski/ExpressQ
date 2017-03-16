@@ -216,6 +216,17 @@ public class ConnectionManager {
         return false;
     }
 
+    /**
+     * Adds a new user to the database
+     * 
+     * @param username	username value to be written to database
+     * @param password	hashed password value to be wrriten to database
+     * @param email		email value to be written to database
+     * @param fname		first name value to be written to database
+     * @param lname		last name value to br written to database
+     * @return			if sql insert cannot be run return false
+     * @throws ConnectionManagerException
+     */
     public static boolean writeUser(String username, String password, String email, String fname, String lname) throws ConnectionManagerException {
         // Using prepared statement to prevent SQL injection
         PreparedStatement pstmt;
@@ -237,7 +248,12 @@ public class ConnectionManager {
         return false;
     }
 
-    // Get the venueID
+    /**
+     * @deprecated
+     * @param name
+     * @return
+     * @throws ConnectionManagerException
+     */
     public static int getVenueID(String name) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
@@ -579,6 +595,11 @@ public class ConnectionManager {
         return userDetails;
     }
 
+/**
+ * Gets the values held in the editing fields and update the database with them.
+ * @param user holds the user that is being updated
+ * @throws ConnectionManagerException
+ */
     public static void UserUpdate(User user) throws ConnectionManagerException {
         PreparedStatement stmt;
         try {
@@ -600,9 +621,8 @@ public class ConnectionManager {
     public static boolean checkBusinessCredentials(String userName, String password) throws ConnectionManagerException {
         // Using prepared statement to prevent SQL injection
         PreparedStatement pstmt;
-        try {
-			
-				conn = getConnection();
+        try {			
+			conn = getConnection();
             // Query returning a user with matching username and password.
             pstmt = conn.prepareStatement("SELECT * FROM venue WHERE Name = ? and Password = ?");
             pstmt.setString(1, userName);
@@ -619,6 +639,7 @@ public class ConnectionManager {
         }
         return false;
     }
+    
 	/**
 	 * Retrieves the password of a user given the username.
 	 * @param userName userName is passed in to get the relevant password.
@@ -645,6 +666,12 @@ public class ConnectionManager {
         return "fail";
 	}
 
+	/**
+	 * Given an email address checks that it does not already exist in the database.
+	 * @param email email to be checked by function
+	 * @return true if the email exists otherwise false
+	 * @throws ConnectionManagerException
+	 */
 	public static boolean checkEmail(String email) throws ConnectionManagerException {
         // Using prepared statement to prevent SQL injection
         PreparedStatement pstmt;
