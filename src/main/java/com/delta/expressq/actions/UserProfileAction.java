@@ -37,11 +37,6 @@ public class UserProfileAction extends ActionSupportWithSession implements Appli
 		}
 		return SUCCESS;
 	}
-	
-	public void Edit(){
-
-	}
-
 
 	public void setApplication(Map userDetails){
 		this.userDetails = userDetails;
