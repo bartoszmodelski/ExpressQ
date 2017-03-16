@@ -51,7 +51,7 @@ public class Registration extends ActionSupportWithSession {
 }
 
 	/**
-	 * When the registration action is called this checks if a user already exists in the database with the username that has been selected by the user. 
+	 * When the registration action is called this checks if a user already exists in the database with the username and email that has been selected by the user. 
 	 * If it does already exits then it returns the result existed. If the username does not already exist then the new user details are written to the database.
 	 */
 	public String execute()throws Exception{
