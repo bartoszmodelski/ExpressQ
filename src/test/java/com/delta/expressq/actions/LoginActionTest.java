@@ -11,15 +11,15 @@ public class LoginActionTest extends StrutsTestCase{
 	 * @throws Exception
 	 */
 	public void testLoginSuccess() throws Exception{
-		request.setParameter("userName", "hash");
-		request.setParameter("password", "test");
+		request.setParameter("userName", "lol");
+		request.setParameter("password", "lol2");
 		ActionProxy proxy = getActionProxy("/loginUser");
 		LoginAction loginAction = (LoginAction) proxy.getAction();
         String result = proxy.execute();
         assertTrue("Problem There were errors present in fieldErrors but there should not have been any errors present", loginAction.getFieldErrors().size() == 0);
         assertEquals("Result returned form executing the action was not success but it should have been.", "success", result);
 	}
-	
+
 	/**
 	 * Tests that login is returned when an invalid username and password are entered.
 	 * @throws Exception
@@ -28,10 +28,10 @@ public class LoginActionTest extends StrutsTestCase{
 		request.setParameter("userName", "hashfail");
 		request.setParameter("password", "test");
 		ActionProxy proxy = getActionProxy("/loginUser");
-        String result = proxy.execute();	
+        String result = proxy.execute();
         assertEquals("Result returned form executing the action was not login but it should have been.", "login", result);
 	}
-	
+
 	/**
 	 * Tests that login is returned when a vaild username is entered with an incorrect password
 	 * @throws Exception
@@ -40,10 +40,10 @@ public class LoginActionTest extends StrutsTestCase{
 		request.setParameter("userName", "hash");
 		request.setParameter("password", "testfail");
 		ActionProxy proxy = getActionProxy("/loginUser");
-        String result = proxy.execute();	
+        String result = proxy.execute();
         assertEquals("Result returned form executing the action was not login but it should have been.", "login", result);
 	}
-	
+
 	/**
 	 * Tests that when /login is called the login page is presented to the user
 	 */
@@ -53,5 +53,5 @@ public class LoginActionTest extends StrutsTestCase{
         assertEquals("/", mapping.getNamespace());
         assertEquals("login", mapping.getName());
 	}
-	
+
 }
