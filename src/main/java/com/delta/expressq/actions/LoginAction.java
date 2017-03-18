@@ -1,11 +1,13 @@
 package com.delta.expressq.actions;
 
 import com.delta.expressq.database.*;
+import com.delta.expressq.util.UserNew;
 import com.delta.expressq.util.BCrypt;
 
 public class LoginAction extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
-	private String userName, password;
+	private String username = "";
+	private String password = "";
 
 	/**
 	 * Used to redirect the user to the home page after they have logged in.
@@ -20,7 +22,7 @@ public class LoginAction extends ActionSupportWithSession {
 	 * @return SUCCESS
 	 */
 	public String logout() {
-		session.remove("loginId");
+		session.remove("user");
 		addActionMessage("You have been logged out.");//for testing delete later
 		return SUCCESS;
 	}
@@ -32,29 +34,31 @@ public class LoginAction extends ActionSupportWithSession {
 	 * @return LOGIN redirect if the credentials do not match. SUCCESS if they do.
 	 */
 	public String login() {
+		if (username.equals("") || password.equals(""))
+			return "login";
 		try {
-			if (BCrypt.checkpw(password, ConnectionManager.getPassword(userName)) == false) {
+			UserNew user = ConnectionManager.getUserByUsername(username);
+			if ((user == null) || !BCrypt.checkpw(password, user.getPassword())) {
 				addActionError("Please enter valid username and password.");
 				return LOGIN;
-			}
-			else {
-				session.put("loginId", userName);
+			} else {
+				session.put("user", user);
 				return SUCCESS;
 			}
 		} catch (ConnectionManagerException e) {
 			return "db_error";
 		} catch(IllegalArgumentException ee){
 			return "login";
-		} 
+		}
 	}
 
 	//Setters and getters for variables
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserName(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -65,4 +69,3 @@ public class LoginAction extends ActionSupportWithSession {
 		this.password = password;
 	}
 }
-

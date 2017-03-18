@@ -656,9 +656,9 @@ public class ConnectionManager {
 	 * @return User object if found, null otherwise
 	 * @throws ConnectionManagerException
 	 */
-    public static UserNew getUserBy(String[] fields, Object[] values) throws ConnectionManagerException {
+    private static UserNew getUserBy(String[] fields, Object[] values) throws ConnectionManagerException {
         if (fields.length != values.length)
-            throw new ConnectionManagerException("getUserBy: fields and values must contain the same number of objects.")
+            throw new ConnectionManagerException("getUserBy: fields and values must contain the same number of objects.");
 
         //Building the query.
         //String concatenation for fields is safe, as they are never provided by user.
@@ -695,5 +695,9 @@ public class ConnectionManager {
         } catch (SQLException sqle) {
             throw new ConnectionManagerException(sqle);
         }
+    }
+
+    public static UserNew getUserByUsername(String username) throws ConnectionManagerException {
+        return getUserBy(new String[]{"Username"}, new Object[]{username});
     }
 }

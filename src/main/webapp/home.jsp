@@ -12,7 +12,7 @@
 		<jsp:include page="partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
-		Hello <s:property value="%{#session['loginId']}"/>
+		Hello <s:property value="%{#session['user']}"/>
 		<br><a href="<s:url action="logout"/>">LogOut</a>
     </jsp:body>
 </t:wrapper>
