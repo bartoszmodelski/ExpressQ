@@ -30,18 +30,28 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 	public String transactionID = "";
 	public String minutes = "";
 	public String json = "";
-	
+	public String status = "";
 	
 	public String execute() {
 		//HttpServletRequest request = ServletActionContext.getRequest();
 		
-		if (!name.isEmpty() && !APIpass.isEmpty() && !transactionID.isEmpty()) {
+		//if any of the credentials is empty, return error
+		if (name.isEmpty() || APIpass.isEmpty())
+			return ERROR;
+		
+		if (!status.isEmpty() && !transactionID.isEmpty()) {
+			return setTransactionStatus(name, APIpass, transactionID, status);
+		} else if (!transactionID.isEmpty()) {
 			return getOneTransaction(name, APIpass, transactionID);
-		} else if (!name.isEmpty() && !APIpass.isEmpty() && !minutes.isEmpty()) {
+		} else if (!minutes.isEmpty()) {
 			return getUpcomingTransactions(name, APIpass, minutes);
 		} else {
 			return ERROR;
 		}
+	}
+	
+	public String setTransactionStatus(String name, String APIpass, String transactionID, String status) {
+		return "fds";
 	}
 	
 	public String getOneTransaction(String name, String APIpass, String transactionID) {

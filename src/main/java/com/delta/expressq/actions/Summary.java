@@ -40,7 +40,11 @@ public class Summary extends ActionSupportWithSession {
 		}
 
 		//Retrieve Item objects by IDs
-		items = ConnectionManager.getItemsByIDs(new ArrayList(itemsToOrderConverted.keySet()));
+		try {
+			items = ConnectionManager.getItemsByIDs(new ArrayList(itemsToOrderConverted.keySet()));
+		} catch (Exception e) {
+			return ERROR;
+		}
 		
 		for (Item i: items) {
 			order.add(i, itemsToOrderConverted.get(i.getID()));
