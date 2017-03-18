@@ -30,11 +30,9 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 	public String transactionID = "";
 	public String minutes = "";
 	public String json = "";
-	
-	
+
+
 	public String execute() {
-		//HttpServletRequest request = ServletActionContext.getRequest();
-		
 		if (!name.isEmpty() && !APIpass.isEmpty() && !transactionID.isEmpty()) {
 			return getOneTransaction(name, APIpass, transactionID);
 		} else if (!name.isEmpty() && !APIpass.isEmpty() && !minutes.isEmpty()) {
@@ -43,21 +41,21 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 			return ERROR;
 		}
 	}
-	
+
 	public String getOneTransaction(String name, String APIpass, String transactionID) {
 		try {
 			Transaction trans = ConnectionManager.getTransaction(name, APIpass, Integer.parseInt(transactionID));
 			if (trans == null)
 				return ERROR;
-			
+
 			String username = ConnectionManager.getUsername(trans.userID);
 			if (username.equals(""))
 				return ERROR;
-			
+
 			HashMap hmap = ConnectionManager.getItemsInTransaction(Integer.parseInt(transactionID));
 			if (hmap == null)
 				return ERROR;
-			
+
 			if (!setJSONWithOne(trans, username, hmap))
 				return ERROR;
 		} catch (Exception e) {
@@ -65,7 +63,7 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 		}
 		return SUCCESS;
 	}
-		
+
 	public String getUpcomingTransactions(String name, String APIpass, String minutes) {
 		try {
 			List<Integer> IDs = ConnectionManager.getIDsOfUpcomingTransactions(name, APIpass, Integer.parseInt(minutes));
@@ -74,25 +72,25 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 		} catch (Exception e) {
 			return ERROR;
 		}
-		return SUCCESS;			
+		return SUCCESS;
 	}
-		
+
 	public boolean setJSONWithMany(List<Integer> IDs) {
 		JSONObject obj = new JSONObject();
-        try {							
+        try {
 			obj.put("success", 1);
 			obj.put("ids", IDs);
         } catch (JSONException exception) {
 			return false;
         }
-		
+
 		json = obj.toString();
 		return true;
 	}
-		
+
 	public boolean setJSONWithOne(Transaction trans, String username, HashMap<String, Integer> hmap) {
 		JSONObject obj = new JSONObject();
-   
+
         try {
         	obj.put("orderId", trans.transactionID);
         	obj.put("username", username);
@@ -105,20 +103,20 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 			obj.put("success", 1);
 			obj.put("fullname", trans.fullname);
 			JSONObject obj2 = new JSONObject();
-			for (Map.Entry<String, Integer> entry : hmap.entrySet()) {				
-				obj2.put(entry.getKey(), entry.getValue());   
+			for (Map.Entry<String, Integer> entry : hmap.entrySet()) {
+				obj2.put(entry.getKey(), entry.getValue());
 			}
-			
-			obj.put("items", obj2);			
+
+			obj.put("items", obj2);
         } catch (JSONException exception) {
 			System.out.println(exception.getMessage());
 			return false;
         }
-		
+
 		json = obj.toString();
 		return true;
 	}
-	
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -126,5 +124,5 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 	public HttpServletRequest getServletRequest() {
 		return this.request;
 	}
-	
+
 }

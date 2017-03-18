@@ -53,36 +53,6 @@ public class ConnectionManager {
         }
     }
 
-// Add APIKey parameter later
-
-    /**
-     * Checks if the login details provided by the user are correct.
-     *
-     * @param username The username to be checked
-     * @param password The password to be checked
-     * @return true if the username and password exist in the same record. false if they do not.
-     */
-	 @Deprecated
-    public static boolean checkCredentials(String username, String password) throws ConnectionManagerException {//NO LONGER USED
-
-        PreparedStatement pstmt;
-        try {
-			Connection conn = getConnection();
-            // Query returning a user with matching username and password.
-            pstmt = conn.prepareStatement("SELECT * FROM User WHERE Username = ? and Password = ?");
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
-            // Check whether a matching user was returned.
-            boolean next = rs.next();
-
-            cleanup(conn, pstmt, rs);
-            return next;
-        } catch (SQLException sqle) {
-			System.out.println(sqle.getMessage());
-            throw new ConnectionManagerException(sqle);
-        }
-    }
 
     public static String getUsername(int userID) throws ConnectionManagerException {
         PreparedStatement pstmt;
@@ -461,7 +431,7 @@ public class ConnectionManager {
                 user.setemail(rs.getString("email"));
                 user.setUsername(rs.getString("Username"));
                 user.setPassword(rs.getString("Password"));
-                user.setAdmin(rs.getInt("Admin"));
+                user.setAdmin(rs.getInt("Type"));
                 users.add(user);
             }
             cleanup(conn, null, rs);
@@ -511,7 +481,7 @@ public class ConnectionManager {
                 userDetails.put("Fname", rs.getString("Fname"));
                 userDetails.put("Lname", rs.getString("Lname"));
                 userDetails.put("email", rs.getString("email"));
-                userDetails.put("Admin", rs.getString("Admin"));
+                userDetails.put("Admin", rs.getString("Type"));
             }
             cleanup(conn, pstmt, rs);
             return userDetails;
@@ -674,4 +644,56 @@ public class ConnectionManager {
             throw new ConnectionManagerException(sqle);
         }
 	}
+
+    /**
+	 * Functions gets user matching provided pattern. For every element in fields, there should be a
+     * corresponding value in values, what will result in a query following below pattern:
+     * SELECT * FROM User WHERE fields[0] = values[0] AND fields[1] = values[1]...
+     * Ex 1.  userNew = ConnectionManager.getUserBy(new String[]{"Username"}, new Object[]{"Matt"});
+     * Ex 2.  userNew = ConnectionManager.getUserBy(new String[]{"UserID"}, new Object[]{3});
+	 * @param fields array of fields
+     * @param values array of values
+	 * @return User object if found, null otherwise
+	 * @throws ConnectionManagerException
+	 */
+    public static UserNew getUserBy(String[] fields, Object[] values) throws ConnectionManagerException {
+        if (fields.length != values.length)
+            throw new ConnectionManagerException("getUserBy: fields and values must contain the same number of objects.")
+
+        //Building the query.
+        //String concatenation for fields is safe, as they are never provided by user.
+        StringBuilder query = new StringBuilder("SELECT * FROM User WHERE " + fields[0] + " = ? ");
+        for (int i = 1; i < fields.length; i++)
+            query.append(" AND " + fields[i] + " = ? ");
+
+        try {
+            Connection conn = getConnection();
+            Statement stmt = conn.createStatement();
+            PreparedStatement pstmt = conn.prepareStatement(query.toString());
+            //Safe because field is always hardcoded in calling function.
+            for (int i = 0; i < values.length; i++) {
+                if (values[i] instanceof String)
+                    pstmt.setString(i + 1, (String)values[i]);
+                else if (values[i] instanceof Integer)
+                    pstmt.setInt(i + 1, (Integer)values[i]);
+                else
+                    throw new ConnectionManagerException("getUserBy: value which is neither String nor Integer.");
+            }
+            ResultSet rs = pstmt.executeQuery();
+            UserNew user = null;
+            if (rs.next())
+                user = new UserNew(rs.getInt("UserID"),
+                        rs.getInt("Type"),
+                        rs.getString("Fname"),
+                        rs.getString("Lname"),
+            			rs.getString("Email"),
+                        rs.getString("Username"),
+                        rs.getString("Password"));
+
+            cleanup(conn, pstmt, rs);
+            return user;
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+    }
 }
