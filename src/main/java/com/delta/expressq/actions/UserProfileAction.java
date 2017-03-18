@@ -5,6 +5,7 @@ import org.apache.struts2.interceptor.ApplicationAware;
 
 import com.delta.expressq.database.*;
 import com.delta.expressq.util.User;
+import com.delta.expressq.util.UserNew;
 
 public class UserProfileAction extends ActionSupportWithSession implements ApplicationAware {
 	private static final long serialVersionUID = 1L;
@@ -15,14 +16,19 @@ public class UserProfileAction extends ActionSupportWithSession implements Appli
 	/**
 	 * Gets the loginid from the active session and passes it into UserEdit(), this populates the fields in the jsp file with the current details of the user.
 	 */
-	public String execute(){	
-		username = session.get("loginId").toString();
-		try {
-			ConnectionManager.UserEdit(username, userDetails);		
-		} catch (ConnectionManagerException e) {
-			return "db_error";
+	public String execute(){
+		if (isLoggedIn()){
+			UserNew usernew = getUserObject();
+			username = usernew.getUsername();
+			try {
+				ConnectionManager.UserEdit(username, userDetails);		
+			} catch (ConnectionManagerException e) {
+				return "db_error";
+			}
+			return SUCCESS;
+		}else{
+			return ERROR;
 		}
-		return SUCCESS;
 	}
 	
 	/**

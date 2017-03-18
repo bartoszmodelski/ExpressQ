@@ -16,29 +16,34 @@ public class ConfirmOrder extends ActionSupportWithSession {
 	private String hour, minute;
 	public String keywords = "";
 	
-	public String execute() {		
-		String username = session.get("loginId").toString();
-		if ((hour != "unspecified") && (minute != "unspecified")) {
-			int hourConverted;
-			int minuteConverted;
-			System.out.println("ConfirmOrder.java: values should be compared against hardcoded hours/times, right now 912:244 goes through.");
-			try {
-				hourConverted = Integer.parseInt(hour);
-				minuteConverted = Integer.parseInt(minute);
-				
-				keywords = KeywordsGenerator.getKeywords();
-				ActiveRecord.getOrder(username).setCollectionTime(hourConverted, minuteConverted);
-				ActiveRecord.getOrder(username).setKeywords(keywords);
-			} catch (Exception e) {
-				System.out.println("Failed to convert. Back to normal path of execution: " + e.getMessage());
+	public String execute() {
+		if(isLoggedIn()){
+			UserNew user = getUserObject();
+			String username = user.getUsername();
+			if ((hour != "unspecified") && (minute != "unspecified")) {
+				int hourConverted;
+				int minuteConverted;
+				System.out.println("ConfirmOrder.java: values should be compared against hardcoded hours/times, right now 912:244 goes through.");
+				try {
+					hourConverted = Integer.parseInt(hour);
+					minuteConverted = Integer.parseInt(minute);
+					
+					keywords = KeywordsGenerator.getKeywords();
+					ActiveRecord.getOrder(username).setCollectionTime(hourConverted, minuteConverted);
+					ActiveRecord.getOrder(username).setKeywords(keywords);
+				} catch (Exception e) {
+					System.out.println("Failed to convert. Back to normal path of execution: " + e.getMessage());
+				}
 			}
+			try {
+				transactionID = ActiveRecord.confirmOrder(username);		
+			} catch (ConnectionManagerException e) {
+				return "db_error";
+			}
+			return SUCCESS;
+		}else{
+			return ERROR;
 		}
-		try {
-			transactionID = ActiveRecord.confirmOrder(username);		
-		} catch (ConnectionManagerException e) {
-			return "db_error";
-		}
-		return SUCCESS;
 	}
 	
 	public int getTransactionID() {

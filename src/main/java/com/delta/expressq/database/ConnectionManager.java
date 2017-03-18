@@ -612,7 +612,7 @@ public class ConnectionManager {
             pstmt.setString(1, userName);
             ResultSet rs = pstmt.executeQuery();
 
-            String password = "fail";
+            String password = null;
             if (rs.next())
                 password = rs.getString("password");
 

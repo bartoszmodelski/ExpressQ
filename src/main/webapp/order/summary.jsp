@@ -22,9 +22,9 @@
 			<col width="100">
 			<tr><th>Item</th><th>Price</th><th>Quantity</th><th>Total</th></tr>
 			<s:iterator value="order.itemsAndQuantities">
-				<tr><td><s:property value="key.name"/></td><td><s:property value="key.price"/></td><td><s:property value="value"/></td><td>sum</td></tr>
+				<tr><td><s:property value="key.name"/></td><td>£<s:property value="getText('{0,number,#,##0.00}',{key.price})"/></td><td><s:property value="value"/></td><td>£<s:property value="getText('{0,number,#,##0.00}',{(key.price*value)})"/></td></tr>
 			</s:iterator>
-			<td colspan="3"></td><td>grand sum</td>
+			<td colspan="2"></td><td><b>Grand Total:</b></td><td>£<s:property value="getText('{0,number,#,##0.00}',{total})"/></td>
 			</table>
 			<br><h3>Specify time of collection</h3>
 			<br>

@@ -17,8 +17,8 @@ public class Order {
 	
 	public double getTotal() {
 		double total = 0;
-		for (Item i: itemsAndQuantities.keySet()) {
-			total += i.getPrice();
+		for (Map.Entry entry: itemsAndQuantities.entrySet()){
+			 total += ((int)entry.getValue()) * ((Item) entry.getKey()).getPrice();
 		}
 		return total;
 	}

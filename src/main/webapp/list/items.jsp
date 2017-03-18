@@ -29,7 +29,7 @@
 										<s:property value="name"/>
 									</td>
 									<td>
-										&pound;<s:property value="price"/>
+										&pound;<s:property value="getText('{0,number,#,##0.00}',{price})"/>
 									</td>
 									<td>
 										<s:textfield name = "itemsToOrder['%{ID}']" value = "0"/>
