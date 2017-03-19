@@ -12,7 +12,6 @@ public class UserProfileAction extends ActionSupportWithSession implements Appli
 	private String username;
 	Map userDetails;
 	User user = new User();
-
 	/**
 	 * Gets the loginid from the active session and passes it into UserEdit(), this populates the fields in the jsp file with the current details of the user.
 	 */
@@ -32,16 +31,30 @@ public class UserProfileAction extends ActionSupportWithSession implements Appli
 	}
 	
 	/**
-	 * This calls a method within ConnectionManager that updates the database with the changes that have been made by the user.
+	 * This calls a method within ConnectionManager that updates the database with the changes that have been made by the user. It then updates the session so the user can keep using the system.
 	 * @return SUCCESS
 	 */
-	public String Update(){
-		try {
-			ConnectionManager.UserUpdate(user);
-		} catch (ConnectionManagerException e) {
-			return "db_error";
+	public String Update(){ //session refresh can be improved
+		if (isLoggedIn()){
+			UserNew usernew = getUserObject();
+			username = usernew.getUsername();
+			try {
+				ConnectionManager.UserUpdate(user);
+			} catch (ConnectionManagerException e) {
+				return "db_error";
+			}
+			//refreshes session with new changes
+			session.remove("user");
+			try {
+				UserNew user = ConnectionManager.getUserByUsername(username);
+				session.put("user", user);
+			} catch (ConnectionManagerException e) {
+				return "db_error";
+			}
+			return SUCCESS;
+		}else{
+			return ERROR;
 		}
-		return SUCCESS;
 	}
 
 	public void setApplication(Map userDetails){
