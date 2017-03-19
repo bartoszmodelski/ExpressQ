@@ -6,6 +6,7 @@ import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import com.delta.expressq.database.*;
 import com.delta.expressq.util.User;
+import com.delta.expressq.util.UserNew;
 
 public class AdminAction extends ActionSupportWithSession implements ServletRequestAware, ApplicationAware {
 	private static final long serialVersionUID = 1L;
@@ -21,13 +22,22 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	 * @return SUCCESS 
 	 */
 	public String Display(){
-		try {
-			ConnectionManager.DisplayUsers(users);
-		} catch (ConnectionManagerException e) {
-			return "db_error";
+		if(isLoggedIn()){
+			UserNew adminuser = getUserObject();
+			if (adminuser.getType() == 1){
+				try {
+					ConnectionManager.DisplayUsers(users);
+				} catch (ConnectionManagerException e) {
+					return "db_error";
+				}
+				request.setAttribute("disp", users);
+				return SUCCESS;
+			}else{
+				return "denied";
+			}
+		}else{
+			return "denied";
 		}
-		request.setAttribute("disp", users);
-		return SUCCESS;
 	}
 
 	/**
@@ -37,16 +47,25 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	 * @return ERROR if no user has been selected for deletion. SUCCESS if a user has been selected.
 	 */
 	public String Delete(){
-		arrayDeletionSelection = request.getParameterValues("deleteSelection");//get values from jsp to pass into connection manager
-		if (arrayDeletionSelection == null){
-			return ERROR;//maybe change to a redirect with appropriate actionmessage.
-		} else {
-			try {
-				ConnectionManager.DeleteUsers(arrayDeletionSelection);
-			} catch (ConnectionManagerException e) {
-				return "db_error";
-			}	
-			return SUCCESS;
+		if (isLoggedIn()){
+			UserNew adminuser = getUserObject();
+			if (adminuser.getType() == 1){
+				arrayDeletionSelection = request.getParameterValues("deleteSelection");//get values from jsp to pass into connection manager
+				if (arrayDeletionSelection == null){
+					return ERROR;//maybe change to a redirect with appropriate actionmessage.
+				} else {
+					try {
+						ConnectionManager.DeleteUsers(arrayDeletionSelection);
+					} catch (ConnectionManagerException e) {
+						return "db_error";
+					}	
+					return SUCCESS;
+				}
+			}else{
+				return "denied";
+			}
+		}else{
+			return "denied";
 		}
 	}
 	
@@ -56,17 +75,25 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	 * @return SUCCESS if the UserID selected exists. ERROR if it does not.
 	 */
 	public String Edit(){
-		selectedID = request.getParameter("selectedID");
-		try {
-			if (ConnectionManager.checkUserExists(selectedID) == true) {
-				ConnectionManager.AdminEditUser(selectedID, userDetails);
-				return SUCCESS;
-			} else {
-				return ERROR;
+		if(isLoggedIn()){
+			UserNew adminuser = getUserObject();
+			if (adminuser.getType() == 1){
+				selectedID = request.getParameter("selectedID");
+				try {
+					if (ConnectionManager.checkUserExists(selectedID) == true) {
+						ConnectionManager.AdminEditUser(selectedID, userDetails);
+						return SUCCESS;
+					} else {
+						return ERROR;
+					}
+				} catch (ConnectionManagerException e) {
+					return "db_error";
+				}
+			}else {
+				return "denied";
 			}
-		} catch (ConnectionManagerException e) {
-			return "db_error";
-		}
+		}else
+			return "denied";
 	}
 	
 	/**
@@ -74,13 +101,22 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	 * @return SUCCESS
 	 */
 	public String UpdateUserDetails(){
-		try {
-			ConnectionManager.AdminUpdateUser(user);
-		} catch (ConnectionManagerException e) {
-			System.out.println(e.getMessage());
-			return "db_error";
+		if(isLoggedIn()){
+			UserNew adminuser = getUserObject();
+			if (adminuser.getType() == 1){
+				try {
+					ConnectionManager.AdminUpdateUser(user);
+				} catch (ConnectionManagerException e) {
+					System.out.println(e.getMessage());
+					return "db_error";
+				}
+				return SUCCESS;
+			}else{
+				return "denied";
+			}
+		}else{
+			return "denied";
 		}
-		return SUCCESS;
 	}
 	
 	/**
@@ -88,7 +124,16 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	 * @return SUCCESS
 	 */
 	public String Insert(){
-			return SUCCESS;
+		if(isLoggedIn()){
+			UserNew adminuser = getUserObject();
+			if (adminuser.getType() == 1){
+				return SUCCESS;
+			}else{
+				return "denied";
+			}
+		}else{
+			return "denied";
+		}
 	}
 	
 	//getters and setters

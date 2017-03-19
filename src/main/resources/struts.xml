@@ -99,11 +99,13 @@
     <!-- AdminAction Actions -->
     <action name="view" class="com.delta.expressq.actions.AdminAction" method="Display">
       <result name="success">/display.jsp</result>
+      <result name="denied">/errors/noPermission.jsp</result>
     </action>
 	
 	<!-- Delete User(s) -->
     <action name="del" class="com.delta.expressq.actions.AdminAction" method="Delete">
       <result name="success">/deletesuccess.jsp</result>
+      <result name="denied">/errors/noPermission.jsp</result>
     </action>
 
 	<!-- Insert New User -->
@@ -114,11 +116,13 @@
 	<!-- Edit User Display-->
     <action name="edit" class="com.delta.expressq.actions.AdminAction" method="Edit">
       <result name ="success">edituser.jsp</result>
+      <result name="denied">/errors/noPermission.jsp</result>
     </action>
 	
 	<!-- Save Edited Changes -->
 	<action name="update" class="com.delta.expressq.actions.AdminAction" method="UpdateUserDetails">
-		<result name="success" type="redirect">view</result>
+	  <result name="success" type="redirect">view</result>
+	  <result name="denied">/errors/noPermission.jsp</result>
 	</action>
 	<!--End of AdminAction Actions-->
 	
