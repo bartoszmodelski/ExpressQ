@@ -30,7 +30,7 @@ public class LoginAction extends ActionSupportWithSession {
 	/**
 	 * This method calls BCrypt.checkpw to check the plaintext password entered by the user with the hashed password stored in the database. This hashed password is retrieved
 	 * by calling getPassword() in connection manager.
-	 * If they do match it creates a new session and maps the user's username to it. If not it displays an error message.
+	 * If they do match it creates a new session and maps the user to it. If not it displays an error message.
 	 * @return LOGIN redirect if the credentials do not match. SUCCESS if they do.
 	 */
 	public String login() {

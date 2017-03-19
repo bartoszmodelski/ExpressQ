@@ -13,7 +13,7 @@ public class UserProfileAction extends ActionSupportWithSession implements Appli
 	Map userDetails;
 	User user = new User();
 	/**
-	 * Gets the loginid from the active session and passes it into UserEdit(), this populates the fields in the jsp file with the current details of the user.
+	 * Gets the username from the active session and passes it into UserEdit(), this populates the fields in the jsp file with the current details of the user.
 	 */
 	public String execute(){
 		if (isLoggedIn()){

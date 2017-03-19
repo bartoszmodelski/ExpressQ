@@ -19,7 +19,7 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	/**
 	 * Calls the DisplayUsers method within ConnectionManager to retrieve the users from the database and sets the user object to "disp"
 	 * so display.jsp can access the data. 
-	 * @return SUCCESS 
+	 * @return SUCCESS if an admin user is trying to access the page, otherwise return "denied".
 	 */
 	public String Display(){
 		if(isLoggedIn()){
@@ -44,7 +44,7 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	 * This method gets the values from display.jsp that have been selected for deletion and passes them into the DeleteUsers method
 	 * in ConnectionManager.This method will then carry out the required processes to delete the user(s). 
 	 * If users have been selected for deletion the program will return an error
-	 * @return ERROR if no user has been selected for deletion. SUCCESS if a user has been selected.
+	 * @return ERROR if no user has been selected for deletion. SUCCESS if a user has been selected. "denied" if the user trying to access the method is not an admin.
 	 */
 	public String Delete(){
 		if (isLoggedIn()){
@@ -72,7 +72,7 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	/**
 	 * Retrieves the selectedID from the display.jsp file and calls methods held within connection manager to get the 
 	 * userDetails required to populate the fields in the edituser.jsp page.
-	 * @return SUCCESS if the UserID selected exists. ERROR if it does not.
+	 * @return SUCCESS if the UserID selected exists. ERROR if it does not. "denied" if the user trying to access the method is not an admin.
 	 */
 	public String Edit(){
 		if(isLoggedIn()){
@@ -98,7 +98,7 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	
 	/**
 	 * This calls a method within ConnectionManager that updates the database with the changes that have been made by the user.
-	 * @return SUCCESS
+	 * @return SUCCESS if an admin user is trying to access the page, otherwise return "denied".
 	 */
 	public String UpdateUserDetails(){
 		if(isLoggedIn()){
@@ -121,7 +121,7 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	
 	/**
 	 * When the user selects to insert a new user this method returns SUCCESS which is used to redirect the user to the page used to create a new user.
-	 * @return SUCCESS
+	 * @return SUCCESS if an admin user is trying to access the page, otherwise return "denied".
 	 */
 	public String Insert(){
 		if(isLoggedIn()){
