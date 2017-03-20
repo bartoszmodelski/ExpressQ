@@ -15,19 +15,19 @@ public class ConfirmOrder extends ActionSupportWithSession {
 	private int transactionID;
 	private String hour, minute;
 	public String keywords = "";
-	
+
 	public String execute() {
 		if(isLoggedIn()){
 			UserNew user = getUserObject();
 			String username = user.getUsername();
 			if ((hour != "unspecified") && (minute != "unspecified")) {
+				System.out.println("Hour conversion unsafe");
 				int hourConverted;
 				int minuteConverted;
-				System.out.println("ConfirmOrder.java: values should be compared against hardcoded hours/times, right now 912:244 goes through.");
 				try {
 					hourConverted = Integer.parseInt(hour);
 					minuteConverted = Integer.parseInt(minute);
-					
+
 					keywords = KeywordsGenerator.getKeywords();
 					ActiveRecord.getOrder(username).setCollectionTime(hourConverted, minuteConverted);
 					ActiveRecord.getOrder(username).setKeywords(keywords);
@@ -36,7 +36,7 @@ public class ConfirmOrder extends ActionSupportWithSession {
 				}
 			}
 			try {
-				transactionID = ActiveRecord.confirmOrder(username);		
+				transactionID = ActiveRecord.confirmOrder(username);
 			} catch (ConnectionManagerException e) {
 				return "db_error";
 			}
@@ -45,31 +45,31 @@ public class ConfirmOrder extends ActionSupportWithSession {
 			return ERROR;
 		}
 	}
-	
+
 	public int getTransactionID() {
 		return transactionID;
 	}
-	
+
 	public void setTransactionID(int transactionID) {
 		this.transactionID = transactionID;
 	}
-	
+
 	public void setHour(String hour) {
 		this.hour = hour;
 	}
-	
+
 	public String getHour() {
 		return hour;
 	}
-	
+
 	public String getKeywords() {
 		return keywords;
 	}
-	
+
 	public void setMinute(String minute) {
 		this.minute = minute;
 	}
-	
+
 	public String getMinute() {
 		return minute;
 	}

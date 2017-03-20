@@ -3,7 +3,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
-	
+
 <t:wrapper>
     <jsp:attribute name="title">
 		Home
@@ -12,8 +12,7 @@
 		<jsp:include page="partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
-		Hello <s:property value="%{#session['user']}"/>
+		Hello <s:property value="%{(#session['user']).getUsername()}"/>
 		<br><a href="<s:url action="logout"/>">LogOut</a>
     </jsp:body>
 </t:wrapper>
-
