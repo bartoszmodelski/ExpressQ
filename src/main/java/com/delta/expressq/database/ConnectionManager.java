@@ -708,4 +708,22 @@ public class ConnectionManager {
     public static UserNew getUserByUsername(String username) throws ConnectionManagerException {
         return getUserBy(new String[]{"Username"}, new Object[]{username});
     }
+
+	public static String getVenueName(String id) throws ConnectionManagerException {
+        try {
+			Connection conn = getConnection();
+            // Query returning a user with matching username
+            PreparedStatement pstmt = conn.prepareStatement("SELECT name FROM Venue WHERE venueid = ?");
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            String name = null;
+            // Check whether a matching user was returned.
+            if (rs.next())
+            	name = rs.getString("name");
+            cleanup(conn, pstmt, rs);
+            return name;
+        } catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+	}
 }

@@ -6,13 +6,13 @@
 	
 <t:wrapper>
     <jsp:attribute name="title">
-		<venue name>
+		<s:property value="venueName"/>
 	</jsp:attribute>
     <jsp:attribute name="navbar">
 		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
-		<h3><venue name></h3>	
+		<h3><s:property value="venueName"/></h3>	
 		<logic:iterate>
 		<s:form method = "POST" action="summary">
 			<s:iterator value="items">
