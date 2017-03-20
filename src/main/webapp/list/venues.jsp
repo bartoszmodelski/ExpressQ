@@ -11,6 +11,7 @@
 		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
+        <s:actionerror />
 		<h3>Available venues</h1>
 		<logic:iterate>
 		<s:iterator value="Map">

@@ -11,8 +11,8 @@
 		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
-		<h3>Check your order</h1>
 		<s:actionerror />
+		<h3>Check your order</h1>
 		<s:form method = "POST" action="confirmOrder">
 			<br>
 			<table>
@@ -34,7 +34,5 @@
 			<s:submit value="Confirm Order"/>
 		</s:form>
     </jsp:body>
-	
+
 </t:wrapper>
-
-

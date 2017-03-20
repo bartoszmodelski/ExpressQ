@@ -28,15 +28,15 @@ public class ConfirmOrder extends ActionSupportWithSession {
 				addActionError("Internal error. Please place order again.");
 				return "order_again";
 			} else if (!ActiveRecord.isStillValid(username)) { //if order was placed too long ago
-				addActionError("Order was not confirmed within allowed time ("
-					+ ActiveRecord.getMaximalConfirmationTimeAsString() + "). "
+				addActionError("Order was not confirmed within allowed time (2 hours). "
 					+ "Please place it again.");
 				ActiveRecord.removeOrderFromAR(username);
 				return "order_again";
 			}
+			System.out.println(ActiveRecord.getMaximalConfirmationTimeAsString());
 
 			//Place order without specified time
-			if ((hour == "unspecified") && (minute == "unspecified")) {
+			if ((hour.equals("unspecified")) && (minute.equals("unspecified"))) {
 				return placeOrderWithoutTime(username);
 			} else {
 				return placeOrderWithTime(minute, hour, username);

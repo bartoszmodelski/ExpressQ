@@ -12,7 +12,9 @@ public class Order {
 	private int minute = 0;
 	private String keywords = "";
 
-
+	public Order() {
+		setTimestamp();
+	}
 
 	public double getTotal() {
 		double total = 0;
@@ -64,7 +66,7 @@ public class Order {
 		this.itemsAndQuantities = itemsAndQuantities;
 	}
 
-	public void updateTimestamp() {
+	public void setTimestamp() {
 		Calendar calendar = Calendar.getInstance();
 		Date now = calendar.getTime();
 		timestamp = new java.sql.Timestamp(now.getTime());
