@@ -42,7 +42,6 @@ public class ConfirmOrder extends ActionSupportWithSession {
 				return placeOrderWithTime(minute, hour, username);
 			}
 		}
-
 		//if not logged redirect to login page
 		addActionError("You have to be logged in to place order.");
 		return "login";

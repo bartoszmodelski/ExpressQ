@@ -139,5 +139,10 @@
 		<result name ="success" type="redirect">homeAction</result>
 	</action>
 	
+		<!--exampe=le-->
+	<action name ="exampleOfMessages" class="com.delta.expressq.actions.ExampleOfMessages" method="execute">
+		<result name="success">exampleOfMessages.jsp</result>
+	</action>
+	
 	</package>
 </struts>
