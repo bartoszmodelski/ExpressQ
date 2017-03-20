@@ -5,7 +5,7 @@ import com.delta.expressq.util.BCrypt;
 public class Registration extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
 	private String Uname, Pass, PassConf, Email, Fname, Lname;
-	
+
 	//Setters and getters for registration variables
 	public String getUname(){
 		return Uname;}
@@ -15,7 +15,8 @@ public class Registration extends ActionSupportWithSession {
 }
 
 	public String getPass(){
-		return Pass;}
+		return Pass;
+	}
 
 	public void setPass(String Pass) {
 		this.Pass = Pass;
@@ -24,11 +25,11 @@ public class Registration extends ActionSupportWithSession {
 	public String getPassConf(){
 		return PassConf;
 	}
-	
+
 	public void setPassConf(String PassConf){
 		this.PassConf = PassConf;
 	}
-	
+
 	public String getEmail(){
 		return Email;}
 
@@ -51,14 +52,15 @@ public class Registration extends ActionSupportWithSession {
 }
 
 	/**
-	 * When the registration action is called this checks if a user already exists in the database with the username and email that has been selected by the user. 
+	 * When the registration action is called this checks if a user already exists in the database with the username and email that has been selected by the user.
 	 * If it does already exits then it returns the result existed. If the username does not already exist then the new user details are written to the database.
 	 */
-	public String execute()throws Exception{
+	public String execute() throws Exception{
+
 		String salt = BCrypt.gensalt(12);
-		String hashed_password = BCrypt.hashpw(Pass, salt);		
+		String hashed_password = BCrypt.hashpw(Pass, salt);
 		if (ConnectionManager.checkUserName(Uname) == true) { //if the username already exists in the system inform the user. otherwise add the user details to the database
-			return "existed";		
+			return "existed";
 		}
 		else if (ConnectionManager.checkEmail(Email) == true){
 			return "existed";

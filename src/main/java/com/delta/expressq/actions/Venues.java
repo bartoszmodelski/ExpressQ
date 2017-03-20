@@ -12,12 +12,12 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 	public Map<String, Integer> venues = new HashMap<String, Integer>();
 	public Map<String, Map<String, ArrayList<Item>>> items = new HashMap<String, Map<String, ArrayList<Item>>>();
 	public String id = null;
-	
+
 	public String execute() throws Exception{
 		if (id == null) {
 			ConnectionManager.setVenues(venues);
 			return "listVenues";
-		} 
+		}
 		ConnectionManager.setItems(items, id);
 		//System.out.println(items.toString());
 		if(items.toString() == "{}") { //can be better
@@ -26,23 +26,23 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 			return "listItems";
 		}
 	}
-	
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public Map<String, Integer> getMap(){
 		return venues;
 	}
-	
+
 	public Map<String, Map<String, ArrayList<Item>>> getItems() {
 		return items;
 	}
-	
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
