@@ -36,7 +36,6 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 	public void setId(String id) {
 		this.id = id;
 	}
-<<<<<<< HEAD
 
 	public String getVenueName(){
 		return venueName;
@@ -46,9 +45,6 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 		this.venueName = venueName;
 	}
 
-=======
-
->>>>>>> Bootstrap-alerts
 	public Map<String, Integer> getMap(){
 		return venues;
 	}
