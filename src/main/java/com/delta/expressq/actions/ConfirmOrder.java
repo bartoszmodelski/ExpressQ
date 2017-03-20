@@ -1,6 +1,5 @@
 package com.delta.expressq.actions;
 
-
 import com.delta.expressq.database.*;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ActionContext;
@@ -16,34 +15,114 @@ public class ConfirmOrder extends ActionSupportWithSession {
 	private String hour, minute;
 	public String keywords = "";
 
+	/**
+	 * Main function called by struts, when routed to "confirm".
+	 * @return "success", "db_error", "login", "error"
+	 */
 	public String execute() {
+		//if logged in attempt at placing order
 		if(isLoggedIn()){
-			UserNew user = getUserObject();
-			String username = user.getUsername();
-			if ((hour != "unspecified") && (minute != "unspecified")) {
-				System.out.println("Hour conversion unsafe");
-				int hourConverted;
-				int minuteConverted;
-				try {
-					hourConverted = Integer.parseInt(hour);
-					minuteConverted = Integer.parseInt(minute);
+			String username = getUserObject().getUsername();
 
-					keywords = KeywordsGenerator.getKeywords();
-					ActiveRecord.getOrder(username).setCollectionTime(hourConverted, minuteConverted);
-					ActiveRecord.getOrder(username).setKeywords(keywords);
-				} catch (Exception e) {
-					System.out.println("Failed to convert. Back to normal path of execution: " + e.getMessage());
-				}
+			if (!ActiveRecord.orderExists(username)) {	//if order does not exists
+				addActionError("Internal error. Please place order again.");
+				return "order_again";
+			} else if (!ActiveRecord.isStillValid(username)) { //if order was placed too long ago
+				addActionError("Order was not confirmed within allowed time ("
+					+ ActiveRecord.getMaximalConfirmationTimeAsString() + "). "
+					+ "Please place it again.");
+				ActiveRecord.removeOrderFromAR(username);
+				return "order_again";
 			}
-			try {
-				transactionID = ActiveRecord.confirmOrder(username);
-			} catch (ConnectionManagerException e) {
-				return "db_error";
+
+			//Place order without specified time
+			if ((hour == "unspecified") && (minute == "unspecified")) {
+				return placeOrderWithoutTime(username);
+			} else {
+				return placeOrderWithTime(minute, hour, username);
 			}
-			return SUCCESS;
-		}else{
+		}
+
+		//if not logged redirect to login page
+		addActionError("You have to be logged in to place order.");
+		return "login";
+	}
+
+
+
+	/**
+	 * Place order for specific time.
+	 * @param minute MM in HH:MM time format
+	 * @param hour HH in HH:MM time format
+	 * @param username user for which order should be placed
+	 * @return "success", "error", "db_error"
+	 */
+	private String placeOrderWithTime(String minute, String hour, String username) {
+		int hourConverted, minuteConverted;
+		try {
+			hourConverted = convertHour(hour);
+			minuteConverted = convertMinute(hour);
+		} catch (Exception e) {
+			addActionError("Incorrect time.");
 			return ERROR;
 		}
+
+		ActiveRecord.getOrder(username).setCollectionTime(hourConverted, minuteConverted);
+		keywords = ActiveRecord.getOrder(username).generateAndSetKeywords();
+		try {
+			transactionID = ActiveRecord.confirmOrder(username);
+		} catch (ConnectionManagerException e) {
+			addActionError("Order not placed.");
+			return "db_error";
+		} finally {
+			ActiveRecord.removeOrderFromAR(username);
+			return SUCCESS;
+		}
+	}
+
+	/**
+	 * Place order for specific user, without specifying time.
+	 * @param username user for which order should be placed
+	 * @return "success", "db_error"
+	 */
+	private String placeOrderWithoutTime(String username) {
+		try {
+			transactionID = ActiveRecord.confirmOrder(username);
+		} catch (ConnectionManagerException e) {
+			addActionError("Order not placed.");
+			return "db_error";
+		} finally {
+			ActiveRecord.removeOrderFromAR(username);
+			return SUCCESS;
+		}
+	}
+
+	/**
+	 * Function converting String to Integer. Accepts only natural numbers
+	 * between 8 and 19 (exclusive), otherwise throws Exception.
+	 * @param hour Integer number saved in String.
+	 * @return "success", "db_error"
+	 * @throws Exception
+	 */
+	private int convertHour(String hour) throws Exception {
+		int converted = Integer.parseInt(hour);
+		if ((converted < 8) || (19 < converted))
+			throw new Exception("Incorrect hours.");
+		return converted;
+	}
+
+	/**
+	 * Function converting String to Integer. Accepts only natural numbers
+	 * between -1 and 60 (exclusive), otherwise throws Exception.
+	 * @param hour Integer number saved in String.
+	 * @return "success", "db_error"
+	 * @throws Exception
+	 */
+	private int convertMinute(String minute) throws Exception {
+		int converted = Integer.parseInt(minute);
+		if ((converted < 0) || (59 < converted))
+			throw new Exception("Incorrect minutes.");
+		return converted;
 	}
 
 	public int getTransactionID() {

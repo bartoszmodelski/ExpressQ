@@ -5,10 +5,10 @@
 				<select name = "hour">
 					<option value="unspecified"></option>
 					<% for(int i = 8; i < 13; i += 1) { %>
-							<option value="<%=i%>"><%=i%></option>
+							<option value="<%=i%>"><%=i%> AM</option>
 					<% } %>
 					<% for(int i = 1; i < 8; i += 1) { %>
-							<option value="<%=i%>"><%=i%></option>
+							<option value="<%=i + 12%>"><%=i%> PM</option>
 					<% } %>
 				</select>
 				:

@@ -87,7 +87,8 @@
 			<interceptor-ref name="loginStack" />
 			<result name="login" type="redirect">login</result>
 			<result name="success">order/confirmed.jsp</result>
-			<result name="fail">order/summary.jsp</result>
+			<result name="error">order/summary.jsp</result>
+			<result name="order_again" type="redirect">venues</result>
 		</action>
 
 		<!-- json -->

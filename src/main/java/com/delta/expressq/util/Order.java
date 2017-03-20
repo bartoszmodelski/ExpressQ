@@ -2,18 +2,17 @@ package com.delta.expressq.util;
 
 import java.sql.Timestamp;
 import java.util.*;
+import com.delta.expressq.record.*;
 
 public class Order {
-	public Map<Item, Integer> itemsAndQuantities;
-	public Timestamp timestamp = null;
-	public int venueID = -1;
+	private Map<Item, Integer> itemsAndQuantities = new HashMap<Item, Integer>();
+	private Timestamp timestamp = null;
+	private int venueID = -1;
 	private int hour = 0;
 	private int minute = 0;
 	private String keywords = "";
 
-	public Order() {
-		itemsAndQuantities = new HashMap<Item, Integer>();
-	}
+
 
 	public double getTotal() {
 		double total = 0;
@@ -23,8 +22,9 @@ public class Order {
 		return total;
 	}
 
-	public void setKeywords(String keywords) {
-		this.keywords = keywords;
+	public String generateAndSetKeywords() {
+		this.keywords = KeywordsGenerator.getKeywords();
+		return this.keywords;
 	}
 
 	public String getKeywords() {

@@ -333,8 +333,6 @@ public class ConnectionManager {
         if (ids.size() == 0)
             return items;
 
-        //System.out.println(ids.toString());
-
         StringBuilder query = new StringBuilder("SELECT Item.ItemID as ID, Item.Name AS Name, Item.Price as Price FROM Item WHERE Item.ItemID = ? ");
 
         for (int i = 1; i < ids.size(); i++) {
@@ -697,6 +695,16 @@ public class ConnectionManager {
         }
     }
 
+    /**
+     * Returns user object corresponding to given username
+     *
+     * @param username	sought user's username
+     * @param email		email value to be written to database
+     * @param fname		first name value to be written to database
+     * @param lname		last name value to br written to database
+     * @return			user object if found, null otherwise
+     * @throws ConnectionManagerException
+     */
     public static UserNew getUserByUsername(String username) throws ConnectionManagerException {
         return getUserBy(new String[]{"Username"}, new Object[]{username});
     }
