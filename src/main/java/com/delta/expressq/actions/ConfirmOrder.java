@@ -13,14 +13,18 @@ import com.stripe.exception.InvalidRequestException;
 import com.stripe.model.Charge;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
-public class ConfirmOrder extends ActionSupportWithSession{
+import org.apache.struts2.interceptor.ServletRequestAware;
+
+public class ConfirmOrder extends ActionSupportWithSession implements ServletRequestAware{
 	public Map<String, String> itemsToOrder = new HashMap<String, String>();
 	public List<Item> items = new ArrayList<Item>();
 	private int transactionID;
 	private String hour, minute;
 	public String keywords = "";
-	private String token, stripeEmail, stripeTokenType;
+	private HttpServletRequest request;
+
 	
 	/**
 	 * Main function called by struts, when routed to "confirm".
@@ -34,6 +38,7 @@ public class ConfirmOrder extends ActionSupportWithSession{
 	public String execute() throws AuthenticationException, InvalidRequestException, APIConnectionException, CardException, APIException {
 		//if logged in attempt at placing order
 		if(isLoggedIn()){
+			UserNew user = getUserObject();
 			String username = getUserObject().getUsername();
 
 			if (!ActiveRecord.orderExists(username)) {	//if order does not exists
@@ -46,18 +51,15 @@ public class ConfirmOrder extends ActionSupportWithSession{
 				return "order_again";
 			}
 			Stripe.apiKey = "sk_test_U1DddsCH9sv1xbGdcv1G7ZRl";
+			String token = request.getParameter("stripeToken");
 			System.out.println(ActiveRecord.getMaximalConfirmationTimeAsString());
 			Order order = ActiveRecord.getOrder(username);
-		    final Map<String, Object> cardParams = new HashMap<String, Object>();
-		    cardParams.put("number", "4242424242424242");
-		    cardParams.put("exp_month", 12);
-		    cardParams.put("exp_year", 2020);
-		    cardParams.put("cvc", "123");
-		    
+
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("amount", order.getAmount());
 			params.put("currency", "gbp");
-			params.put("card", cardParams);
+			params.put("description", order.getVenue());
+			params.put("source", token);
 			Charge charge = Charge.create(params);
 			if ((hour.equals("unspecified")) && (minute.equals("unspecified"))) {
 				return placeOrderWithoutTime(username);
@@ -175,7 +177,7 @@ public class ConfirmOrder extends ActionSupportWithSession{
 		return minute;
 	}
 	
-	public String getStripeToken(){
+	/*public String getStripeToken(){
 		return token;
 	}
 	
@@ -197,5 +199,13 @@ public class ConfirmOrder extends ActionSupportWithSession{
 	
 	public void setStripeTokenType(String stripeTokenType){
 		this.stripeTokenType = stripeTokenType;
+	}*/
+
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+	
+	public HttpServletRequest getServletRequest(){
+		return request;
 	}
 }
