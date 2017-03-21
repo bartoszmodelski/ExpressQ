@@ -20,7 +20,7 @@
             <p class="text-center">
                 Order number:
                 <span id="lastOrder"><s:property value="transactionID"/></span></p>
-            <div class="row id="qrcode"></div>
+            <div class="row" id="qrcode"></div>
         </div>
         <script type="text/javascript" src="jquery.qrcode.js"></script>
         <script type="text/javascript" src="qrcode.js"></script>
