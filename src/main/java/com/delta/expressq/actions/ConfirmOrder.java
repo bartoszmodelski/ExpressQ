@@ -11,8 +11,6 @@ import com.stripe.exception.AuthenticationException;
 import com.stripe.exception.CardException;
 import com.stripe.exception.InvalidRequestException;
 import com.stripe.model.Charge;
-
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -50,15 +48,17 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 				ActiveRecord.removeOrderFromAR(username);
 				return "order_again";
 			}
+			//Setup for stripe charge
 			Stripe.apiKey = "sk_test_U1DddsCH9sv1xbGdcv1G7ZRl";
 			String token = request.getParameter("stripeToken");
+			
 			System.out.println(ActiveRecord.getMaximalConfirmationTimeAsString());
 			Order order = ActiveRecord.getOrder(username);
-
+			
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("amount", order.getAmount());
 			params.put("currency", "gbp");
-			params.put("description", order.getVenue());
+			params.put("description", user.getFirstName() + " " + user.getLastName() + " ordered from venue with id" + order.getVenue());
 			params.put("source", token);
 			Charge charge = Charge.create(params);
 			if ((hour.equals("unspecified")) && (minute.equals("unspecified"))) {
@@ -176,30 +176,6 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	public String getMinute() {
 		return minute;
 	}
-	
-	/*public String getStripeToken(){
-		return token;
-	}
-	
-	public void setStripeToken(String token){
-		this.token = token;
-	}
-	
-	public String getStripeEmail(){
-		return stripeEmail;
-	}
-	
-	public void setStripeEmail(String email){
-		this.stripeEmail = stripeEmail;
-	}
-	
-	public String getStripeTokenType(){
-		return stripeTokenType;
-	}
-	
-	public void setStripeTokenType(String stripeTokenType){
-		this.stripeTokenType = stripeTokenType;
-	}*/
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
