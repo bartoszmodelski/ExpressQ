@@ -1,25 +1,37 @@
 package com.delta.expressq.actions;
 
 import com.delta.expressq.database.*;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ActionContext;
-import org.apache.struts2.interceptor.SessionAware;
 import java.util.*;
 import com.delta.expressq.util.*;
 import com.delta.expressq.record.*;
+import com.stripe.Stripe;
+import com.stripe.exception.APIConnectionException;
+import com.stripe.exception.APIException;
+import com.stripe.exception.AuthenticationException;
+import com.stripe.exception.CardException;
+import com.stripe.exception.InvalidRequestException;
+import com.stripe.model.Charge;
 
-public class ConfirmOrder extends ActionSupportWithSession {
+import javax.servlet.ServletRequest;
+
+public class ConfirmOrder extends ActionSupportWithSession{
 	public Map<String, String> itemsToOrder = new HashMap<String, String>();
 	public List<Item> items = new ArrayList<Item>();
 	private int transactionID;
 	private String hour, minute;
 	public String keywords = "";
-
+	private String token, stripeEmail, stripeTokenType;
+	
 	/**
 	 * Main function called by struts, when routed to "confirm".
 	 * @return "success", "db_error", "login", "error"
+	 * @throws APIException 
+	 * @throws CardException 
+	 * @throws APIConnectionException 
+	 * @throws InvalidRequestException 
+	 * @throws AuthenticationException 
 	 */
-	public String execute() {
+	public String execute() throws AuthenticationException, InvalidRequestException, APIConnectionException, CardException, APIException {
 		//if logged in attempt at placing order
 		if(isLoggedIn()){
 			String username = getUserObject().getUsername();
@@ -33,9 +45,20 @@ public class ConfirmOrder extends ActionSupportWithSession {
 				ActiveRecord.removeOrderFromAR(username);
 				return "order_again";
 			}
+			Stripe.apiKey = "sk_test_U1DddsCH9sv1xbGdcv1G7ZRl";
 			System.out.println(ActiveRecord.getMaximalConfirmationTimeAsString());
-
-			//Place order without specified time
+			Order order = ActiveRecord.getOrder(username);
+		    final Map<String, Object> cardParams = new HashMap<String, Object>();
+		    cardParams.put("number", "4242424242424242");
+		    cardParams.put("exp_month", 12);
+		    cardParams.put("exp_year", 2020);
+		    cardParams.put("cvc", "123");
+		    
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("amount", order.getAmount());
+			params.put("currency", "gbp");
+			params.put("card", cardParams);
+			Charge charge = Charge.create(params);
 			if ((hour.equals("unspecified")) && (minute.equals("unspecified"))) {
 				return placeOrderWithoutTime(username);
 			} else {
@@ -150,5 +173,29 @@ public class ConfirmOrder extends ActionSupportWithSession {
 
 	public String getMinute() {
 		return minute;
+	}
+	
+	public String getStripeToken(){
+		return token;
+	}
+	
+	public void setStripeToken(String token){
+		this.token = token;
+	}
+	
+	public String getStripeEmail(){
+		return stripeEmail;
+	}
+	
+	public void setStripeEmail(String email){
+		this.stripeEmail = stripeEmail;
+	}
+	
+	public String getStripeTokenType(){
+		return stripeTokenType;
+	}
+	
+	public void setStripeTokenType(String stripeTokenType){
+		this.stripeTokenType = stripeTokenType;
 	}
 }

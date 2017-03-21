@@ -23,7 +23,7 @@ public class LoginAction extends ActionSupportWithSession {
 	 */
 	public String logout() {
 		session.remove("user");
-		addActionMessage("You have been logged out.");//for testing delete later
+		addSuccessMessage("Success! ", "You have been logged out");//for testing delete later
 		return SUCCESS;
 	}
 

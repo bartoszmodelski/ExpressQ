@@ -31,8 +31,17 @@
 			<jsp:include page="selects.jsp"/> - (strongly advised when ordering any not off-the-shelf items)
 			<br>
 			<br><h3>Confirm your order</h3>
-			<s:submit value="Confirm Order"/>
-		</s:form>
+		  <script
+		    src="https://checkout.stripe.com/checkout.js"
+		    class="stripe-button"
+		    data-key="pk_test_gJ2xZioR7mLdDZ3kDZ05OHy5"
+		    data-name="SwiftQ"
+		    data-email= <s:property value="%{(#session['user']).getEmail()}"/>
+		    data-description="Enter Card Details"
+		    data-currency="gbp"
+		    data-amount=<s:property value = "amount"/>>
+		  </script>
+	</s:form>
     </jsp:body>
 
 </t:wrapper>

@@ -1,6 +1,7 @@
 package com.delta.expressq.util;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.*;
 import com.delta.expressq.record.*;
 
@@ -11,6 +12,8 @@ public class Order {
 	private int hour = 0;
 	private int minute = 0;
 	private String keywords = "";
+	public Double total;
+	public String amount;
 
 	public Order() {
 		setTimestamp();
@@ -24,6 +27,18 @@ public class Order {
 		return total;
 	}
 
+    public String getAmount(){
+    	total = getTotal();
+    	DecimalFormat df = new DecimalFormat("#.00"); 
+    	amount = df.format(total);
+    	amount = amount.replace(".","");
+    	return amount;
+    }
+    
+    public void setAmount(String amount){
+    	this.amount = amount;
+    }
+	
 	public String generateAndSetKeywords() {
 		this.keywords = KeywordsGenerator.getKeywords();
 		return this.keywords;
