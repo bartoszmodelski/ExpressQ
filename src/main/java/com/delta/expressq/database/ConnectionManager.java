@@ -264,30 +264,24 @@ public class ConnectionManager {
 	*	@param 		items			datastructure for items
 	*	@param		venueID 		id of venue
 	*/
-    public static void setItems(Map<String, Map<String, ArrayList<Item>>> items, String venueID) throws ConnectionManagerException {
+    public static void setItems(Map<String, ArrayList<Item>> items, String venueID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
 			Connection conn = getConnection();
             pstmt = conn.prepareStatement("SELECT Item.ItemID AS ItemID, Item.Name AS ItemName, Item.Price as ItemPrice, Section.SectionID, "
-                    + " Section.Description AS SectionName, "
-                    + " Menu.MenuID, Menu.VenueID, Menu.Description AS MenuName "
-                    + "FROM Menu, Section, Item "
-                    + "WHERE Menu.VenueID = ?"
-                    + "AND Menu.MenuID = Section.MenuID "
+                    + " Section.Description AS SectionName "
+                    + "FROM Section, Item "
+                    + "WHERE Section.VenueID = ?"
                     + "AND Section.SectionID = Item.SectionID");
             pstmt.setString(1, venueID);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                String menuName = rs.getString("MenuName");
-                if (!items.containsKey(menuName))
-                    items.put(menuName, new HashMap<String, ArrayList<Item>>());
-
                 String sectionName = rs.getString("SectionName");
-                if (!items.get(menuName).containsKey(sectionName))
-                    items.get(menuName).put(sectionName, new ArrayList<Item>());
+                if (!items.containsKey(sectionName))
+                    items.put(sectionName, new ArrayList<Item>());
 
-                items.get(menuName).get(sectionName).add(
+                items.get(sectionName).add(
                         new Item(
                                 rs.getDouble("ItemPrice"),
                                 rs.getString("ItemName"),
@@ -297,7 +291,6 @@ public class ConnectionManager {
 
             }
             cleanup(conn, pstmt, rs);
-
         } catch (SQLException sqle) {
             throw new ConnectionManagerException(sqle);
         }

@@ -16,8 +16,6 @@
 		<logic:iterate>
 		<s:form method = "POST" action="summary">
 			<s:iterator value="items">
-				<h2><s:property value="key" /></h2>
-					<s:iterator value="value">
 							<h3><s:property value="key" /></h3>
 							<table>
 							<col width="200">
@@ -37,7 +35,6 @@
 								</tr>
 							</s:iterator>
 							</table>
-					</s:iterator>
 			</s:iterator>
 			<s:submit value = "Purchase!"/>
 			<input type="hidden" name="venue" value="${id}">
