@@ -162,8 +162,11 @@
     </action>
     
     <action name="editsection" class="com.delta.expressq.actions.VenueAction" method="EditSection">
-    	<result name="success">editsection.jsp</result>
+    	<result name="success">/venue/editsection.jsp</result>
     </action>
 	
+	<action name="updatesection" class="com.delta.expressq.actions.VenueAction" method="UpdateSection">
+    	<result name="success" type="redirect">venuehome</result>
+	</action>
 	</package>
 </struts>

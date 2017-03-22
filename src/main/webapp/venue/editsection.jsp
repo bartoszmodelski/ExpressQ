@@ -11,6 +11,11 @@
 		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
-		<s:textfield name= "description" label = "New Section Name"/>
+    	<h3>Update Section Name</h3>
+    	<a href="<s:url action="venuehome.action"/>">Return to sections without saving changes.</a><br><br>
+		<s:form name="sectionupdate" method = "POST" action="updatesection">
+			<s:textfield name = "NewName" value = "%{Name}" label = "New Section Name"/>
+			<s:submit value="Register"/>
+		</s:form>
     </jsp:body>
 </t:wrapper>

@@ -14,7 +14,7 @@ import com.delta.expressq.util.UserNew;
 public class VenueAction extends ActionSupportWithSession implements ServletRequestAware {
 	public Map<String, Integer> sections = new HashMap<String, Integer>();
 	public HttpServletRequest request;
-	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], selectedSectionID;
+	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], selectedSectionID, Name, NewName;
 	
 	public String execute(){
 		if (isLoggedIn()){
@@ -82,14 +82,39 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	
 	public String EditSection(){
 		if(isLoggedIn()){
-			UserNew adminuser = getUserObject();
-			if (adminuser.getType() == 2){
-				return SUCCESS;
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				selectedSectionID = request.getParameter("selectedSectionID");
+				try {
+					Name = ConnectionManager.EditSection(selectedSectionID, Name);
+					return SUCCESS;
+				} catch (ConnectionManagerException e) {
+					return "db_error";
+				}
 			}else {
-				return "denied";
+				return ERROR;
 			}
 		}else
-			return "denied";
+			return ERROR;
+	}
+	
+	public String UpdateSection(){
+		if(isLoggedIn()){
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				try {
+					ConnectionManager.UpdateSection(selectedSectionID ,NewName);
+				} catch (ConnectionManagerException e) {
+					System.out.println(e.getMessage());
+					return "db_error";
+				}
+				return SUCCESS;
+			}else{
+				return ERROR;
+			}
+		}else{
+			return ERROR;
+		}
 	}
 
 	public Map<String, Integer> getMap(){
@@ -126,6 +151,18 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	
 	public void setSectionSelectedID(String selectedSectionID){
 		this.selectedSectionID = selectedSectionID;
+	}
+	
+	public String getName(){
+		return Name;
+	}
+	
+	public String getNewName(){
+		return NewName;
+	}
+	
+	public void setNewName(){
+		this.NewName = NewName;
 	}
 
 }

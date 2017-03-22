@@ -767,8 +767,35 @@ public class ConnectionManager {
 		
 	}
 
-	public static void EditVenueSection(String selectedSectionID) {
-		// TODO Auto-generated method stub
-		
+	public static String EditSection(String sectionID, String newName) throws ConnectionManagerException {
+        try {
+            Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT description FROM section WHERE sectionID=?");
+            pstmt.setString(1, sectionID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+            	newName = rs.getString("description");
+            }
+            cleanup(conn, pstmt, rs);
+            return newName;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
 	}
+
+	public static void UpdateSection(String newName, String sectionID) throws ConnectionManagerException {
+        try {
+        	System.out.println(newName);
+        	System.out.println(sectionID);
+
+			Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE section set description=?,  WHERE sectionid=?");
+            pstmt.setString(1, newName);
+            pstmt.setString(1, sectionID);
+            pstmt.executeUpdate();
+            cleanup(conn, pstmt, null);
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
 }
