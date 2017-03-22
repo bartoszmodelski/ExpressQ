@@ -144,5 +144,45 @@
 		<result name="success">exampleOfMessages.jsp</result>
 	</action>
 	
+	<!--///////////////// Venue Actions /////////////////-->
+	<action name ="venuehome" class="com.delta.expressq.actions.VenueAction" method="execute">
+		<result name ="success">/venue/main.jsp</result>
+	</action>
+	
+	<action name ="NewSection" class="com.delta.expressq.actions.VenueAction" method="NewSection">
+	      <result>/venue/newsection.jsp</result>
+	</action>
+	
+	<action name ="InsertSection" class="com.delta.expressq.actions.VenueAction" method="InsertSection">
+		<result name ="success" type="redirect">venuehome</result>
+	</action>
+	
+	<action name="delsection" class="com.delta.expressq.actions.VenueAction" method="DeleteSection">
+    	<result name="success" type="redirect">venuehome</result>
+    </action>
+    
+    <action name="editsection" class="com.delta.expressq.actions.VenueAction" method="EditSection">
+    	<result name="success">/venue/editsection.jsp</result>
+    </action>
+	
+	<action name="updatesection" class="com.delta.expressq.actions.VenueAction" method="UpdateSection">
+    	<result name="success" type="redirect">venuehome</result>
+	</action>
+	
+	<action name="viewItems" class="com.delta.expressq.actions.VenueAction" method="DisplayItems">
+		<result name="success">/venue/items.jsp</result>
+	</action>
+	
+	<action name ="NewItem" class="com.delta.expressq.actions.VenueAction" method="NewItem">
+	      <result>/venue/newitem.jsp</result>
+	</action>	
+	
+	<action name="InsertItem" class="com.delta.expressq.actions.VenueAction" method="InsertItem">
+    	<result name="success" type="redirect">venuehome</result>	
+    </action>
+    
+    <action name="delitems" class="com.delta.expressq.actions.VenueAction" method="DeleteItem">
+    	<result name="success" type="redirect">venuehome</result>
+    </action>
 	</package>
 </struts>
