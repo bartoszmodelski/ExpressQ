@@ -798,4 +798,20 @@ public class ConnectionManager {
             throw new ConnectionManagerException(ex);
         }
     }
+	
+	public static void getItemsBySection(Map<String, Integer> items, String sectionID) throws ConnectionManagerException {
+		PreparedStatement pstmt;
+		try {
+			Connection conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT name, itemid FROM item WHERE sectionid = ?");
+            pstmt.setString(1, sectionID);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                items.put(rs.getString("name"), rs.getInt("itemid"));
+            }
+            cleanup(conn, null, rs);
+		}catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+		}
+	}
 }

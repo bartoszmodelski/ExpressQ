@@ -5,26 +5,26 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 <t:wrapper>
     <jsp:attribute name="title">
-		Venue Home
+		Items
 	</jsp:attribute>
     <jsp:attribute name="navbar">
 		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
-		<h1>Sections</h1>
-		<a href="<s:url action="NewSection.action"/>">Add a new Section</a><br><br>
+		<h1>Items</h1>
+		<a href="<s:url action="NewItem.action"/>">Add a new item under this section</a><br><br>
 		<h4>Your Sections</h4>
 		<table>
-			<form name="sectionDisplay" method="post">
+			<form name="itemDisplay" method="post">
 				<tr>
 				<th></th>
-				<th>Section Name</th>
+				<th>Item Name</th>
 				<logic:iterate>
-					<s:iterator value="Map">
+					<s:iterator value="Items">
 						<tr>
 						<td><input type="checkbox" value=<s:property value="value"/> name= "sectionDeleteSelection"></td>
 						<td><a href="javascript:viewItems(<s:property value="value"/>)"><s:property value="key"/></a></td>
-						<td><a href="javascript:editSection(<s:property value="value"/>)">Change Section Name</a></td>
+						<td><a href="javascript:editSection(<s:property value="value"/>)">Edit Item</a></td>
 						<tr>
 					</s:iterator>
 				</logic:iterate>
