@@ -24,6 +24,7 @@
 						<tr>
 						<td><input type="checkbox" value=<s:property value="value"/> name= "sectionDeleteSelection"></td>
 						<td><a href="/sections?id=<s:property value="value"/>"><s:property value="key"/></a></td>
+						<td><a href="javascript:editSection(<s:property value="value"/>, <s:property value="key"/>)">Change Section Name</a></td>
 						<tr>
 					</s:iterator>
 				</logic:iterate>
@@ -32,8 +33,16 @@
 		</table>
 		<script type="text/javascript">
 			function deleteRecord(){
-			document.sectionDisplay.action="delsection.action";
-			document.sectionDisplay.submit();}
+				document.sectionDisplay.action="delsection.action";
+				document.sectionDisplay.submit();
+			}
+			
+			function editUser(id, name){
+				document.sectionDisplay.action="editsection.action?selectedSectionID="+id;
+				document.sectionDisplay.submit();
+			}
+			
+			
 		</script>
     </jsp:body>
 </t:wrapper>

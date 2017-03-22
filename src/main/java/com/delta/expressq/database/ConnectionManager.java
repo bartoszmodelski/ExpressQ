@@ -766,4 +766,9 @@ public class ConnectionManager {
         }
 		
 	}
+
+	public static void EditVenueSection(String selectedSectionID) {
+		// TODO Auto-generated method stub
+		
+	}
 }

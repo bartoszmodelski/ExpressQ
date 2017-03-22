@@ -160,6 +160,10 @@
 	<action name="delsection" class="com.delta.expressq.actions.VenueAction" method="DeleteSection">
     	<result name="success" type="redirect">venuehome</result>
     </action>
+    
+    <action name="editsection" class="com.delta.expressq.actions.VenueAction" method="EditSection">
+    	<result name="success">editsection.jsp</result>
+    </action>
 	
 	</package>
 </struts>

@@ -14,7 +14,7 @@ import com.delta.expressq.util.UserNew;
 public class VenueAction extends ActionSupportWithSession implements ServletRequestAware {
 	public Map<String, Integer> sections = new HashMap<String, Integer>();
 	public HttpServletRequest request;
-	private String description, sectionDeleteSelection, arraySectionDeleteSelection[];
+	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], selectedSectionID;
 	
 	public String execute(){
 		if (isLoggedIn()){
@@ -79,6 +79,18 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 			return ERROR;
 		}
 	}
+	
+	public String EditSection(){
+		if(isLoggedIn()){
+			UserNew adminuser = getUserObject();
+			if (adminuser.getType() == 2){
+				return SUCCESS;
+			}else {
+				return "denied";
+			}
+		}else
+			return "denied";
+	}
 
 	public Map<String, Integer> getMap(){
 		return sections;
@@ -106,6 +118,14 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	
 	public void setSectionDeleteSelection(String sectionDeleteSelection){
 		this.sectionDeleteSelection = sectionDeleteSelection;
+	}
+	
+	public String getSectionSelectedID(){
+		return selectedSectionID;
+	}
+	
+	public void setSectionSelectedID(String selectedSectionID){
+		this.selectedSectionID = selectedSectionID;
 	}
 
 }
