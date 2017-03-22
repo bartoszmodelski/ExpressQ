@@ -11,6 +11,29 @@
 		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
-		<h1>Venue Home</h1>
+		<h1>Sections</h1>
+		<a href="<s:url action="NewSection.action"/>">Add a new Section</a><br><br>
+		<h4>Your Sections</h4>
+		<table>
+			<form name="sectionDisplay" method="post">
+				<tr>
+				<th</th>
+				<th>Section Name</th>
+				<logic:iterate>
+					<s:iterator value="Map">
+						<tr>
+						<td><input type="checkbox" value=<s:property value="value"/> name= "sectionDeleteSelection"></td>
+						<td><a href="/sections?id=<s:property value="value"/>"><s:property value="key"/></a></td>
+						<tr>
+					</s:iterator>
+				</logic:iterate>
+				<input type="button" value="Delete Selected Sections" onclick="deleteRecord();">
+			</form>
+		</table>
+		<script type="text/javascript">
+			function deleteRecord(){
+			document.sectionDisplay.action="delsection.action";
+			document.sectionDisplay.submit();}
+		</script>
     </jsp:body>
 </t:wrapper>

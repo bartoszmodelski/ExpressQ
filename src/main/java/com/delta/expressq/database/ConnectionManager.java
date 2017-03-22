@@ -235,17 +235,17 @@ public class ConnectionManager {
     }
 
     /**
-     * @deprecated
-     * @param name
+     * 
+     * @param i
      * @return
      * @throws ConnectionManagerException
      */
-    public static int getVenueID(String name) throws ConnectionManagerException {
+    public static int getVenueID(int i) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
 			Connection conn = getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Venue WHERE Name = ?");
-            pstmt.setString(1, name);
+            pstmt = conn.prepareStatement("SELECT * FROM Venue WHERE UserID = ?");
+            pstmt.setInt(1, i);
             ResultSet rs = pstmt.executeQuery();
 
             int venueID = -1;
@@ -718,5 +718,52 @@ public class ConnectionManager {
         } catch (SQLException sqle) {
             throw new ConnectionManagerException(sqle);
         }
+	}
+	
+
+	public static void setSections(Map<String, Integer> sections, int venueID) throws ConnectionManagerException {
+		PreparedStatement pstmt;
+		try {
+			Connection conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT description, sectionid FROM section WHERE venueid = ?");
+            pstmt.setInt(1, venueID);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                sections.put(rs.getString("description"), rs.getInt("sectionid"));
+            }
+            cleanup(conn, null, rs);
+		}catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+		}
+	}
+
+	public static boolean InsertSection(int venueid, String description) throws ConnectionManagerException{
+		PreparedStatement pstmt;
+        try {
+			Connection conn = getConnection();
+			pstmt = conn.prepareStatement("INSERT into section (venueid, description) VALUES (?,?)");
+			pstmt.setInt(1, venueid);
+			pstmt.setString(2, description);
+			pstmt.executeUpdate();
+        }catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+		return false;
+	}
+
+	public static void DeleteSections(String[] arraySectionDeleteSelection) throws ConnectionManagerException {
+        PreparedStatement stmt;
+        try {
+			Connection conn = getConnection();
+            for (int i = 0; i < arraySectionDeleteSelection.length; i++) { //loops through the checked boxes for deletion
+                stmt = conn.prepareStatement("DELETE FROM section WHERE sectionid=?");
+                int k = Integer.parseInt(arraySectionDeleteSelection[i]);
+                stmt.setInt(1, k);
+                stmt.executeUpdate();
+            }
+        } catch (Exception ex) {
+        	throw new ConnectionManagerException(ex);
+        }
+		
 	}
 }
