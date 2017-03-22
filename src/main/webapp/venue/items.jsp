@@ -11,9 +11,10 @@
 		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
+    <s:hidden name="sectionID" value="%{selectedSectionID}" />
 		<h1>Items</h1>
-		<a href="<s:url action="NewItem.action"/>">Add a new item under this section</a><br><br>
-		<h4>Your Sections</h4>
+		<a href="<s:url action="NewItem.action?sectionID=%{selectedSectionID}"/>">Add a new item under this section</a><br><br>
+		<h4>Your Items</h4>
 		<table>
 			<form name="itemDisplay" method="post">
 				<tr>

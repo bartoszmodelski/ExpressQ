@@ -15,8 +15,9 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	public Map<String, Integer> sections = new HashMap<String, Integer>();
 	public Map<String, Integer> items = new HashMap<String, Integer>();
 	public HttpServletRequest request;
-	private String description, sectionDeleteSelection, arraySectionDeleteSelection[];
+	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], itemname, itemdescription, allergens;
 	public String selectedSectionID, Name, NewName, sectionID;
+	private int preparationtime, stock, price;
 	
 	public String execute(){
 		if (isLoggedIn()){
@@ -87,9 +88,7 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 			UserNew user = getUserObject();
 			if (user.getType() == 2){
 				selectedSectionID = request.getParameter("selectedSectionID");
-				System.out.println(selectedSectionID);
 				try {
-					System.out.println(selectedSectionID);
 					Name = ConnectionManager.EditSection(selectedSectionID, Name);
 					return SUCCESS;
 				} catch (ConnectionManagerException e) {
@@ -128,6 +127,28 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 				selectedSectionID = request.getParameter("selectedSectionID");
 				try {
 					ConnectionManager.getItemsBySection(items, selectedSectionID);
+				} catch (ConnectionManagerException e) {
+					e.printStackTrace();
+				}
+				return SUCCESS;
+			}else{
+				return ERROR;
+			}
+		}else{
+			return ERROR;
+		}
+	}
+	
+	public String NewItem(){
+		return SUCCESS;
+	}
+	
+	public String InsertItem(){
+		if (isLoggedIn()){
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				try {
+					ConnectionManager.InsertItem(sectionID, price, itemname, itemdescription, stock, allergens, preparationtime);
 				} catch (ConnectionManagerException e) {
 					e.printStackTrace();
 				}
@@ -190,5 +211,53 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	
 	public String getSectionID(){
 		return sectionID;
+	}
+	
+	public String getItemname(){
+		return itemname;
+	}
+	
+	public void setItemname(String itemname){
+		this.itemname = itemname;
+	}
+	
+	public String getItemDescription(){
+		return itemdescription;
+	}
+	
+	public void setItemdescription(String itemdescription){
+		this.itemdescription = itemdescription;
+	}
+	
+	public int getStock(){
+		return stock;
+	}
+	
+	public void setStock(int stock){
+		this.stock = stock;
+	}
+	
+	public int getPreparationTime(){
+		return preparationtime;
+	}
+	
+	public void setPreparationtime(int preparationtime){
+		this.preparationtime = preparationtime;
+	}
+	
+	public String getAllergens(){
+		return allergens;
+	}
+	
+	public void setAllergens(String allergens){
+		this.allergens = allergens;
+	}
+	
+	public int getPrice(){
+		return price;
+	}
+	
+	public void setPrice(int price){
+		this.price = price;
 	}
 }

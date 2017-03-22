@@ -149,7 +149,7 @@
 		<result name ="success">/venue/main.jsp</result>
 	</action>
 	
-		<action name ="NewSection" class="com.delta.expressq.actions.VenueAction" method="NewSection">
+	<action name ="NewSection" class="com.delta.expressq.actions.VenueAction" method="NewSection">
 	      <result>/venue/newsection.jsp</result>
 	</action>
 	
@@ -172,5 +172,13 @@
 	<action name="viewItems" class="com.delta.expressq.actions.VenueAction" method="DisplayItems">
 		<result name="success">/venue/items.jsp</result>
 	</action>
+	
+	<action name ="NewItem" class="com.delta.expressq.actions.VenueAction" method="NewItem">
+	      <result>/venue/newitem.jsp</result>
+	</action>	
+	
+	<action name="InsertItem" class="com.delta.expressq.actions.VenueAction" method="InsertItem">
+    	<result name="success" type="redirect">venuehome</result>	
+    </action>
 	</package>
 </struts>

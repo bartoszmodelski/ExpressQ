@@ -814,4 +814,23 @@ public class ConnectionManager {
             throw new ConnectionManagerException(sqle);
 		}
 	}
+
+	public static boolean InsertItem(String selectedSectionID, int price, String name, String itemdescription, int stock, String allergens, int preparationtime) throws ConnectionManagerException {
+		PreparedStatement pstmt;
+        try {
+			Connection conn = getConnection();
+			pstmt = conn.prepareStatement("INSERT into item (sectionid, price, name, description, stock, allergens, preparationtime) VALUES (?,?,?,?,?,?,?)");
+			pstmt.setString(1, selectedSectionID);
+			pstmt.setInt(2, price);
+			pstmt.setString(3, name);
+			pstmt.setString(4, itemdescription);
+			pstmt.setInt(5, stock);
+			pstmt.setString(6, allergens);
+			pstmt.setInt(7, preparationtime);
+			pstmt.executeUpdate();
+        }catch (SQLException sqle) {
+            throw new ConnectionManagerException(sqle);
+        }
+		return false;
+	}
 }
