@@ -144,5 +144,10 @@
 		<result name="success">exampleOfMessages.jsp</result>
 	</action>
 	
+	<!--///////////////// Venue Actions /////////////////-->
+	<action name ="venuehome" class="com.delta.expressq.actions.VenueAction" method="execute">
+		<result name ="success">/venue/main.jsp</result>
+	</action>
+	
 	</package>
 </struts>
