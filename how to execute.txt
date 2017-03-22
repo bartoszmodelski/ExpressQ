@@ -36,3 +36,11 @@
 	db: heroku_ce661b81b9c9192
 	
 	There's no official one, but we can steal utilise: http://www.phpmyadmin.co
+	
+2.6 Email
+
+swiftqdelta@gmail.com
+cs3528detlateam
+
+stripe
+CS3528delta_team

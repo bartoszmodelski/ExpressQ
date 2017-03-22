@@ -1,27 +1,42 @@
 package com.delta.expressq.actions;
 
 import com.delta.expressq.database.*;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ActionContext;
-import org.apache.struts2.interceptor.SessionAware;
 import java.util.*;
 import com.delta.expressq.util.*;
 import com.delta.expressq.record.*;
+import com.stripe.Stripe;
+import com.stripe.exception.APIConnectionException;
+import com.stripe.exception.APIException;
+import com.stripe.exception.AuthenticationException;
+import com.stripe.exception.CardException;
+import com.stripe.exception.InvalidRequestException;
+import com.stripe.model.Charge;
+import javax.servlet.http.HttpServletRequest;
 
-public class ConfirmOrder extends ActionSupportWithSession {
+import org.apache.struts2.interceptor.ServletRequestAware;
+
+public class ConfirmOrder extends ActionSupportWithSession implements ServletRequestAware{
 	public Map<String, String> itemsToOrder = new HashMap<String, String>();
 	public List<Item> items = new ArrayList<Item>();
 	private int transactionID;
 	private String hour, minute;
 	public String keywords = "";
+	private HttpServletRequest request;
 
+	
 	/**
 	 * Main function called by struts, when routed to "confirm".
 	 * @return "success", "db_error", "login", "error"
+	 * @throws APIException 
+	 * @throws CardException 
+	 * @throws APIConnectionException 
+	 * @throws InvalidRequestException 
+	 * @throws AuthenticationException 
 	 */
-	public String execute() {
+	public String execute() throws AuthenticationException, InvalidRequestException, APIConnectionException, CardException, APIException {
 		//if logged in attempt at placing order
 		if(isLoggedIn()){
+			UserNew user = getUserObject();
 			String username = getUserObject().getUsername();
 
 			if (!ActiveRecord.orderExists(username)) {	//if order does not exists
@@ -33,9 +48,19 @@ public class ConfirmOrder extends ActionSupportWithSession {
 				ActiveRecord.removeOrderFromAR(username);
 				return "order_again";
 			}
+			//Setup for stripe charge
+			Stripe.apiKey = "sk_test_U1DddsCH9sv1xbGdcv1G7ZRl";
+			String token = request.getParameter("stripeToken");
+			
 			System.out.println(ActiveRecord.getMaximalConfirmationTimeAsString());
-
-			//Place order without specified time
+			Order order = ActiveRecord.getOrder(username);
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("amount", order.getAmount());
+			params.put("currency", "gbp");
+			params.put("description", user.getFirstName() + " " + user.getLastName() + " ordered from venue with id" + order.getVenue());
+			params.put("source", token);
+			Charge charge = Charge.create(params);
 			if ((hour.equals("unspecified")) && (minute.equals("unspecified"))) {
 				return placeOrderWithoutTime(username);
 			} else {
@@ -150,5 +175,13 @@ public class ConfirmOrder extends ActionSupportWithSession {
 
 	public String getMinute() {
 		return minute;
+	}
+
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+	
+	public HttpServletRequest getServletRequest(){
+		return request;
 	}
 }

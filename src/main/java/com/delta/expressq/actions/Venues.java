@@ -10,7 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 public class Venues extends ActionSupportWithSession implements ServletRequestAware {
 	public HttpServletRequest request;
 	public Map<String, Integer> venues = new HashMap<String, Integer>();
-	public Map<String, Map<String, ArrayList<Item>>> items = new HashMap<String, Map<String, ArrayList<Item>>>();
+	protected Map<String, ArrayList<Item>> items = new HashMap<String, ArrayList<Item>>();
 	public String id = null;
 	public String venueName;
 
@@ -49,7 +49,7 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 		return venues;
 	}
 
-	public Map<String, Map<String, ArrayList<Item>>> getItems() {
+	public Map<String, ArrayList<Item>> getItems() {
 		return items;
 	}
 
