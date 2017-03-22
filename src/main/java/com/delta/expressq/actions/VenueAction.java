@@ -14,7 +14,8 @@ import com.delta.expressq.util.UserNew;
 public class VenueAction extends ActionSupportWithSession implements ServletRequestAware {
 	public Map<String, Integer> sections = new HashMap<String, Integer>();
 	public HttpServletRequest request;
-	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], selectedSectionID, Name, NewName;
+	private String description, sectionDeleteSelection, arraySectionDeleteSelection[];
+	public String selectedSectionID, Name, NewName, sectionID;
 	
 	public String execute(){
 		if (isLoggedIn()){
@@ -85,7 +86,9 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 			UserNew user = getUserObject();
 			if (user.getType() == 2){
 				selectedSectionID = request.getParameter("selectedSectionID");
+				System.out.println(selectedSectionID);
 				try {
+					System.out.println(selectedSectionID);
 					Name = ConnectionManager.EditSection(selectedSectionID, Name);
 					return SUCCESS;
 				} catch (ConnectionManagerException e) {
@@ -103,7 +106,7 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 			UserNew user = getUserObject();
 			if (user.getType() == 2){
 				try {
-					ConnectionManager.UpdateSection(selectedSectionID ,NewName);
+					ConnectionManager.UpdateSection(NewName, sectionID);
 				} catch (ConnectionManagerException e) {
 					System.out.println(e.getMessage());
 					return "db_error";
@@ -148,10 +151,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	public String getSectionSelectedID(){
 		return selectedSectionID;
 	}
-	
+	/*
 	public void setSectionSelectedID(String selectedSectionID){
 		this.selectedSectionID = selectedSectionID;
-	}
+	}*/
 	
 	public String getName(){
 		return Name;
@@ -161,8 +164,7 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 		return NewName;
 	}
 	
-	public void setNewName(){
-		this.NewName = NewName;
+	public String getSectionID(){
+		return sectionID;
 	}
-
 }

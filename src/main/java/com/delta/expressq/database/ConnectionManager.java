@@ -789,9 +789,9 @@ public class ConnectionManager {
         	System.out.println(sectionID);
 
 			Connection conn = getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE section set description=?,  WHERE sectionid=?");
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE section set description=?  WHERE sectionid=?");
             pstmt.setString(1, newName);
-            pstmt.setString(1, sectionID);
+            pstmt.setString(2, sectionID);
             pstmt.executeUpdate();
             cleanup(conn, pstmt, null);
         } catch (Exception ex) {

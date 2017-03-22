@@ -17,7 +17,7 @@
 		<table>
 			<form name="sectionDisplay" method="post">
 				<tr>
-				<th</th>
+				<th></th>
 				<th>Section Name</th>
 				<logic:iterate>
 					<s:iterator value="Map">
