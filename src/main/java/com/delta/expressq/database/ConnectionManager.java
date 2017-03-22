@@ -764,7 +764,6 @@ public class ConnectionManager {
         } catch (Exception ex) {
         	throw new ConnectionManagerException(ex);
         }
-		
 	}
 
 	public static String EditSection(String sectionID, String newName) throws ConnectionManagerException {
@@ -832,5 +831,20 @@ public class ConnectionManager {
             throw new ConnectionManagerException(sqle);
         }
 		return false;
+	}
+
+	public static void DeleteItems(String[] arrayItemDeleteSelection) throws ConnectionManagerException {
+        PreparedStatement stmt;
+        try {
+			Connection conn = getConnection();
+            for (int i = 0; i < arrayItemDeleteSelection.length; i++) { //loops through the checked boxes for deletion
+                stmt = conn.prepareStatement("DELETE FROM item WHERE itemid=?");
+                int k = Integer.parseInt(arrayItemDeleteSelection[i]);
+                stmt.setInt(1, k);
+                stmt.executeUpdate();
+            }
+        } catch (Exception ex) {
+        	throw new ConnectionManagerException(ex);
+        }
 	}
 }

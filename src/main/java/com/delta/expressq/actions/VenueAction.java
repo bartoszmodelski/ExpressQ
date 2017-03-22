@@ -15,7 +15,7 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	public Map<String, Integer> sections = new HashMap<String, Integer>();
 	public Map<String, Integer> items = new HashMap<String, Integer>();
 	public HttpServletRequest request;
-	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], itemname, itemdescription, allergens;
+	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], arrayItemDeleteSelection[], itemname, itemdescription, allergens;
 	public String selectedSectionID, Name, NewName, sectionID;
 	private int preparationtime, stock, price;
 	
@@ -151,6 +151,29 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 					ConnectionManager.InsertItem(sectionID, price, itemname, itemdescription, stock, allergens, preparationtime);
 				} catch (ConnectionManagerException e) {
 					e.printStackTrace();
+				}
+				return SUCCESS;
+			}else{
+				return ERROR;
+			}
+		}else{
+			return ERROR;
+		}
+	}
+	
+	public String DeleteItem(){
+		if (isLoggedIn()){
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				arrayItemDeleteSelection = request.getParameterValues("itemDeleteSelection");//get values from jsp to pass into connection manager
+				if (arrayItemDeleteSelection == null){
+					return ERROR;//change to message perhaps?
+				}else{
+					try {
+						ConnectionManager.DeleteItems(arrayItemDeleteSelection);
+					} catch (ConnectionManagerException e) {
+						return "db_error";
+					}
 				}
 				return SUCCESS;
 			}else{

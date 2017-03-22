@@ -23,30 +23,25 @@
 				<logic:iterate>
 					<s:iterator value="Items">
 						<tr>
-						<td><input type="checkbox" value=<s:property value="value"/> name= "sectionDeleteSelection"></td>
-						<td><a href="javascript:viewItems(<s:property value="value"/>)"><s:property value="key"/></a></td>
+						<td><input type="checkbox" value=<s:property value="value"/> name= "itemDeleteSelection"></td>
+						<td><s:property value="key"/></td>
 						<td><a href="javascript:editSection(<s:property value="value"/>)">Edit Item</a></td>
 						<tr>
 					</s:iterator>
 				</logic:iterate>
-				<input type="button" value="Delete Selected Sections" onclick="deleteRecord();">
+				<input type="button" value="Delete Selected Items" onclick="deleteRecord();">
 			</form>
 		</table>
 		<script type="text/javascript">
 		
 			function deleteRecord(){
-				document.sectionDisplay.action="delsection.action";
-				document.sectionDisplay.submit();
+				document.itemDisplay.action="delitems.action";
+				document.itemDisplay.submit();
 			}
 			
 			function editSection(id){
-				document.sectionDisplay.action="editsection.action?selectedSectionID="+id;
-				document.sectionDisplay.submit();
-			}
-			
-			function viewItems(id){
-				document.sectionDisplay.action="viewItems.action?selectedSectionID="+id;
-				document.sectionDisplay.submit();
+				document.itemDisplay.action="editsection.action?selectedSectionID="+id;
+				document.itemDisplay.submit();
 			}
 		</script>
     </jsp:body>

@@ -180,5 +180,9 @@
 	<action name="InsertItem" class="com.delta.expressq.actions.VenueAction" method="InsertItem">
     	<result name="success" type="redirect">venuehome</result>	
     </action>
+    
+    <action name="delitems" class="com.delta.expressq.actions.VenueAction" method="DeleteItem">
+    	<result name="success" type="redirect">venuehome</result>
+    </action>
 	</package>
 </struts>
