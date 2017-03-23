@@ -5,7 +5,7 @@ import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
-
+import com.delta.expressq.util.Item;
 import com.delta.expressq.database.*;
 
 import java.util.HashMap;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 
 /*
@@ -36,7 +37,7 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 		if (!name.isEmpty() && !APIpass.isEmpty() && !transactionID.isEmpty()) {
 			return getOneTransaction(name, APIpass, transactionID);
 		} else if (!name.isEmpty() && !APIpass.isEmpty() && !minutes.isEmpty()) {
-			return getUpcomingTransactions(name, APIpass, minutes);
+			return getUpcomingOrders(name, APIpass, minutes);
 		} else {
 			return ERROR;
 		}
@@ -64,10 +65,10 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 		return SUCCESS;
 	}
 
-	public String getUpcomingTransactions(String name, String APIpass, String minutes) {
+	public String getUpcomingOrders(String name, String APIpass, String minutes) {
 		try {
-			List<Integer> IDs = ConnectionManager.getIDsOfUpcomingTransactions(name, APIpass, Integer.parseInt(minutes));
-			if (!setJSONWithMany(IDs))
+			Map<Transaction, Map<Item, Integer>> orders = ConnectionManager.getUpcomingOrders(name, APIpass, Integer.parseInt(minutes));
+			if (!setJSONWithMany(orders))
 				return ERROR;
 		} catch (Exception e) {
 			return ERROR;
@@ -75,11 +76,31 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 		return SUCCESS;
 	}
 
-	public boolean setJSONWithMany(List<Integer> IDs) {
-		JSONObject obj = new JSONObject();
+	public boolean setJSONWithMany(Map<Transaction, Map<Item, Integer>> orders) {
+		JSONArray obj = new JSONArray();
         try {
-			obj.put("success", 1);
-			obj.put("ids", IDs);
+			for (Map.Entry<Transaction, Map<Item, Integer>> entry: orders.entrySet()) {
+				JSONObject transactionJSON = new JSONObject();
+				Transaction trans = entry.getKey();
+
+				transactionJSON.put("orderId", trans.transactionID);
+		        transactionJSON.put("username", trans.username);
+		        transactionJSON.put("price", trans.total);
+		        transactionJSON.put("date", trans.date);
+		        transactionJSON.put("status", trans.status);
+				transactionJSON.put("collectionTime", trans.collection);
+				transactionJSON.put("username", trans.username);
+				transactionJSON.put("keywords", trans.keywords);
+				transactionJSON.put("fullname", trans.fullname);
+
+				JSONObject items = new JSONObject();
+				for (Map.Entry<Item, Integer> itemAndQuantity: entry.getValue().entrySet()) {
+					items.put(itemAndQuantity.getKey().getName(), itemAndQuantity.getValue());
+				}
+				transactionJSON.put("items", items);
+
+				obj.put(transactionJSON);
+			}
         } catch (JSONException exception) {
 			return false;
         }

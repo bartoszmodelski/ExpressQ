@@ -156,6 +156,74 @@ public class ConnectionManager {
         }
 	}
 
+    /**
+     *	Method gets those Order objects from database, which will be picked up within 'minutes' number of mintues.
+     *	@param 		minutes 	    scope of upcomingness
+     *	@param		name 			venue name
+     *	@param		APIpass 		venue password for mobile application
+     *	@returns 	details of needed transaction as transaction object
+     */
+     public static Map<Transaction, Map<Item, Integer>> getUpcomingOrders(String name, String APIpass, int minutes) throws ConnectionManagerException {
+         try {
+             Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT User.Username, User.Fname, User.Lname, TransactionID, "
+                     + " User.UserID, Keywords, Transaction.VenueID, TotalPrice, Time, CollectionTime, Status "
+                     + " FROM Transaction, Venue, User "
+                     + " WHERE Venue.VenueID = Transaction.VenueID "
+                     + " AND Venue.Name =  ? "
+                     + " AND Venue.APIpass =  ? "
+                     + " AND Transaction.UserID = User.UserID "
+                     + " AND CAST(Transaction.Time AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE) "
+                     + " AND CollectionTime < CAST((DATE_ADD(CURRENT_TIMESTAMP, INTERVAL ? minute)) AS TIME) "
+                     + " AND Status = 0 "
+                     + " AND CollectionTime <> CAST('00:00:00' AS TIME)"); //exclude ones with unset time
+             pstmt.setString(1, name);
+             pstmt.setString(2, APIpass);
+             pstmt.setInt(3, minutes);
+             ResultSet rs = pstmt.executeQuery();
+             // Check whether a transaction was returned.
+             Map<Transaction, Map<Item, Integer>> orders = new HashMap<Transaction, Map<Item, Integer>>();
+
+             while (rs.next()) {
+
+                 int userID = rs.getInt("UserID");
+                 int transactionID = rs.getInt("TransactionID");
+                 int venueID = rs.getInt("VenueID");
+                 float total = rs.getFloat("TotalPrice");
+                 String date = rs.getTimestamp("Time").toString();
+                 int status = rs.getInt("Status");
+                 String fullname = rs.getString("Fname") + " " + rs.getString("Lname");
+                 Time collection = rs.getTime("CollectionTime");
+                 String keywords = rs.getString("Keywords");
+                 String username = rs.getString("Username");
+                 orders.put(new Transaction(transactionID, userID, venueID, total, date, status, keywords, collection, username, fullname),
+                                new HashMap<Item, Integer>());
+             }
+             System.out.println(orders);
+
+             for (Transaction transaction: orders.keySet()) {
+                     pstmt = conn.prepareStatement("SELECT Name, Price, Quantity, PreparationTime, Allergens, Item.ItemID as ItemID "
+                             + "FROM ItemQuantity, Item "
+                             + "WHERE ItemQuantity.TransactionID = ? "
+                             + "AND ItemQuantity.ItemID = Item.ItemID ");
+                     pstmt.setInt(1, transaction.transactionID);
+                     rs = pstmt.executeQuery();
+                     while (rs.next()) {
+                         orders.get(transaction).put(
+                                new Item(rs.getDouble("price"), rs.getString("Name"), rs.getInt("ItemID"), rs.getInt("PreparationTime"), rs.getString("Allergens")),
+                                rs.getInt("Quantity"));
+                     }
+             }
+
+             cleanup(conn, pstmt, rs);
+             return orders;
+
+         } catch (SQLException sqle) {
+             System.out.println(sqle.getMessage());
+             throw new ConnectionManagerException(sqle);
+         }
+     }
+
 	/**
 	*	Method gets items and their quantities for given transaction.
 	*	@param 		transactionID 	id of transaction
@@ -235,7 +303,7 @@ public class ConnectionManager {
     }
 
     /**
-     * 
+     *
      * @param i
      * @return
      * @throws ConnectionManagerException
@@ -719,7 +787,7 @@ public class ConnectionManager {
             throw new ConnectionManagerException(sqle);
         }
 	}
-	
+
 
 	public static void setSections(Map<String, Integer> sections, int venueID) throws ConnectionManagerException {
 		PreparedStatement pstmt;
@@ -797,7 +865,7 @@ public class ConnectionManager {
             throw new ConnectionManagerException(ex);
         }
     }
-	
+
 	public static void getItemsBySection(Map<String, Integer> items, String sectionID) throws ConnectionManagerException {
 		PreparedStatement pstmt;
 		try {
