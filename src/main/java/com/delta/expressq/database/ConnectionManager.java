@@ -422,7 +422,7 @@ public class ConnectionManager {
                 user.setemail(rs.getString("email"));
                 user.setUsername(rs.getString("Username"));
                 user.setPassword(rs.getString("Password"));
-                user.setAdmin(rs.getInt("Type"));
+                user.setType(rs.getInt("Type"));
                 users.add(user);
             }
             cleanup(conn, null, rs);
@@ -472,7 +472,7 @@ public class ConnectionManager {
                 userDetails.put("Fname", rs.getString("Fname"));
                 userDetails.put("Lname", rs.getString("Lname"));
                 userDetails.put("email", rs.getString("email"));
-                userDetails.put("Admin", rs.getString("Type"));
+                userDetails.put("Type", rs.getString("Type"));
             }
             cleanup(conn, pstmt, rs);
             return userDetails;
@@ -489,12 +489,12 @@ public class ConnectionManager {
     public static void AdminUpdateUser(User user) throws ConnectionManagerException {
         try {
 			Connection conn = getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE user set Username=?, Fname=?, Lname=?, email=?, Admin=? WHERE UserID=?");
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE user set Username=?, Fname=?, Lname=?, email=?, Type=? WHERE UserID=?");
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getFname());
             pstmt.setString(3, user.getLname());
             pstmt.setString(4, user.getemail());
-            pstmt.setInt(5, user.getAdmin());
+            pstmt.setInt(5, user.getType());
             pstmt.setInt(6, user.getUserID());
             pstmt.executeUpdate();
             cleanup(conn, pstmt, null);

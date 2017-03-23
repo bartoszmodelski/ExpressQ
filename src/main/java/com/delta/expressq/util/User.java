@@ -1,7 +1,7 @@
 package com.delta.expressq.util;
 
 public class User {
-	public int UserID, Admin;
+	public int UserID, Type;
 	public String Username, Fname, Lname, email, Password;
 	public String salt = BCrypt.gensalt(12);
 	public int getUserID(){
@@ -52,11 +52,11 @@ public class User {
 		this.email = email;
 	}
 	
-	public int getAdmin(){
-		return Admin;
+	public int getType(){
+		return Type;
 	}
 	
-	public void setAdmin(int Admin){
-		this.Admin = Admin;
+	public void setType(int Type){
+		this.Type = Type;
 	}
 }

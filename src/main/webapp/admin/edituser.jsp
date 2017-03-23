@@ -6,7 +6,7 @@
 			Edit User Details
 	</jsp:attribute>
     <jsp:attribute name="navbar">
-			<jsp:include page="partials/navbar.jsp"/>
+			<jsp:include page="../partials/navbar.jsp"/>
 	</jsp:attribute>
     <jsp:body>
         <div class="container">

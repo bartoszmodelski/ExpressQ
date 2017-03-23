@@ -14,7 +14,7 @@
                         <th>Forename</th>
                         <th>Surname</th>
                         <th>Email</th>
-                        <th>Admin Permission</th>
+                        <th>Type</th>
                     </tr>
                     </thead>
                     <%
@@ -28,7 +28,7 @@
                                 String Fname = user.getFname();
                                 String Lname = user.getLname();
                                 String email = user.getemail();
-                                int Admin = user.getAdmin();
+                                int Type = user.getType();
                     %>
                     <tbody>
                     <tr>
@@ -41,7 +41,7 @@
                         </td>
                         <td><%= email %>
                         </td>
-                        <td><%= Admin %>
+                        <td><%= Type %>
                         </td>
                         <td><a href="javascript:editUser('<%= UserID %>')">Edit User</a></td>
                     </tr>
