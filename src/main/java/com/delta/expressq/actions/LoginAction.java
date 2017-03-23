@@ -9,6 +9,14 @@ public class LoginAction extends ActionSupportWithSession {
 	private String username = "";
 	private String password = "";
 
+	public String execute(){
+		if(isLoggedIn()){
+			return "permission_error";
+		}else{
+			return SUCCESS;
+		}
+	}
+	
 	/**
 	 * Used to redirect the user to the home page after they have logged in.
 	 * @return SUCCESS
@@ -23,7 +31,7 @@ public class LoginAction extends ActionSupportWithSession {
 	 */
 	public String logout() {
 		session.remove("user");
-		addSuccessMessage("Success! ", "You have been logged out");//for testing delete later
+		addSuccessMessage("Success! ", "You have been logged out");
 		return SUCCESS;
 	}
 
@@ -34,21 +42,25 @@ public class LoginAction extends ActionSupportWithSession {
 	 * @return LOGIN redirect if the credentials do not match. SUCCESS if they do.
 	 */
 	public String login() {
-		if (username.equals("") || password.equals(""))
-			return "login";
-		try {
-			UserNew user = ConnectionManager.getUserByUsername(username);
-			if ((user == null) || !BCrypt.checkpw(password, user.getPassword())) {
-				addActionError("Please enter valid username and password.");
-				return LOGIN;
-			} else {
-				session.put("user", user);
-				return SUCCESS;
+		if(isLoggedIn()){
+			return ERROR;
+		}else{
+			if (username.equals("") || password.equals(""))
+				return "login";
+			try {
+				UserNew user = ConnectionManager.getUserByUsername(username);
+				if ((user == null) || !BCrypt.checkpw(password, user.getPassword())) {
+					addActionError("Please enter valid username and password.");
+					return LOGIN;
+				} else {
+					session.put("user", user);
+					return SUCCESS;
+				}
+			} catch (ConnectionManagerException e) {
+				return "db_error";
+			} catch(IllegalArgumentException ee){
+				return "login";
 			}
-		} catch (ConnectionManagerException e) {
-			return "db_error";
-		} catch(IllegalArgumentException ee){
-			return "login";
 		}
 	}
 
