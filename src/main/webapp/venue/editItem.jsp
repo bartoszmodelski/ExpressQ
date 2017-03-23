@@ -1,8 +1,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
 <t:wrapper>
     <jsp:attribute name="title">
 		Edit Item
@@ -11,17 +9,19 @@
 		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
     <jsp:body>
-    	<h3>Update Item Details</h3>
-		<s:form name="itemupdate" method = "POST" action="updateitem">
-			<s:hidden name ="itemID" value = "%{itemDetails.ItemID}"/>
-			<s:hidden name ="sectionID" value = "%{itemDetails.SectionID}"/>
-			<s:textfield name = "Name" value = "%{itemDetails.Name}" label = "Name"/>
-			<s:textfield name = "Description" value = "%{itemDetails.Description}" label = "Description"/>
-			<s:textfield name = "Price" value = "%{itemDetails.Price}" label = "Price"/>
-			<s:textfield name = "Stock" value = "%{itemDetails.Stock}" label = "Stock"/>
-			<s:textfield name = "Allergens" value = "%{itemDetails.Allergens}" label = "Allergens"/>
-			<s:textfield name = "PreparationTime" value = "%{itemDetails.PreparationTime}" label = "PreparationTime"/>
-			<s:submit value="Update"/>
-		</s:form>
+         <div class="container">
+	    	<h3 class="text-center">Update Item Details</h3>
+			<s:form cssStyle="max-width: 330px; padding: 15px; margin: 0 auto;" name="itemupdate" method = "POST" action="updateitem">
+				<s:hidden name ="itemID" value = "%{itemDetails.ItemID}" cssClass="form-control"/>
+				<s:hidden name ="sectionID" value = "%{itemDetails.SectionID}" cssClass="form-control"/>
+				<s:textfield name = "Name" value = "%{itemDetails.Name}" label = "Name" cssClass="form-control"/>
+				<s:textfield name = "Description" value = "%{itemDetails.Description}" label = "Description" cssClass="form-control"/>
+				<s:textfield name = "Price" value = "%{itemDetails.Price}" label = "Price" cssClass="form-control"/>
+				<s:textfield name = "Stock" value = "%{itemDetails.Stock}" label = "Stock" cssClass="form-control"/>
+				<s:textfield name = "Allergens" value = "%{itemDetails.Allergens}" label = "Allergens" cssClass="form-control"/>
+				<s:textfield name = "PreparationTime" value = "%{itemDetails.PreparationTime}" label = "PreparationTime" cssClass="form-control"/>
+				<s:submit value="Update" cssStyle="float: right;" cssClass="btn btn btn-primary btn-sm"/>
+			</s:form>
+		</div>
     </jsp:body>
 </t:wrapper>
