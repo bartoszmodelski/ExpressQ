@@ -199,7 +199,6 @@ public class ConnectionManager {
                  orders.put(new Transaction(transactionID, userID, venueID, total, date, status, keywords, collection, username, fullname),
                                 new HashMap<Item, Integer>());
              }
-             System.out.println(orders);
 
              for (Transaction transaction: orders.keySet()) {
                      pstmt = conn.prepareStatement("SELECT Name, Price, Quantity, PreparationTime, Allergens, Item.ItemID as ItemID "
