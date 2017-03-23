@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.delta.expressq.database.ConnectionManager;
@@ -14,10 +15,11 @@ import com.delta.expressq.util.UserNew;
 public class VenueAction extends ActionSupportWithSession implements ServletRequestAware {
 	public Map<String, Integer> sections = new HashMap<String, Integer>();
 	public Map<String, Integer> items = new HashMap<String, Integer>();
+	public Map<String, String> itemDetails = new HashMap<String, String>();
 	public HttpServletRequest request;
 	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], arrayItemDeleteSelection[], itemname, itemdescription, allergens;
-	public String selectedSectionID, Name, NewName, sectionID;
-	private int preparationtime, stock, price;
+	public String selectedSectionID, Name, NewName, sectionID, selectedItemID;
+	private int preparationtime, stock, price, itemID;
 	
 	public String execute(){
 		if (isLoggedIn()){
@@ -183,6 +185,46 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 			return ERROR;
 		}
 	}
+	
+	public String EditItem(){
+		if(isLoggedIn()){
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				selectedItemID = request.getParameter("selectedItemID");
+				try {
+					ConnectionManager.EditItem(selectedItemID, itemDetails);
+					request.setAttribute("itemDetails", itemDetails);
+					System.out.println(itemDetails);
+					return SUCCESS;
+				} catch (ConnectionManagerException e) {
+					e.printStackTrace();
+					return "db_error";
+				}
+			}else {
+				return ERROR;
+			}
+		}else
+			return ERROR;
+	}
+	
+	public String UpdateItem(){
+		if(isLoggedIn()){
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				try {
+					ConnectionManager.UpdateItem(itemID, sectionID, Name, description, price, stock, allergens, preparationtime);
+				} catch (ConnectionManagerException e) {
+					System.out.println(e.getMessage());
+					return "db_error";
+				}
+				return SUCCESS;
+			}else{
+				return ERROR;
+			}
+		}else{
+			return ERROR;
+		}
+	}
 
 	public Map<String, Integer> getMap(){
 		return sections;
@@ -282,5 +324,13 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	
 	public void setPrice(int price){
 		this.price = price;
+	}
+	
+	public int getItemID(){
+		return itemID;
+	}
+	
+	public void setItemID(int itemID){
+		this.itemID = itemID;
 	}
 }
