@@ -1,8 +1,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
 
 <t:wrapper>
     <jsp:attribute name="title">
@@ -12,16 +10,18 @@
 		<jsp:include page="../partials/navbar.jsp" />
 	</jsp:attribute>
 	<jsp:body>
-		<h3>Add an Item</h3>
-		<s:form name="item" method = "POST" action="InsertItem">
-			<s:hidden name ="sectionID" value = "%{sectionID}"/>
-			<s:textfield name = "itemname" label = "Item Name"/>
-			<s:textfield name = "itemdescription" label = "Item Description"/>
-			<s:textfield name = "price" label ="Price"/>
-			<s:textfield name = "stock" label = "Stock"/>
-			<s:textfield name = "allergens" label ="Allergens"/>
-			<s:textfield name = "preparationtime" label ="Preparation Time"/>
-			<s:submit value="Add Item"/>
+	<div class ="container">
+		<h3 class="text-center">Add an Item</h3>
+		<s:form cssStyle="max-width: 330px; padding: 15px; margin: 0 auto;"  name="item" method = "POST" action="InsertItem">
+			<s:hidden name ="sectionID" value = "%{sectionID}" cssClass="form-control"/>
+			<s:textfield name = "itemname" label = "Item Name" cssClass="form-control"/>
+			<s:textfield name = "itemdescription" label = "Item Description" cssClass="form-control"/>
+			<s:textfield name = "price" label ="Price" cssClass="form-control"/>
+			<s:textfield name = "stock" label = "Stock" cssClass="form-control"/>
+			<s:textfield name = "allergens" label ="Allergens" cssClass="form-control"/>
+			<s:textfield name = "preparationtime" label ="Preparation Time" cssClass="form-control"/>
+			<s:submit value="Add Item" cssClass="btn btn-primary btn-sm"/>
 		</s:form>
+		</div>
     </jsp:body>
 </t:wrapper>
