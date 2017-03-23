@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.delta.expressq.database.ConnectionManager;
@@ -14,9 +15,10 @@ import com.delta.expressq.util.UserNew;
 public class VenueAction extends ActionSupportWithSession implements ServletRequestAware {
 	public Map<String, Integer> sections = new HashMap<String, Integer>();
 	public Map<String, Integer> items = new HashMap<String, Integer>();
+	public Map<String, String> itemDetails = new HashMap<String, String>();
 	public HttpServletRequest request;
 	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], arrayItemDeleteSelection[], itemname, itemdescription, allergens;
-	public String selectedSectionID, Name, NewName, sectionID;
+	public String selectedSectionID, Name, NewName, sectionID, selectedItemID;
 	private int preparationtime, stock, price;
 	
 	public String execute(){
@@ -182,6 +184,27 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 		}else{
 			return ERROR;
 		}
+	}
+	
+	public String EditItem(){
+		if(isLoggedIn()){
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				selectedItemID = request.getParameter("selectedItemID");
+				try {
+					ConnectionManager.EditItem(selectedItemID, itemDetails);
+					request.setAttribute("itemDetails", itemDetails);
+					System.out.println(itemDetails);
+					return SUCCESS;
+				} catch (ConnectionManagerException e) {
+					e.printStackTrace();
+					return "db_error";
+				}
+			}else {
+				return ERROR;
+			}
+		}else
+			return ERROR;
 	}
 
 	public Map<String, Integer> getMap(){

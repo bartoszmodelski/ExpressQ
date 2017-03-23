@@ -25,7 +25,7 @@
 						<tr>
 						<td><input type="checkbox" value=<s:property value="value"/> name= "itemDeleteSelection"></td>
 						<td><s:property value="key"/></td>
-						<td><a href="javascript:editSection(<s:property value="value"/>)">Edit Item</a></td>
+						<td><a href="javascript:editItem(<s:property value="value"/>)">Edit Item</a></td>
 						<tr>
 					</s:iterator>
 				</logic:iterate>
@@ -39,8 +39,8 @@
 				document.itemDisplay.submit();
 			}
 			
-			function editSection(id){
-				document.itemDisplay.action="editsection.action?selectedSectionID="+id;
+			function editItem(id){
+				document.itemDisplay.action="edititem.action?selectedItemID="+id;
 				document.itemDisplay.submit();
 			}
 		</script>

@@ -847,4 +847,28 @@ public class ConnectionManager {
         	throw new ConnectionManagerException(ex);
         }
 	}
+
+	public static Map EditItem(String selectedItemID, Map itemDetails) throws ConnectionManagerException {
+        try {
+            Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM item WHERE itemid=?");
+            int k = Integer.parseInt(selectedItemID);
+            pstmt.setInt(1, k);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+            	itemDetails.put("ItemID", rs.getString("itemid"));       		
+            	itemDetails.put("SectionID", rs.getString("SectionID"));	
+            	itemDetails.put("Price", rs.getString("Price"));		
+            	itemDetails.put("Name", rs.getString("Name"));
+            	itemDetails.put("Description", rs.getString("Description"));
+            	itemDetails.put("Stock", rs.getString("Stock"));
+            	itemDetails.put("Allergens", rs.getString("Allergens"));
+            	itemDetails.put("PreparationTime", rs.getString("PreparationTime"));
+            }
+            cleanup(conn, pstmt, rs);
+            return itemDetails;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+	}
 }

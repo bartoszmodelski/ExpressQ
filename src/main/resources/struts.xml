@@ -184,5 +184,9 @@
     <action name="delitems" class="com.delta.expressq.actions.VenueAction" method="DeleteItem">
     	<result name="success" type="redirect">venuehome</result>
     </action>
+    
+    <action name="edititem" class="com.delta.expressq.actions.VenueAction" method="EditItem">
+    	<result name="success">venue/editItem.jsp</result>
+    </action>
 	</package>
 </struts>
