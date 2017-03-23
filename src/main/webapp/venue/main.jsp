@@ -19,6 +19,7 @@
                     <tr>
                         <th></th>
                         <th>Section Name</th>
+                        <th></th>
                         <logic:iterate>
                         <s:iterator value="Map">
                     <tr>
