@@ -32,10 +32,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 				}
 				return SUCCESS;
 			}else{
-				return ERROR;
+				return "permission_error";
 			}
 		}else{
-			return ERROR;
+			return "permission_error";
 		}
 	}
 	
@@ -54,10 +54,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 				}
 				return SUCCESS;
 			}else{
-				return ERROR;
+				return "permission_error";
 			}
 		}else{
-			return ERROR;
+			return "permission_error";
 		}
 	}
 	
@@ -78,10 +78,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 				}
 				return SUCCESS;
 			}else{
-				return ERROR;
+				return "permission_error";
 			}
 		}else{
-			return ERROR;
+			return "permission_error";
 		}
 	}
 	
@@ -97,10 +97,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 					return "db_error";
 				}
 			}else {
-				return ERROR;
+				return "permission_error";
 			}
 		}else
-			return ERROR;
+			return "permission_error";
 	}
 	
 	public String UpdateSection(){
@@ -115,10 +115,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 				}
 				return SUCCESS;
 			}else{
-				return ERROR;
+				return "permission_error";
 			}
 		}else{
-			return ERROR;
+			return "permission_error";
 		}
 	}
 	
@@ -134,15 +134,24 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 				}
 				return SUCCESS;
 			}else{
-				return ERROR;
+				return "permission_error";
 			}
 		}else{
-			return ERROR;
+			return "permission_error";
 		}
 	}
 	
 	public String NewItem(){
-		return SUCCESS;
+		if (isLoggedIn()){
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				return SUCCESS;
+			}else{
+				return "permission_error";				
+			}
+		}else{
+			return "permission_error";
+		}
 	}
 	
 	public String InsertItem(){
@@ -156,10 +165,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 				}
 				return SUCCESS;
 			}else{
-				return ERROR;
+				return "permission_error";
 			}
 		}else{
-			return ERROR;
+			return "permission_error";
 		}
 	}
 	
@@ -179,10 +188,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 				}
 				return SUCCESS;
 			}else{
-				return ERROR;
+				return "permission_error";
 			}
 		}else{
-			return ERROR;
+			return "permission_error";
 		}
 	}
 	
@@ -201,10 +210,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 					return "db_error";
 				}
 			}else {
-				return ERROR;
+				return "permission_error";
 			}
 		}else
-			return ERROR;
+			return "permission_error";
 	}
 	
 	public String UpdateItem(){
@@ -219,10 +228,10 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 				}
 				return SUCCESS;
 			}else{
-				return ERROR;
+				return "permission_error";
 			}
 		}else{
-			return ERROR;
+			return "permission_error";
 		}
 	}
 
