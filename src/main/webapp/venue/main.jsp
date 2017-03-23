@@ -31,11 +31,12 @@
                     <tr>
                         </s:iterator>
                         </logic:iterate>
-                        <input type="button" class="btn btn-primary btn-sm" style="float: right"
-                               value="Delete Selected Sections"
-                               onclick="deleteRecord();">
+
                 </form>
             </table>
+            <input type="button" class="btn btn-primary btn-sm" style="float: right"
+            	value="Delete Selected Sections"
+                onclick="deleteRecord();"/>
             <script type="text/javascript">
 
                 function deleteRecord() {
