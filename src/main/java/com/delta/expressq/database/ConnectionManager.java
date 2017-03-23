@@ -784,9 +784,6 @@ public class ConnectionManager {
 
 	public static void UpdateSection(String newName, String sectionID) throws ConnectionManagerException {
         try {
-        	System.out.println(newName);
-        	System.out.println(sectionID);
-
 			Connection conn = getConnection();
             PreparedStatement pstmt = conn.prepareStatement("UPDATE section set description=?  WHERE sectionid=?");
             pstmt.setString(1, newName);
@@ -870,5 +867,26 @@ public class ConnectionManager {
         } catch (Exception ex) {
             throw new ConnectionManagerException(ex);
         }
+	}
+
+	public static void UpdateItem(int itemID, String sectionID, String name, String description, int price, int stock, String allergens, int preparationtime) throws ConnectionManagerException {
+        try {
+			Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE item set sectionID=?, name=?, description=?, price=?, stock=?, allergens=?, preparationtime=?  WHERE itemid=?");
+            pstmt.setString(1, sectionID);
+            pstmt.setString(2, name);
+            pstmt.setString(3, description);
+            pstmt.setInt(4, price);
+            pstmt.setInt(5, stock);
+            pstmt.setString(6, allergens);
+            pstmt.setInt(7, preparationtime);
+            pstmt.setInt(8, itemID);
+            System.out.println(pstmt);
+            pstmt.executeUpdate();
+            cleanup(conn, pstmt, null);
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+		
 	}
 }

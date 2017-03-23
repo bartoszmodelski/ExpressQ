@@ -19,7 +19,7 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	public HttpServletRequest request;
 	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], arrayItemDeleteSelection[], itemname, itemdescription, allergens;
 	public String selectedSectionID, Name, NewName, sectionID, selectedItemID;
-	private int preparationtime, stock, price;
+	private int preparationtime, stock, price, itemID;
 	
 	public String execute(){
 		if (isLoggedIn()){
@@ -206,6 +206,25 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 		}else
 			return ERROR;
 	}
+	
+	public String UpdateItem(){
+		if(isLoggedIn()){
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				try {
+					ConnectionManager.UpdateItem(itemID, sectionID, Name, description, price, stock, allergens, preparationtime);
+				} catch (ConnectionManagerException e) {
+					System.out.println(e.getMessage());
+					return "db_error";
+				}
+				return SUCCESS;
+			}else{
+				return ERROR;
+			}
+		}else{
+			return ERROR;
+		}
+	}
 
 	public Map<String, Integer> getMap(){
 		return sections;
@@ -305,5 +324,13 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	
 	public void setPrice(int price){
 		this.price = price;
+	}
+	
+	public int getItemID(){
+		return itemID;
+	}
+	
+	public void setItemID(int itemID){
+		this.itemID = itemID;
 	}
 }
