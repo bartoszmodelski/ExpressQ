@@ -15,7 +15,7 @@
             <s:actionerror/>
             <br>
             <s:form id="idLoginForm" action="loginUser" cssClass="form-signin">
-                <h2 class="form-signin-heading">Login below</h2>
+                <h2 class="form-signin-heading text-center">Login below</h2>
                 <label for="userName" class="sr-only">Username</label>
                 <s:textfield name="userName" placeholder="Username" cssClass="form-control"/>
                 <label for="password" class="sr-only">Password</label>
