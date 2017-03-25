@@ -13,7 +13,7 @@
             <div class="row text-center">
                 <!-- Currently doesn't work -->
                 <!-- div class="vertical-center" -->
-                    <h1>ExpressQ</h1>
+                    <h1>SwiftQ</h1>
                     <p class="lead">Generic boilerplate marketing talk goes here</p>
                     <s:if test="#session.containsKey('user')">
                     </s:if>

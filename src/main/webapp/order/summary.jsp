@@ -1,26 +1,6 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @GrantChristie
- Sign out
- Unwatch 5
-  Star 0
-  Fork 0 bartoszmodelski/delta Private
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs
-Tree: ff19e19445 Find file Copy pathdelta/src/main/webapp/order/summary.jsp
-3cfa8dc  15 hours ago
-@MBrighty MBrighty Add Stripe payment button
-3 contributors @bartoszmodelski @MBrighty @GrantChristie
-RawBlameHistory    
-74 lines (72 sloc)  2.61 KB
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
 <t:wrapper>
     <jsp:attribute name="title">
 		Summary
@@ -89,5 +69,3 @@ RawBlameHistory
     </jsp:body>
 
 </t:wrapper>
-Contact GitHub API Training Shop Blog About
-© 2017 GitHub, Inc. Terms Privacy Security Status Help
