@@ -7,96 +7,84 @@
     <constant name="struts.devMode" value="true"/>
     <package name="default" namespace="/" extends="struts-default">
 
-		<interceptors>
-			<interceptor class="com.delta.expressq.interceptors.LoginInterceptor" name="loginInterceptor">
-			</interceptor>
-			<interceptor-stack name="loginStack">
-				<interceptor-ref name="loginInterceptor" />
-				<interceptor-ref name="defaultStack" />
-			</interceptor-stack>
-		</interceptors>
+	<interceptors>
+		<interceptor class="com.delta.expressq.interceptors.LoginInterceptor" name="loginInterceptor">
+		</interceptor>
+		<interceptor-stack name="loginStack">
+			<interceptor-ref name="loginInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</interceptor-stack>
+	</interceptors>
 				
-		<global-results>
-			<result name="db_error">errors/db.jsp</result>
-			<result name="error">errors/general.jsp</result>
-			<result name="permission_error">errors/noPermission.jsp</result>
-		</global-results>
+	<global-results>
+		<result name="db_error">errors/db.jsp</result>
+		<result name="error">errors/general.jsp</result>
+		<result name="permission_error">errors/noPermission.jsp</result>
+	</global-results>
+	
+	<action name="index">
+    	<result >/index.jsp</result>
+	</action>
+
+	<action name="email">
+		<result>Email.jsp</result>
+	</action>
+
+	<action name="emailer" class="com.delta.expressq.actions.Emailer" method="execute">
+		<result name="success">/login.jsp</result>
+	</action>
+
+	<action name="venues" class="com.delta.expressq.actions.Venues" method="execute">
+		<result name="listVenues">list/venues.jsp</result>
+		<result name="listItems">list/items.jsp</result>
+	</action>
 		
-		<action name="index">
-            <result >/index.jsp</result>
-		</action>
-
-		<action name="email">
-			<result>Email.jsp</result>
-		</action>
-
-		<action name="emailer" class="com.delta.expressq.actions.Emailer" method="execute">
-			<result name="success">/login.jsp</result>
-		</action>
-
-		<action name="venues" class="com.delta.expressq.actions.Venues" method="execute">
-			<result name="listVenues">list/venues.jsp</result>
-			<result name="listItems">list/items.jsp</result>
-		</action>
-		
-		<action name="exampleOfSession" class="com.delta.expressq.actions.ExampleOfSession" method="execute">
-			<result name="success">exampleOfSession.jsp</result>
-		</action>
-
-		<!-- registration -->
+	<!-- registration -->
 		<action name="registration" class="com.delta.expressq.actions.Registration" method="display">
-			<result name="success">registration.jsp</result>
-		</action>
+		<result name="success">registration.jsp</result>
+	</action>
 
-		<action name="reg" class="com.delta.expressq.actions.Registration" method = "execute">
-			<result name="success">login.jsp</result>
-			<result name="registration">registration.jsp</result>
-		</action>
+	<action name="reg" class="com.delta.expressq.actions.Registration" method = "execute">
+		<result name="success">login.jsp</result>
+		<result name="registration">registration.jsp</result>
+	</action>
 
-		<!-- login -->
-		<action name="login" class="com.delta.expressq.actions.LoginAction" method="execute">
-			<result name = "success">login.jsp</result>
-		</action>
+	<!-- login -->
+	<action name="login" class="com.delta.expressq.actions.LoginAction" method="execute">
+		<result name = "success">login.jsp</result>
+	</action>
 
-		<!-- login action -->
-		<action name="loginUser" class="com.delta.expressq.actions.LoginAction" method="login">
-			<result name="success" type="redirect">homeAction</result>
-			<result name="login">login.jsp</result>
-		</action>
+	<!-- login action -->
+	<action name="loginUser" class="com.delta.expressq.actions.LoginAction" method="login">
+		<result name="success" type="redirect">index</result>
+		<result name="login">login.jsp</result>
+	</action>
 
+	<!-- logout action -->
+	<action name="logout" class="com.delta.expressq.actions.LoginAction" method="logout">
+		<result name="success">login.jsp</result>
+	</action>
 
-		<!-- home link action, change to website front page perhaps? -->
-		<action name="homeAction" class="com.delta.expressq.actions.LoginAction" method="home">
-			<interceptor-ref name="loginStack" />
-			<result name="login" type="redirect">login</result>
-			<result name="success">home.jsp</result>
-		</action>
+	<!-- show summary of order -->
+	<action name="summary" class="com.delta.expressq.actions.Summary" method="execute">
+		<interceptor-ref name="loginStack" />
+		<result name="login" type="redirect">login</result>
+		<result name="success">order/summary.jsp</result>
+	</action>
 
-		<!-- logout action -->
-		<action name="logout" class="com.delta.expressq.actions.LoginAction" method="logout">
-			<result name="success">login.jsp</result>
-		</action>
+	<action name="confirmOrder" class="com.delta.expressq.actions.ConfirmOrder">
+		<interceptor-ref name="loginStack" />
+		<result name="login" type="redirect">login</result>
+		<result name="success">order/confirmed.jsp</result>
+		<result name="error">order/summary.jsp</result>
+		<result name="order_again" type="redirect">venues</result>
+	</action>
 
-		<!-- show summary of order -->
-		<action name="summary" class="com.delta.expressq.actions.Summary" method="execute">
-			<interceptor-ref name="loginStack" />
-			<result name="login" type="redirect">login</result>
-			<result name="success">order/summary.jsp</result>
-		</action>
-
-	    <action name="confirmOrder" class="com.delta.expressq.actions.ConfirmOrder">
-			<interceptor-ref name="loginStack" />
-			<result name="login" type="redirect">login</result>
-			<result name="success">order/confirmed.jsp</result>
-			<result name="error">order/summary.jsp</result>
-			<result name="order_again" type="redirect">venues</result>
-		</action>
-
-		<!-- json -->
-		<action name="json" class="com.delta.expressq.actions.Json" method="execute">
-			<result name="success">json/success.jsp</result>
-			<result name="error">json/error.jsp</result>
-		</action>
+	<!-- json -->
+	<action name="json" class="com.delta.expressq.actions.Json" method="execute">
+		<result name="success">json/success.jsp</result>
+		<result name="error">json/error.jsp</result>
+	</action>
 
     <!-- AdminAction Actions -->
     <action name="view" class="com.delta.expressq.actions.AdminAction" method="Display">
@@ -133,10 +121,10 @@
 	
 	<!--Action for saving customer profile changes-->
 	<action name ="UserUpdate" class="com.delta.expressq.actions.UserProfileAction" method="Update">
-		<result name ="success" type="redirect">homeAction</result>
+		<result name ="success" type="redirect">index</result>
 	</action>
 	
-		<!--exampe=le-->
+		<!--example-->
 	<action name ="exampleOfMessages" class="com.delta.expressq.actions.ExampleOfMessages" method="execute">
 		<result name="success">exampleOfMessages.jsp</result>
 	</action>

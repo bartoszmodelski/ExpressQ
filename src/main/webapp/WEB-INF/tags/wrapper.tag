@@ -20,7 +20,7 @@
 <jsp:doBody/>
 <footer class="footer">
     <div class="container">
-        <p class="text-muted text-center">© 2017 ExpressQ</p>
+        <p class="text-muted text-center">2017 SwiftQ</p>
     </div>
 </footer>
 <script src="../../js/jquery.min.js"></script>
