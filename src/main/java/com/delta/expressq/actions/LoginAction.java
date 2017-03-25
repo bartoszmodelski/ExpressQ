@@ -30,9 +30,13 @@ public class LoginAction extends ActionSupportWithSession {
 	 * @return SUCCESS
 	 */
 	public String logout() {
-		session.remove("user");
-		addSuccessMessage("Success! ", "You have been logged out");
-		return SUCCESS;
+		if(isLoggedIn()){
+			session.remove("user");
+			addSuccessMessage("Success! ", "You have been logged out");
+			return SUCCESS;
+		}else{
+			return "permission_error";
+		}
 	}
 
 	/**
@@ -43,14 +47,14 @@ public class LoginAction extends ActionSupportWithSession {
 	 */
 	public String login() {
 		if(isLoggedIn()){
-			return ERROR;
+			return "permission_error";
 		}else{
 			if (username.equals("") || password.equals(""))
 				return "login";
 			try {
 				UserNew user = ConnectionManager.getUserByUsername(username);
 				if ((user == null) || !BCrypt.checkpw(password, user.getPassword())) {
-					addActionError("Please enter valid username and password.");
+					addInformationMessage("Alert! ", "Please enter a valid username and password.");
 					return LOGIN;
 				} else {
 					session.put("user", user);

@@ -49,27 +49,39 @@ public class Registration extends ActionSupportWithSession {
 
 	public void setLname(String Lname) {
 		this.Lname = Lname;
-}
+	}
+	
+	public String display(){
+		if(isLoggedIn()){
+			return "permission_error";
+		}else{
+			return SUCCESS;
+		}
+	}
 
 	/**
 	 * When the registration action is called this checks if a user already exists in the database with the username and email that has been selected by the user.
 	 * If it does already exits then it returns the result existed. If the username does not already exist then the new user details are written to the database.
 	 */
 	public String execute() throws Exception{
-
-		String salt = BCrypt.gensalt(12);
-		String hashed_password = BCrypt.hashpw(Pass, salt);
-		if (ConnectionManager.checkUserName(Uname) == true) { //if the username already exists in the system inform the user. otherwise add the user details to the database
-			return "existed";
+		if(isLoggedIn()){
+			return "permission_error";
+		}else{
+			String salt = BCrypt.gensalt(12);
+			String hashed_password = BCrypt.hashpw(Pass, salt);
+			if (ConnectionManager.checkUserName(Uname) == true) { //if the username already exists in the system inform the user. otherwise add the user details to the database
+				addInformationMessage("Alert! ", "That username already exists.");
+				return "registration";
+			}
+			else if (ConnectionManager.checkEmail(Email) == true){
+				addInformationMessage("Alert! ", "That email already exists.");
+				return "registration";
+			}
+			else{
+				ConnectionManager.writeUser(Uname, hashed_password, Email, Fname, Lname);
+				return "success";
+			}
 		}
-		else if (ConnectionManager.checkEmail(Email) == true){
-			return "existed";
-		}
-		else{
-			ConnectionManager.writeUser(Uname, hashed_password, Email, Fname, Lname);
-			return "success";
-		}
-
 }
 
 }
