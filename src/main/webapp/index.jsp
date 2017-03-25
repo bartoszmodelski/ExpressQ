@@ -15,10 +15,14 @@
                 <!-- div class="vertical-center" -->
                     <h1>ExpressQ</h1>
                     <p class="lead">Generic boilerplate marketing talk goes here</p>
-                    <p>
-                        <a href="<s:url action="registration"/>" class="btn btn-lg btn-primary"
-                           role="button">Register</a>
-                    </p>
+                    <s:if test="#session.containsKey('user')">
+                    </s:if>
+                    <s:else>
+                    	<p>
+	                        <a href="<s:url action="registration"/>" class="btn btn-lg btn-primary" role="button">Register</a>
+	                        <a href="<s:url action="login"/>" class="btn btn-lg btn-primary" role="button">Login</a>
+	                    </p>
+                    </s:else>
                 <!-- /div -->
             </div>
         </div>
