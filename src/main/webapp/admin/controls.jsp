@@ -3,6 +3,7 @@
 <%@ page import="java.util.*" %>
  
        <div class="container">
+            <s:actionmessage/>
             <a href="<s:url action="insert.action"/>">Insert New User</a>
             <br><br>
             <table class="table">

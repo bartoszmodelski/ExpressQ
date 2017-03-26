@@ -53,7 +53,12 @@ public class ConnectionManager {
         }
     }
 
-
+    /**
+     * Returns a username from the database given a UserID.
+     * @param userID The ID we want to get the username for. 
+     * @return The username retrieved from the database.
+     * @throws ConnectionManagerException
+     */
     public static String getUsername(int userID) throws ConnectionManagerException {
         PreparedStatement pstmt;
         try {
@@ -183,6 +188,12 @@ public class ConnectionManager {
         }
     }
 
+    /**
+     * Given a String, checks if that string already exists in the User table as a username.
+     * @param username String that will be checked by the query.
+     * @return True if it does exist, false if it does not.
+     * @throws ConnectionManagerException
+     */
     public static boolean checkUserName(String username) throws ConnectionManagerException {
         // Using prepared statement to prevent SQL injection
         PreparedStatement pstmt;
@@ -572,24 +583,6 @@ public class ConnectionManager {
         }
     }
 
-    //CHANGE THIS ONCE JDBC FIXED
-    public static boolean checkBusinessCredentials(String userName, String password) throws ConnectionManagerException {
-        try {
-			Connection conn = getConnection();
-            // Query returning a user with matching username and password.
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM venue WHERE Name = ? and Password = ?");
-            pstmt.setString(1, userName);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
-            // Check whether a matching user was returned.
-            boolean exists = rs.next();
-            cleanup(conn, pstmt, rs);
-            return exists;
-        } catch (SQLException sqle) {
-            throw new ConnectionManagerException(sqle);
-        }
-    }
-
 	/**
 	 * Retrieves the password of a user given the username.
 	 * @param userName userName is passed in to get the relevant password.
@@ -721,6 +714,12 @@ public class ConnectionManager {
 	}
 	
 
+	/**
+	 * Returns a map of section descriptions and their IDs given a venueID.
+	 * @param sections The map containing the details of the sections.
+	 * @param venueID The venueID that will be used to retrieve the desired sections.
+	 * @throws ConnectionManagerException
+	 */
 	public static void setSections(Map<String, Integer> sections, int venueID) throws ConnectionManagerException {
 		PreparedStatement pstmt;
 		try {
@@ -737,6 +736,13 @@ public class ConnectionManager {
 		}
 	}
 
+	/**
+	 * Creates a new section with the provided description and venueID. SectionID is auto incremented.
+	 * @param venueid the venue that the new section will belong to.
+	 * @param description the name of the new section.
+	 * @return false if the section could not be inserted.
+	 * @throws ConnectionManagerException
+	 */
 	public static boolean InsertSection(int venueid, String description) throws ConnectionManagerException{
 		PreparedStatement pstmt;
         try {
@@ -751,6 +757,11 @@ public class ConnectionManager {
 		return false;
 	}
 
+	/**
+	 * Deletes sections from database.
+	 * @param arraySectionDeleteSelection list of sectionIDs to be deleted. 
+	 * @throws ConnectionManagerException
+	 */
 	public static void DeleteSections(String[] arraySectionDeleteSelection) throws ConnectionManagerException {
         PreparedStatement stmt;
         try {
@@ -766,22 +777,35 @@ public class ConnectionManager {
         }
 	}
 
-	public static String EditSection(String sectionID, String newName) throws ConnectionManagerException {
+	/**
+	 * Returns the current description of a section given its id.
+	 * @param sectionID id of section to be edited.
+	 * @param description current description of section.
+	 * @return Current description retrieved from database.
+	 * @throws ConnectionManagerException
+	 */
+	public static String EditSection(String sectionID, String description) throws ConnectionManagerException {
         try {
             Connection conn = getConnection();
             PreparedStatement pstmt = conn.prepareStatement("SELECT description FROM section WHERE sectionID=?");
             pstmt.setString(1, sectionID);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-            	newName = rs.getString("description");
+            	description = rs.getString("description");
             }
             cleanup(conn, pstmt, rs);
-            return newName;
+            return description;
         } catch (Exception ex) {
             throw new ConnectionManagerException(ex);
         }
 	}
 
+	/**
+	 * Updates a section with it's new name.
+	 * @param newName The new value held in the description part of the section table.
+	 * @param sectionID the ID of the section that is being updated.
+	 * @throws ConnectionManagerException
+	 */
 	public static void UpdateSection(String newName, String sectionID) throws ConnectionManagerException {
         try {
 			Connection conn = getConnection();
@@ -795,6 +819,12 @@ public class ConnectionManager {
         }
     }
 	
+	/**
+	 * Returns a map of item name and their IDs given a sectionID.
+	 * @param items The map containing the details of the items.
+	 * @param sectionID The sectionID that will be used to retrieve the desired items.
+	 * @throws ConnectionManagerException
+	 */
 	public static void getItemsBySection(Map<String, Integer> items, String sectionID) throws ConnectionManagerException {
 		PreparedStatement pstmt;
 		try {
@@ -811,6 +841,18 @@ public class ConnectionManager {
 		}
 	}
 
+	/**
+	 * Creates a new item in the database given the new values to be entered.
+	 * @param selectedSectionID 
+	 * @param price 
+	 * @param name
+	 * @param itemdescription 
+	 * @param stock 
+	 * @param allergens
+	 * @param preparationtime
+	 * @return false if the item cannot be created.
+	 * @throws ConnectionManagerException
+	 */
 	public static boolean InsertItem(String selectedSectionID, int price, String name, String itemdescription, int stock, String allergens, int preparationtime) throws ConnectionManagerException {
 		PreparedStatement pstmt;
         try {
@@ -830,6 +872,11 @@ public class ConnectionManager {
 		return false;
 	}
 
+	/**
+	 * Deletes items from the database.
+	 * @param arrayItemDeleteSelection list of itemIDs to be deleted.
+	 * @throws ConnectionManagerException
+	 */
 	public static void DeleteItems(String[] arrayItemDeleteSelection) throws ConnectionManagerException {
         PreparedStatement stmt;
         try {
@@ -845,6 +892,13 @@ public class ConnectionManager {
         }
 	}
 
+	/**
+	 * Retrieves the current information of the item requested to be edited by the user.
+	 * @param selectedItemID id of the item to be edited.
+	 * @param itemDetails map of the item's current details
+	 * @return The map 'itemDetails' containing all the information from the database.
+	 * @throws ConnectionManagerException
+	 */
 	public static Map EditItem(String selectedItemID, Map itemDetails) throws ConnectionManagerException {
         try {
             Connection conn = getConnection();
@@ -869,6 +923,18 @@ public class ConnectionManager {
         }
 	}
 
+	/**
+	 * Updates an item with the new changes made by the user.
+	 * @param itemID
+	 * @param sectionID
+	 * @param name
+	 * @param description
+	 * @param price
+	 * @param stock
+	 * @param allergens
+	 * @param preparationtime
+	 * @throws ConnectionManagerException
+	 */
 	public static void UpdateItem(int itemID, String sectionID, String name, String description, int price, int stock, String allergens, int preparationtime) throws ConnectionManagerException {
         try {
 			Connection conn = getConnection();
@@ -881,7 +947,6 @@ public class ConnectionManager {
             pstmt.setString(6, allergens);
             pstmt.setInt(7, preparationtime);
             pstmt.setInt(8, itemID);
-            System.out.println(pstmt);
             pstmt.executeUpdate();
             cleanup(conn, pstmt, null);
         } catch (Exception ex) {

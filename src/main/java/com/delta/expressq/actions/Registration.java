@@ -79,6 +79,7 @@ public class Registration extends ActionSupportWithSession {
 			}
 			else{
 				ConnectionManager.writeUser(Uname, hashed_password, Email, Fname, Lname);
+				addSuccessMessage("Registration Successful! ", "Please log in.");
 				return "success";
 			}
 		}
