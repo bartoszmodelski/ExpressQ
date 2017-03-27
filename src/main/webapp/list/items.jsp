@@ -17,22 +17,22 @@
                     <s:iterator value="items">
                         <h3><s:property value="key"/></h3>
                         <table class="table table-responsive">
-                            <colgroup>
-                                <col class="col-6">
-                                <col class="col-3">
-                                <col class="col-3">
-                            </colgroup>
+	                        <colgroup>
+					            <col class="col-6">
+					            <col class="col-3">
+					            <col class="col-3">
+	            			</colgroup>
                             <s:iterator value="value">
                                 <tr>
-                                    <td>
+                                    <td width= "70%">
                                         <s:property value="name"/>
                                     </td>
-                                    <td>
+                                    <td width ="30%">
                                         &pound;<s:property value="getText('{0,number,#,##0.00}',{price})"/>
                                     </td>
                                     <td>
-                                        <s:textfield name="itemsToOrder['%{ID}']" value="0"
-                                                     cssClass="form-control"/>
+                                      <!--  <s:textfield name="itemsToOrder['%{ID}']" value="0" cssClass="form-control"/> -->
+                                      	<s:select name = "itemsToOrder['%{ID}']" list = "{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}" value="0"></s:select>
                                     </td>
                                 </tr>
                             </s:iterator>
