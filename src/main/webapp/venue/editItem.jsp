@@ -17,9 +17,9 @@
 				<s:textfield name = "Name" value = "%{itemDetails.Name}" label = "Name" cssClass="form-control"/>
 				<s:textfield name = "Description" value = "%{itemDetails.Description}" label = "Description" cssClass="form-control"/>
 				<s:textfield name = "Price" value = "%{itemDetails.Price}" label = "Price" cssClass="form-control"/>
-				<s:textfield name = "Stock" value = "%{itemDetails.Stock}" label = "Stock" cssClass="form-control"/>
+				<s:textfield type= "number" name = "Stock" value = "%{itemDetails.Stock}" label = "Stock" cssClass="form-control"/>
 				<s:textfield name = "Allergens" value = "%{itemDetails.Allergens}" label = "Allergens" cssClass="form-control"/>
-				<s:textfield name = "PreparationTime" value = "%{itemDetails.PreparationTime}" label = "PreparationTime" cssClass="form-control"/>
+				<s:textfield type ="number" name = "preparationtime" value = "%{itemDetails.PreparationTime}" label = "PreparationTime" cssClass="form-control"/>
 				<s:submit value="Update" cssStyle="float: right;" cssClass="btn btn btn-primary btn-sm"/>
 			</s:form>
 		</div>

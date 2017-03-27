@@ -17,9 +17,9 @@
 			<s:textfield name = "itemname" label = "Item Name" cssClass="form-control"/>
 			<s:textfield name = "itemdescription" label = "Item Description" cssClass="form-control"/>
 			<s:textfield name = "price" label ="Price" cssClass="form-control"/>
-			<s:textfield name = "stock" label = "Stock" cssClass="form-control"/>
+			<s:textfield type = "number" name = "stock" label = "Stock" cssClass="form-control"/>
 			<s:textfield name = "allergens" label ="Allergens" cssClass="form-control"/>
-			<s:textfield name = "preparationtime" label ="Preparation Time" cssClass="form-control"/>
+			<s:textfield type = "number" name = "preparationtime" label ="Preparation Time" cssClass="form-control"/>
 			<s:submit value="Add Item" cssClass="btn btn-primary btn-sm"/>
 		</s:form>
 		</div>

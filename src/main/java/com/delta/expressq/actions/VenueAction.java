@@ -372,7 +372,7 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 		this.stock = stock;
 	}
 	
-	public int getPreparationTime(){
+	public int getPreparationtime(){
 		return preparationtime;
 	}
 	
