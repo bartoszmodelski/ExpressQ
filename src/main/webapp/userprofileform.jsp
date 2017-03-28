@@ -8,7 +8,7 @@
     <s:textfield label="Confirm Password" cssClass="form-control" value="" name="PasswordConf" type="Password"/>
     <s:textfield label="Forename" cssClass="form-control" value="%{#application.Fname}" name="User.Fname"/>
     <s:textfield label="Surname" cssClass="form-control" value="%{#application.Lname}" name="User.Lname"/>
-    <s:textfield label="Email" cssClass="form-control" value="%{#application.email}" name="User.email"/>
+    <s:textfield type = "email" label="Email" cssClass="form-control" value="%{#application.email}" name="User.email"/>
     <s:submit value="Update" cssClass="btn btn-primary btn-sm"/>
 </s:form>
 
