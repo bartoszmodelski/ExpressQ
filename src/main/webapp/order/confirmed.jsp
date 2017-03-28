@@ -12,7 +12,7 @@
 		<jsp:include page="../partials/navbar.jsp"/>
 	</jsp:attribute>
     <jsp:body>
-        <div class="container">
+        <div class="container" id="mailBody">
             <h1 class="row text-center">Order Placed</h1>
             <p class="text-center">Please bring the QR code to the store to collect your order.
                 <jsp:include page="keywords.jsp"/>

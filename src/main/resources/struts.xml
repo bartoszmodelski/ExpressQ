@@ -177,5 +177,9 @@
     <action name="updateitem" class="com.delta.expressq.actions.VenueAction" method="UpdateItem">
     	<result name="success" type="redirect">venuehome</result>
 	</action>
+	
+	<action name="viewQR" class="com.delta.expressq.actions.ViewQR" method="execute">
+		<result name="success">QR.jsp</result>
+	</action>
 	</package>
 </struts>
