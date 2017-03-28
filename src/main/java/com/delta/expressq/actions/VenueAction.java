@@ -19,8 +19,9 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 	public HttpServletRequest request;
 	private String description, sectionDeleteSelection, arraySectionDeleteSelection[], arrayItemDeleteSelection[], itemname, itemdescription, allergens;
 	public String selectedSectionID, Name, NewName, sectionID, selectedItemID;
-	private int preparationtime, stock, price, itemID;
-	
+	private int preparationtime, stock, itemID;
+	private float price;
+	 
 	/**
 	 * Displays a venue's list of sections given the that is logged in is a venue user. Otherwise the no permission page is displayed.
 	 * @return Success if user passes login check, otherwise permission_error.
@@ -388,11 +389,11 @@ public class VenueAction extends ActionSupportWithSession implements ServletRequ
 		this.allergens = allergens;
 	}
 	
-	public int getPrice(){
+	public float getPrice(){
 		return price;
 	}
 	
-	public void setPrice(int price){
+	public void setPrice(float price){
 		this.price = price;
 	}
 	

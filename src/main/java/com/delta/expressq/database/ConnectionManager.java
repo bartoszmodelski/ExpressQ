@@ -853,13 +853,13 @@ public class ConnectionManager {
 	 * @return false if the item cannot be created.
 	 * @throws ConnectionManagerException
 	 */
-	public static boolean InsertItem(String selectedSectionID, int price, String name, String itemdescription, int stock, String allergens, int preparationtime) throws ConnectionManagerException {
+	public static boolean InsertItem(String selectedSectionID, float price, String name, String itemdescription, int stock, String allergens, int preparationtime) throws ConnectionManagerException {
 		PreparedStatement pstmt;
         try {
 			Connection conn = getConnection();
 			pstmt = conn.prepareStatement("INSERT into item (sectionid, price, name, description, stock, allergens, preparationtime) VALUES (?,?,?,?,?,?,?)");
 			pstmt.setString(1, selectedSectionID);
-			pstmt.setInt(2, price);
+			pstmt.setFloat(2, price);
 			pstmt.setString(3, name);
 			pstmt.setString(4, itemdescription);
 			pstmt.setInt(5, stock);
@@ -935,14 +935,14 @@ public class ConnectionManager {
 	 * @param preparationtime
 	 * @throws ConnectionManagerException
 	 */
-	public static void UpdateItem(int itemID, String sectionID, String name, String description, int price, int stock, String allergens, int preparationtime) throws ConnectionManagerException {
+	public static void UpdateItem(int itemID, String sectionID, String name, String description, float price, int stock, String allergens, int preparationtime) throws ConnectionManagerException {
         try {
 			Connection conn = getConnection();
             PreparedStatement pstmt = conn.prepareStatement("UPDATE item set sectionID=?, name=?, description=?, price=?, stock=?, allergens=?, preparationtime=?  WHERE itemid=?");
             pstmt.setString(1, sectionID);
             pstmt.setString(2, name);
             pstmt.setString(3, description);
-            pstmt.setInt(4, price);
+            pstmt.setFloat(4, price);
             pstmt.setInt(5, stock);
             pstmt.setString(6, allergens);
             pstmt.setInt(7, preparationtime);

@@ -16,10 +16,10 @@
 				<s:hidden name ="sectionID" value = "%{itemDetails.SectionID}" cssClass="form-control"/>
 				<s:textfield name = "Name" value = "%{itemDetails.Name}" label = "Name" cssClass="form-control"/>
 				<s:textfield name = "Description" value = "%{itemDetails.Description}" label = "Description" cssClass="form-control"/>
-				<s:textfield name = "Price" value = "%{itemDetails.Price}" label = "Price" cssClass="form-control"/>
-				<s:textfield type= "number" name = "Stock" value = "%{itemDetails.Stock}" label = "Stock" cssClass="form-control"/>
+				<s:textfield type = "number" step = "any" name = "Price" value = "%{itemDetails.Price}" label = "Price" cssClass="form-control" min="0.01"/>
+				<s:textfield min = "1" type= "number" name = "Stock" value = "%{itemDetails.Stock}" label = "Stock" cssClass="form-control"/>
 				<s:textfield name = "Allergens" value = "%{itemDetails.Allergens}" label = "Allergens" cssClass="form-control"/>
-				<s:textfield type ="number" name = "preparationtime" value = "%{itemDetails.PreparationTime}" label = "PreparationTime" cssClass="form-control"/>
+				<s:textfield min = "0" type ="number" name = "preparationtime" value = "%{itemDetails.PreparationTime}" label = "PreparationTime" cssClass="form-control"/>
 				<s:submit value="Update" cssStyle="float: right;" cssClass="btn btn btn-primary btn-sm"/>
 			</s:form>
 		</div>
