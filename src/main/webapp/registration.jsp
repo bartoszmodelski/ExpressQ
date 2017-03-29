@@ -42,7 +42,8 @@
                 <s:textfield type = "email" name="Email" placeholder="Email Address" cssClass="form-signin"/>
                 <s:textfield name="Fname" placeholder="First Name" cssClass="form-signin"/>
                 <s:textfield name="Lname" placeholder="Last Name" cssClass="form-signin"/>
-                <s:submit value="Register" cssClass="form-signin btn btn-lg btn-block btn-primary"/>
+                <s:submit value="Register" cssClass="form-signin btn btn-lg btn-block btn-primary"
+                          cssStyle="margin-top: 10px;"/>
             </s:form>
         </div>
         <link rel="stylesheet" href="css/login.css">
