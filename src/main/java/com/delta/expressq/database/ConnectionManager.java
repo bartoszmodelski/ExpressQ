@@ -954,4 +954,21 @@ public class ConnectionManager {
         }
 		
 	}
+
+	public static Map getUserTransactions(Map<String, String> orderDetails, int userID) throws ConnectionManagerException {
+		PreparedStatement pstmt;
+		try{
+			Connection conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT transactionid, totalprice from transaction  WHERE userid=?");
+            pstmt.setInt(1, userID);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+            	orderDetails.put(rs.getString("transactionID"), rs.getString("totalprice"));
+            }
+            cleanup(conn, null, rs);
+            return orderDetails;
+		}catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+	}
 }

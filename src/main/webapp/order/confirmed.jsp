@@ -12,7 +12,7 @@
 		<jsp:include page="../partials/navbar.jsp"/>
 	</jsp:attribute>
     <jsp:body>
-        <div class="container">
+        <div class="container" id="mailBody">
             <h1 class="row text-center">Order Placed</h1>
             <p class="text-center">Please bring the QR code to the store to collect your order.
                 <jsp:include page="keywords.jsp"/>
@@ -21,7 +21,7 @@
                 Order number:
                 <span id="lastOrder"><s:property value="transactionID"/></span></p>
 
-            <div class="row" id="qrcode"></div>
+            <div class="row" align = "center" id="qrcode"></div>
         </div>
         <script type="text/javascript" src="jquery.qrcode.js"></script>
         <script type="text/javascript" src="qrcode.js"></script>
