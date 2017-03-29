@@ -959,7 +959,7 @@ public class ConnectionManager {
 		PreparedStatement pstmt;
 		try{
 			Connection conn = getConnection();
-            pstmt = conn.prepareStatement("SELECT transactionid, totalprice from transaction  WHERE userid=?");
+            pstmt = conn.prepareStatement("SELECT transactionid, totalprice from transaction  WHERE userid=? AND status=0");
             pstmt.setInt(1, userID);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()){
