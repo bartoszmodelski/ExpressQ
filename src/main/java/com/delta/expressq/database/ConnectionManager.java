@@ -151,6 +151,36 @@ public class ConnectionManager {
         }
     }
 
+    /**
+     *	Method updates status of specified transaction.
+     *	@param 		transactionID 	id of needed transaction
+     *	@param		name 			venue name
+     *	@param		APIpass 		venue password for mobile application
+     *	@param	    status 		    new status
+     *	@returns 	details of needed transaction as transaction object
+     */
+     public static void updateTransactionStatus(String name, String APIpass, int transactionID, int status) {
+         try {
+             Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("UPDATE Transaction SET Status=? "
+                     + "FROM Transaction, Venue "
+                     + "WHERE TransactionId = ? "
+                     + "AND Venue.VenueID = Transaction.VenueID "
+                     + "AND Venue.Name =  ? "
+                     + "AND Venue.APIpass =  ? "
+             pstmt.setInt(1, status);
+             pstmt.setInt(2, transactionID);
+             pstmt.setString(3, name);
+             pstmt.setString(4, APIpass);
+             pstmt.executeUpdate();
+
+             cleanup(conn, pstmt, null);
+         } catch (SQLException sqle) {
+             System.out.println(sqle.getMessage());
+             throw new ConnectionManagerException(sqle);
+         }
+     }
+
    /**
 	*	Method gets ids of upcoming transactions - paid goods, which will be collected within x minutes.
 	*	@param 		minutes 		only show transactions planned within this time from now

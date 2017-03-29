@@ -20,12 +20,15 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 	public String name = "";
 	public String APIpass = "";
 	public String transactionID = "";
+	public String status = "";
 	public String minutes = "";
 	public String json = "";
 
 
 	public String execute() {
-		if (!name.isEmpty() && !APIpass.isEmpty() && !transactionID.isEmpty()) {
+		if (!name.isEmpty() && !APIpass.isEmpty() && !transactionID.isEmpty() && !status.isEmpty()) {
+			return updateTransactionStatus(name, APIpass, transactionID, status);
+		} else if (!name.isEmpty() && !APIpass.isEmpty() && !transactionID.isEmpty()) {
 			return getOneTransaction(name, APIpass, transactionID);
 		} else if (!name.isEmpty() && !APIpass.isEmpty() && !minutes.isEmpty()) {
 			return getUpcomingTransactions(name, APIpass, minutes);
@@ -34,6 +37,18 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 		} else {
 			return ERROR;
 		}
+	}
+
+	private String updateTransactionStatus(String name, String APIpass, String transactionID, String status) {
+		try {
+			ConnectionManager.updateTransactionStatus(name, APIpass,
+							Integer.parseInt(transactionID),
+							Integer.parseInt(status));
+		} catch (Exception e) {
+			return ERROR;
+		}
+		json = "{}";
+		return SUCCESS;
 	}
 
 	private String checkMobileCredentials(String name, String APIpass) {
