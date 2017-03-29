@@ -180,6 +180,7 @@
 	
 	<action name="viewQR" class="com.delta.expressq.actions.ViewQR" method="execute">
 		<result name="success">QR.jsp</result>
+		<result name="empty">qrempty.jsp</result>
 	</action>
 	</package>
 </struts>

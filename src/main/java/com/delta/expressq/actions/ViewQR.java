@@ -18,8 +18,11 @@ public class ViewQR extends ActionSupportWithSession{
 		if(isLoggedIn()){
 			UserNew user = getUserObject();
 			ConnectionManager.getUserTransactions(orderDetails, user.getUserID());
-			System.out.println(orderDetails);
-			return SUCCESS;
+			if (orderDetails.isEmpty()){
+				return "empty";
+			}else{
+				return SUCCESS;
+			}
 		}else{
 			return "permission_error";
 		}
