@@ -89,7 +89,6 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 		        transactionJSON.put("date", trans.date);
 		        transactionJSON.put("status", trans.status);
 				transactionJSON.put("collectionTime", trans.collection);
-				transactionJSON.put("username", trans.username);
 				transactionJSON.put("keywords", trans.keywords);
 				transactionJSON.put("fullname", trans.fullname);
 
