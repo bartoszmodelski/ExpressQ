@@ -450,13 +450,13 @@ public class ConnectionManager {
     public static void DeleteUsers(String[] arrayDeletionSelection) throws ConnectionManagerException {
         try {
 		    Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("DELETE FROM user WHERE UserID=?");
             for (int i = 0; i < arrayDeletionSelection.length; i++) { //loops through the checked boxes for deletion
-                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM user WHERE UserID=?");
                 int k = Integer.parseInt(arrayDeletionSelection[i]);
                 pstmt.setInt(1, k);
                 pstmt.executeUpdate();
-                cleanup(conn, pstmt, null);
             }
+            cleanup(conn, pstmt, null);
         } catch (Exception ex) {
             throw new ConnectionManagerException(ex);
         }
