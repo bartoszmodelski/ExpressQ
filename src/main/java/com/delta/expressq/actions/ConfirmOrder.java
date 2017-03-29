@@ -26,15 +26,13 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	public Map<String, String> itemsToOrder = new HashMap<String, String>();
 	public List<Item> items = new ArrayList<Item>();
 	private int transactionID;
-	private String hour, minute;
+	private String hour, minute, to, body;
 	public String keywords = "";
 	private HttpServletRequest request;
 	private String from = "swiftqdelta@gmail.com";
 	private String password = "cs3528deltateam";
-	private String to;
 	private String subject = "SwiftQ Order Successful";
-	private String body;
-	
+
 	static Properties properties = new Properties();
 	static{
 		properties.put("mail.smtp.host", "smtp.gmail.com");

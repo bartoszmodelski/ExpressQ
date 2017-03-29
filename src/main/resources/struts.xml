@@ -70,6 +70,7 @@
 		<interceptor-ref name="loginStack" />
 		<result name="login" type="redirect">login</result>
 		<result name="success">order/summary.jsp</result>
+		<result name="empty">order/empty.jsp</result>
 	</action>
 
 	<action name="confirmOrder" class="com.delta.expressq.actions.ConfirmOrder">

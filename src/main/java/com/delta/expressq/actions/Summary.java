@@ -24,6 +24,7 @@ public class Summary extends ActionSupportWithSession {
 			UserNew user = getUserObject();
 			if (itemsToOrder == null) {
 				System.out.println("itemsToOrder is null: implement a try to retrieve it from active record");
+				return ERROR;
 			}
 	
 			//itemsToOrder is a following map [ItemId] = Quantity,
@@ -51,20 +52,22 @@ public class Summary extends ActionSupportWithSession {
 			} catch (Exception e) {
 				return ERROR;
 			}
-	
-			for (Item i: items) {
-				order.add(i, itemsToOrderConverted.get(i.getID()));
-				System.out.println(i.toString() + " " + Integer.toString(itemsToOrderConverted.get(i.getID())));
+			if(items.isEmpty()){
+				return "empty";
+			}else{
+				for (Item i: items) {
+					order.add(i, itemsToOrderConverted.get(i.getID()));
+					System.out.println(i.toString() + " " + Integer.toString(itemsToOrderConverted.get(i.getID())));
+				}
+		
+				try {
+					order.setVenue(Integer.parseInt(venue));
+				} catch (Exception e) {
+					return ERROR;
+				}
+				ActiveRecord.setOrderForUser(user.getUsername(), order);
+				return SUCCESS;
 			}
-	
-			try {
-				order.setVenue(Integer.parseInt(venue));
-			} catch (Exception e) {
-				return ERROR;
-			}
-	
-			ActiveRecord.setOrderForUser(user.getUsername(), order);
-			return SUCCESS;
 		}else{
 			return "error";
 		}
