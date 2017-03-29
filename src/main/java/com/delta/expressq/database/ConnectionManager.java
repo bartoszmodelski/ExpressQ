@@ -163,12 +163,16 @@ public class ConnectionManager {
                     throws ConnectionManagerException {
          try {
              Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement("UPDATE Transaction SET Status = ? "
-                     + "FROM Transaction, Venue "
-                     + "WHERE TransactionID = ? "
-                     + "AND Venue.VenueID = Transaction.VenueID "
-                     + "AND Venue.Name =  ? "
-                     + "AND Venue.APIpass =  ? ");
+
+             //Yes, does not make sense. No, won't work if single nested.
+             PreparedStatement pstmt = conn.prepareStatement("UPDATE Transaction SET Transaction.Status = ? "
+                    + "WHERE TransactionID in "
+                        + "(SELECT * FROM "
+                            + "(SELECT TransactionID "
+                            + "FROM Transaction, Venue "
+                            + "WHERE TransactionID = ? AND Venue.VenueID = Transaction.VenueID "
+                            + "AND Venue.Name = ? AND Venue.APIpass =  ?)"
+                        + "as X)");
 
              pstmt.setInt(1, status);
              pstmt.setInt(2, transactionID);
