@@ -1,6 +1,8 @@
 package com.delta.expressq.actions;
 import com.delta.expressq.database.ConnectionManager;
+import com.delta.expressq.database.ConnectionManagerException;
 import com.delta.expressq.util.BCrypt;
+import com.delta.expressq.util.UserNew;
 
 public class Registration extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
@@ -65,24 +67,32 @@ public class Registration extends ActionSupportWithSession {
 	 */
 	public String execute() throws Exception{
 		if(isLoggedIn()){
-			return "permission_error";
+			UserNew user = getUserObject();
+				if(user.getType() == 2|| user.getType() == 0){
+					return "permission_error";
+				}else{
+					return registerUser();
+				}
 		}else{
-			String salt = BCrypt.gensalt(12);
-			String hashed_password = BCrypt.hashpw(Pass, salt);
-			if (ConnectionManager.checkUserName(Uname) == true) { //if the username already exists in the system inform the user. otherwise add the user details to the database
-				addInformationMessage("Alert! ", "That username already exists.");
-				return "registration";
-			}
-			else if (ConnectionManager.checkEmail(Email) == true){
-				addInformationMessage("Alert! ", "That email already exists.");
-				return "registration";
-			}
-			else{
-				ConnectionManager.writeUser(Uname, hashed_password, Email, Fname, Lname);
-				addSuccessMessage("Registration Successful! ", "Please log in.");
-				return "success";
-			}
+			return registerUser();
 		}
-}
-
+	}
+	
+	public String registerUser() throws ConnectionManagerException{
+		String salt = BCrypt.gensalt(12);
+		String hashed_password = BCrypt.hashpw(Pass, salt);
+		if (ConnectionManager.checkUserName(Uname) == true) { //if the username already exists in the system inform the user. otherwise add the user details to the database
+			addInformationMessage("Alert! ", "That username already exists.");
+			return "registration";
+		}
+		else if (ConnectionManager.checkEmail(Email) == true){
+			addInformationMessage("Alert! ", "That email already exists.");
+			return "registration";
+		}
+		else{
+			ConnectionManager.writeUser(Uname, hashed_password, Email, Fname, Lname);
+			addSuccessMessage("Registration Successful! ", "Please log in.");
+			return "success";
+		}
+	}
 }
