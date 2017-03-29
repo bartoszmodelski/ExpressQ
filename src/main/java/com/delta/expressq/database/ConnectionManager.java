@@ -55,7 +55,7 @@ public class ConnectionManager {
 
     /**
      * Returns a username from the database given a UserID.
-     * @param userID The ID we want to get the username for. 
+     * @param userID The ID we want to get the username for.
      * @return The username retrieved from the database.
      * @throws ConnectionManagerException
      */
@@ -121,6 +121,32 @@ public class ConnectionManager {
 
         } catch (SQLException sqle) {
 			System.out.println(sqle.getMessage());
+            throw new ConnectionManagerException(sqle);
+        }
+    }
+
+    /**
+ 	*	Method checks if provided mobile credentials are valid.
+ 	*	@param		name 			venue name
+ 	*	@param		APIpass 		venue password for mobile application
+ 	*/
+    public static boolean checkMobileCredentials(String name, String APIpass) throws ConnectionManagerException {
+        try {
+            Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * "
+                    + "FROM Venue "
+                    + "WHERE Venue.Name =  ? "
+                    + "AND Venue.APIpass =  ? ");
+            pstmt.setString(1, name);
+            pstmt.setString(2, APIpass);
+            ResultSet rs = pstmt.executeQuery();
+            // Check whether an account was returned.
+            boolean exists = rs.next();
+            cleanup(conn, pstmt, rs);
+            return exists;
+
+        } catch (SQLException sqle) {
+            System.out.println(sqle.getMessage());
             throw new ConnectionManagerException(sqle);
         }
     }
@@ -246,7 +272,7 @@ public class ConnectionManager {
     }
 
     /**
-     * 
+     *
      * @param i
      * @return
      * @throws ConnectionManagerException
@@ -712,7 +738,7 @@ public class ConnectionManager {
             throw new ConnectionManagerException(sqle);
         }
 	}
-	
+
 
 	/**
 	 * Returns a map of section descriptions and their IDs given a venueID.
@@ -759,7 +785,7 @@ public class ConnectionManager {
 
 	/**
 	 * Deletes sections from database.
-	 * @param arraySectionDeleteSelection list of sectionIDs to be deleted. 
+	 * @param arraySectionDeleteSelection list of sectionIDs to be deleted.
 	 * @throws ConnectionManagerException
 	 */
 	public static void DeleteSections(String[] arraySectionDeleteSelection) throws ConnectionManagerException {
@@ -818,7 +844,7 @@ public class ConnectionManager {
             throw new ConnectionManagerException(ex);
         }
     }
-	
+
 	/**
 	 * Returns a map of item name and their IDs given a sectionID.
 	 * @param items The map containing the details of the items.
@@ -843,11 +869,11 @@ public class ConnectionManager {
 
 	/**
 	 * Creates a new item in the database given the new values to be entered.
-	 * @param selectedSectionID 
-	 * @param price 
+	 * @param selectedSectionID
+	 * @param price
 	 * @param name
-	 * @param itemdescription 
-	 * @param stock 
+	 * @param itemdescription
+	 * @param stock
 	 * @param allergens
 	 * @param preparationtime
 	 * @return false if the item cannot be created.
@@ -907,9 +933,9 @@ public class ConnectionManager {
             pstmt.setInt(1, k);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-            	itemDetails.put("ItemID", rs.getString("itemid"));       		
-            	itemDetails.put("SectionID", rs.getString("SectionID"));	
-            	itemDetails.put("Price", rs.getString("Price"));		
+            	itemDetails.put("ItemID", rs.getString("itemid"));
+            	itemDetails.put("SectionID", rs.getString("SectionID"));
+            	itemDetails.put("Price", rs.getString("Price"));
             	itemDetails.put("Name", rs.getString("Name"));
             	itemDetails.put("Description", rs.getString("Description"));
             	itemDetails.put("Stock", rs.getString("Stock"));
@@ -952,7 +978,7 @@ public class ConnectionManager {
         } catch (Exception ex) {
             throw new ConnectionManagerException(ex);
         }
-		
+
 	}
 
 	/**

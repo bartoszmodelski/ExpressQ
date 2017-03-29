@@ -15,13 +15,13 @@
 			<interceptor-ref name="defaultStack" />
 		</interceptor-stack>
 	</interceptors>
-				
+
 	<global-results>
 		<result name="db_error">errors/db.jsp</result>
 		<result name="error">errors/general.jsp</result>
 		<result name="permission_error">errors/noPermission.jsp</result>
 	</global-results>
-	
+
 	<action name="index">
     	<result >/index.jsp</result>
 	</action>
@@ -38,7 +38,7 @@
 		<result name="listVenues">list/venues.jsp</result>
 		<result name="listItems">list/items.jsp</result>
 	</action>
-		
+
 	<!-- registration -->
 		<action name="registration" class="com.delta.expressq.actions.Registration" method="display">
 		<result name="success">registration.jsp</result>
@@ -84,14 +84,17 @@
 	<!-- json -->
 	<action name="json" class="com.delta.expressq.actions.Json" method="execute">
 		<result name="success">json/success.jsp</result>
-		<result name="error">json/error.jsp</result>
+		<result name="incorrect_id">json/incorrect_id.jsp</result>
+		<result name="incorrect_credentials">json/incorrect_credentials.jsp</result>
+		<result name="correct_credentials">json/correct_credentials.jsp</result>
+		<result name="error">json/unknown_error.jsp</result>
 	</action>
 
     <!-- AdminAction Actions -->
     <action name="view" class="com.delta.expressq.actions.AdminAction" method="Display">
       <result name="success">/admin/display.jsp</result>
     </action>
-	
+
 	<!-- Delete User(s) -->
     <action name="del" class="com.delta.expressq.actions.AdminAction" method="Delete">
       <result name="success">/admin/deletesuccess.jsp</result>
@@ -106,79 +109,79 @@
     <action name="edit" class="com.delta.expressq.actions.AdminAction" method="Edit">
       <result name ="success">admin/edituser.jsp</result>
     </action>
-	
+
 	<!-- Save Edited Changes -->
 	<action name="update" class="com.delta.expressq.actions.AdminAction" method="UpdateUserDetails">
 	  <result name="success" type="redirect">view</result>
 	</action>
 	<!--End of AdminAction Actions-->
-	
+
 	<!--User Profile Action-->
 	<action name ="profile" class="com.delta.expressq.actions.UserProfileAction">
 		<interceptor-ref name="loginStack" />
 		<result name ="success">userprofile.jsp</result>
 		<result name="login" type="redirect">login</result>
 	</action>
-	
+
 	<!--Action for saving customer profile changes-->
 	<action name ="UserUpdate" class="com.delta.expressq.actions.UserProfileAction" method="Update">
 		<result name ="success" type="redirect">index</result>
 	</action>
-	
+
 		<!--example-->
 	<action name ="exampleOfMessages" class="com.delta.expressq.actions.ExampleOfMessages" method="execute">
 		<result name="success">exampleOfMessages.jsp</result>
 	</action>
-	
+
 	<!--///////////////// Venue Actions /////////////////-->
 	<action name ="venuehome" class="com.delta.expressq.actions.VenueAction" method="execute">
 		<result name ="success">/venue/main.jsp</result>
 	</action>
-	
+
 	<action name ="NewSection" class="com.delta.expressq.actions.VenueAction" method="NewSection">
 	      <result>/venue/newsection.jsp</result>
 	</action>
-	
+
 	<action name ="InsertSection" class="com.delta.expressq.actions.VenueAction" method="InsertSection">
 		<result name ="success" type="redirect">venuehome</result>
 	</action>
-	
+
 	<action name="delsection" class="com.delta.expressq.actions.VenueAction" method="DeleteSection">
     	<result name="success" type="redirect">venuehome</result>
     </action>
-    
+
     <action name="editsection" class="com.delta.expressq.actions.VenueAction" method="EditSection">
     	<result name="success">/venue/editsection.jsp</result>
     </action>
-	
+
 	<action name="updatesection" class="com.delta.expressq.actions.VenueAction" method="UpdateSection">
     	<result name="success" type="redirect">venuehome</result>
 	</action>
-	
+
 	<action name="viewItems" class="com.delta.expressq.actions.VenueAction" method="DisplayItems">
 		<result name="success">/venue/items.jsp</result>
 	</action>
-	
+
 	<action name ="NewItem" class="com.delta.expressq.actions.VenueAction" method="NewItem">
 	      <result>/venue/newitem.jsp</result>
-	</action>	
-	
+	</action>
+
 	<action name="InsertItem" class="com.delta.expressq.actions.VenueAction" method="InsertItem">
-    	<result name="success" type="redirect">venuehome</result>	
+    	<result name="success" type="redirect">venuehome</result>
     </action>
-    
+
     <action name="delitems" class="com.delta.expressq.actions.VenueAction" method="DeleteItem">
     	<result name="success" type="redirect">venuehome</result>
     </action>
-    
+
     <action name="edititem" class="com.delta.expressq.actions.VenueAction" method="EditItem">
     	<result name="success">venue/editItem.jsp</result>
     </action>
-    
+
     <action name="updateitem" class="com.delta.expressq.actions.VenueAction" method="UpdateItem">
     	<result name="success" type="redirect">venuehome</result>
 	</action>
-	
+
 	<action name="viewQR" class="com.delta.expressq.actions.ViewQR" method="execute">
 		<result name="success">QR.jsp</result>
 		<result name="empty">qrempty.jsp</result>

@@ -15,14 +15,6 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-/*
-
-		<s:set var="msg" value="getJSON()" />
-		<s:property value="msg" />
-		<s:property value="%{#action.name}" />*/
-
-
 public class Json extends ActionSupportWithSession implements ServletRequestAware {
 	private HttpServletRequest request;
 	public String name = "";
@@ -37,7 +29,21 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 			return getOneTransaction(name, APIpass, transactionID);
 		} else if (!name.isEmpty() && !APIpass.isEmpty() && !minutes.isEmpty()) {
 			return getUpcomingTransactions(name, APIpass, minutes);
+		} else if (!name.isEmpty() && !APIpass.isEmpty()) {
+			return checkMobileCredentials(name, APIpass);
 		} else {
+			return ERROR;
+		}
+	}
+
+	private String checkMobileCredentials(String name, String APIpass) {
+		try {
+			if (ConnectionManager.checkMobileCredentials(name, APIpass)) {
+				return "correct_credentials";
+			} else {
+				return "incorrect_credentials";
+			}
+		} catch (Exception e) {
 			return ERROR;
 		}
 	}
@@ -46,7 +52,7 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 		try {
 			Transaction trans = ConnectionManager.getTransaction(name, APIpass, Integer.parseInt(transactionID));
 			if (trans == null)
-				return ERROR;
+				return "incorrect_id";
 
 			String username = ConnectionManager.getUsername(trans.userID);
 			if (username.equals(""))
@@ -78,7 +84,6 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 	public boolean setJSONWithMany(List<Integer> IDs) {
 		JSONObject obj = new JSONObject();
         try {
-			obj.put("success", 1);
 			obj.put("ids", IDs);
         } catch (JSONException exception) {
 			return false;
@@ -100,7 +105,6 @@ public class Json extends ActionSupportWithSession implements ServletRequestAwar
 			obj.put("collectionTime", trans.collection);
 			obj.put("username", trans.username);
 			obj.put("keywords", trans.keywords);
-			obj.put("success", 1);
 			obj.put("fullname", trans.fullname);
 			JSONObject obj2 = new JSONObject();
 			for (Map.Entry<String, Integer> entry : hmap.entrySet()) {
