@@ -11,6 +11,13 @@ import com.stripe.exception.AuthenticationException;
 import com.stripe.exception.CardException;
 import com.stripe.exception.InvalidRequestException;
 import com.stripe.model.Charge;
+
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -22,7 +29,20 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	private String hour, minute;
 	public String keywords = "";
 	private HttpServletRequest request;
-
+	private String from = "swiftqdelta@gmail.com";
+	private String password = "cs3528deltateam";
+	private String to;
+	private String subject = "SwiftQ Order Successful";
+	private String body;
+	
+	static Properties properties = new Properties();
+	static{
+		properties.put("mail.smtp.host", "smtp.gmail.com");
+		properties.put("mail.smtp.socketFactory.port", "465");
+		properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.smtp.port", "465");
+	}
 	
 	/**
 	 * Main function called by struts, when routed to "confirm".
@@ -38,7 +58,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 		if(isLoggedIn()){
 			UserNew user = getUserObject();
 			String username = getUserObject().getUsername();
-
+			to = user.getEmail();
 			if (!ActiveRecord.orderExists(username)) {	//if order does not exists
 				addActionError("Internal error. Please place order again.");
 				return "order_again";
@@ -98,7 +118,26 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 		} catch (ConnectionManagerException e) {
 			addActionError("Order not placed.");
 			return "db_error";
-		} finally {
+		} try{
+			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+				protected PasswordAuthentication 
+				getPasswordAuthentication() {
+				return new PasswordAuthentication(from, password);
+				}
+			});
+			body ="Order was successful. Your order number is: " + Integer.toString(getTransactionID());
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(Message.RecipientType.TO, 
+			InternetAddress.parse(to));
+			message.setSubject(subject);
+			message.setText(body);
+			Transport.send(message);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return ERROR;
+		}finally {
 			ActiveRecord.removeOrderFromAR(username);
 			return SUCCESS;
 		}
@@ -115,7 +154,27 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 		} catch (ConnectionManagerException e) {
 			addActionError("Order not placed.");
 			return "db_error";
-		} finally {
+		} 
+		try{
+			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+				protected PasswordAuthentication 
+				getPasswordAuthentication() {
+				return new PasswordAuthentication(from, password);
+				}
+			});
+			body ="Order was successful. Your order number is: " + Integer.toString(getTransactionID());
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(Message.RecipientType.TO, 
+			InternetAddress.parse(to));
+			message.setSubject(subject);
+			message.setText(body);
+			Transport.send(message);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return ERROR;
+		}finally {
 			ActiveRecord.removeOrderFromAR(username);
 			return SUCCESS;
 		}
