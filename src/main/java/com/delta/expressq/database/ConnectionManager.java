@@ -159,19 +159,22 @@ public class ConnectionManager {
      *	@param	    status 		    new status
      *	@returns 	details of needed transaction as transaction object
      */
-     public static void updateTransactionStatus(String name, String APIpass, int transactionID, int status) {
+     public static void updateTransactionStatus(String name, String APIpass, int transactionID, int status)
+                    throws ConnectionManagerException {
          try {
              Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement("UPDATE Transaction SET Status=? "
+             PreparedStatement pstmt = conn.prepareStatement("UPDATE Transaction SET Status = ? "
                      + "FROM Transaction, Venue "
-                     + "WHERE TransactionId = ? "
+                     + "WHERE TransactionID = ? "
                      + "AND Venue.VenueID = Transaction.VenueID "
                      + "AND Venue.Name =  ? "
-                     + "AND Venue.APIpass =  ? "
+                     + "AND Venue.APIpass =  ? ");
+
              pstmt.setInt(1, status);
              pstmt.setInt(2, transactionID);
              pstmt.setString(3, name);
              pstmt.setString(4, APIpass);
+             System.out.println(pstmt);
              pstmt.executeUpdate();
 
              cleanup(conn, pstmt, null);
