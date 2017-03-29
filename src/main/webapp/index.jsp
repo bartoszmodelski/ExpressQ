@@ -13,7 +13,7 @@
             <div class="row text-center">
                 <!-- Currently doesn't work -->
                 <!-- div class="vertical-center" -->
-                    <h1>SwiftQ</h1>
+                    <img src ="../images/swiftqv2.png" alt="swiftq"/>
                     <p class="lead">Generic boilerplate marketing talk goes here</p>
                     <s:if test="#session.containsKey('user')">
                     </s:if>
