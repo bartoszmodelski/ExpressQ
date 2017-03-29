@@ -14,7 +14,7 @@
                 <!-- Currently doesn't work -->
                 <!-- div class="vertical-center" -->
                     <img src ="../images/swiftqv2.png" alt="swiftq"/>
-                    <p class="lead">Generic boilerplate marketing talk goes here</p>
+                    <p class="lead">Order now to beat the queue!</p>
                     <s:if test="#session.containsKey('user')">
                     </s:if>
                     <s:else>

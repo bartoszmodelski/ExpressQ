@@ -39,7 +39,7 @@
                 <s:textfield name="Uname" placeholder="Username" cssClass="form-signin"/>
                 <s:password name="Pass" placeholder="Password" cssClass="form-signin"/>
                 <s:password name="PassConf" placeholder="Confirm Password" cssClass="form-signin"/>
-                <s:textfield type = "email" name="Email" placeholder="Email Adress" cssClass="form-signin"/>
+                <s:textfield type = "email" name="Email" placeholder="Email Address" cssClass="form-signin"/>
                 <s:textfield name="Fname" placeholder="First Name" cssClass="form-signin"/>
                 <s:textfield name="Lname" placeholder="Last Name" cssClass="form-signin"/>
                 <s:submit value="Register" cssClass="form-signin btn btn-lg btn-block btn-primary"/>
