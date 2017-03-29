@@ -955,6 +955,13 @@ public class ConnectionManager {
 		
 	}
 
+	/**
+	 * Gets active user transactions given a userID
+	 * @param orderDetails maps the needed details of the transactions.
+	 * @param userID ID used to retrieve the desired transactions.
+	 * @return populated orderDetails
+	 * @throws ConnectionManagerException
+	 */
 	public static Map getUserTransactions(Map<String, String> orderDetails, int userID) throws ConnectionManagerException {
 		PreparedStatement pstmt;
 		try{

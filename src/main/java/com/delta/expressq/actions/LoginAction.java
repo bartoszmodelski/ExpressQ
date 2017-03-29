@@ -9,6 +9,9 @@ public class LoginAction extends ActionSupportWithSession {
 	private String username = "";
 	private String password = "";
 
+	/**
+	 * If the user is logged in they are unable to view the log in page.
+	 */
 	public String execute(){
 		if(isLoggedIn()){
 			return "permission_error";

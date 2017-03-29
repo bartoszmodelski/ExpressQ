@@ -19,6 +19,9 @@ public class Summary extends ActionSupportWithSession {
 	public Double total;
 	public String amount;
 	
+	/**
+	 * Gathers the items the user has placed for order and displays it.
+	 */
 	public String execute() {
 		if(isLoggedIn()){
 			UserNew user = getUserObject();

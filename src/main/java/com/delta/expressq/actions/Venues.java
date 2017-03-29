@@ -14,6 +14,9 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 	public String id = null;
 	public String venueName;
 
+	/**
+	 * Lists the venues for the user to choose, then given a venue choice produces a list of items.
+	 */
 	public String execute() throws Exception{
 		if (id == null) {
 			ConnectionManager.setVenues(venues);

@@ -31,7 +31,7 @@ public class RegistrationTest extends StrutsTestCase{
         assertEquals("TestEmail", RegAction.getEmail());
         assertEquals("TestPass", RegAction.getPass());
         assertEquals("TestPass", RegAction.getPassConf());
-        assertEquals("Result returned from executing the action was not existed but it should have been.", "existed", result);
+        assertEquals("Result returned from executing the action was not existed but it should have been.", "registration", result);
 
     }
 	

@@ -43,7 +43,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	}
 	
 	/**
-	 * Main function called by struts, when routed to "confirm".
+	 * Main function called by struts, when routed to "confirm". Retrives payment details inputted by user and creates a charge to our Stripe account.
 	 * @return "success", "db_error", "login", "error"
 	 * @throws APIException 
 	 * @throws CardException 
@@ -93,7 +93,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 
 
 	/**
-	 * Place order for specific time.
+	 * Place order for specific time. Sends a confirmation email.
 	 * @param minute MM in HH:MM time format
 	 * @param hour HH in HH:MM time format
 	 * @param username user for which order should be placed
@@ -142,7 +142,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	}
 
 	/**
-	 * Place order for specific user, without specifying time.
+	 * Place order for specific user, without specifying time. Sends a confirmation email.
 	 * @param username user for which order should be placed
 	 * @return "success", "db_error"
 	 */
