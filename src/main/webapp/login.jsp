@@ -20,7 +20,8 @@
                 <s:textfield name="userName" placeholder="Username" cssClass="form-control"/>
                 <label for="password" class="sr-only">Password</label>
                 <s:password name="password" placeholder="Password" cssClass="form-control"/>
-                <s:submit type="submit" cssClass="btn btn-lg btn-primary btn-block" value="Submit"/>
+                <s:submit type="submit" cssClass="btn btn-lg btn-primary btn-block" cssStyle="margin-top: 10px;"
+                          value="Submit"/>
             </s:form>
         </div>
         <link rel="stylesheet" href="css/login.css">

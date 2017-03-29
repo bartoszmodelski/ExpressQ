@@ -21,6 +21,11 @@
         <jsp:include page="../partials/navbar.jsp"/>
     </jsp:attribute>
     <jsp:body>
-      <jsp:include page="controls.jsp"/>
+        <div class="container">
+            <jsp:include page="controls.jsp"/>
+            <input type="button" class="btn btn-primary btn-small" style="float: right; margin-bottom: 10px;"
+                   value="Delete Selected Users"
+                   onclick="deleteRecord();">
+        </div>
     </jsp:body>
 </t:wrapper>

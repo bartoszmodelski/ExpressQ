@@ -51,8 +51,6 @@
                             }
                         }
                     %>
-                    <input type="button" class="btn btn-primary btn-small" value="Delete Selected Users"
-                           onclick="deleteRecord();">
                 </form>
             </table>
         </div>
