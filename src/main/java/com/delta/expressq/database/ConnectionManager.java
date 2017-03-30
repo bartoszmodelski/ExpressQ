@@ -16,7 +16,11 @@ public class ConnectionManager {
     private static final String DB_USER = "b02576368bd1b5";
     private static final String DB_PASS = "6d1d4ae1";
 
-    // Method controlling connections to the database
+    /**
+     * This method controls connections to the database
+     * @return conn if connection is successful, otherwise return an error message.
+     * @throws ConnectionManagerException
+     */
     private static Connection getConnection() throws ConnectionManagerException {
         try {
 			Class.forName(JDBC_DRIVER);
@@ -32,6 +36,12 @@ public class ConnectionManager {
         }
     }
 
+    /**
+     * Close's connections to database when method is finished
+     * @param conn 
+     * @param pstmt
+     * @param rs
+     */
     private static void cleanup(Connection conn, PreparedStatement pstmt, ResultSet rs) {
         try {
             if (pstmt != null) {
