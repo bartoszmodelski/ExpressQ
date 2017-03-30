@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -36,7 +35,15 @@ public class MainActivity extends AppCompatActivity {
     public void login(View view) {
         String username = ((EditText) findViewById(R.id.editText2)).getText().toString().trim();
         String APIkey = ((EditText) findViewById(R.id.editText3)).getText().toString().trim();
-        //try
+
+        if (username.isEmpty()) {
+            showToast("Username cannot be empty.");
+            return;
+        } else if (APIkey.isEmpty()) {
+            showToast("APIkey cannot be empty.");
+            return;
+        }
+
         try {
             cm = new ConnectionManager(url, username, APIkey, this,
                     MainActivity.class.getMethod("onResponseUpcomingOrders", List.class),
@@ -46,25 +53,22 @@ public class MainActivity extends AppCompatActivity {
             showToast("NSME Java Reflection Error: please contact SwiftQ team. " +
                     "Content of exception: " + e.getMessage());
         }
-        //catch unsuccessful log-ins
         cm.requestCheckCredentials();
     }
 
-    private void handleTimer()
-    {
-        //This method is called directly by the timer
-        //and runs in the same thread as the timer.
-
+    //This method is called directly by the timer
+    //and runs in the same thread as the timer.
+    private void handleTimer() {
         //We call the method that will work with the UI
         //through the runOnUiThread method.
         this.runOnUiThread(tick);
     }
 
+
+    //This method runs in the same thread as the UI.
     private Runnable tick = new Runnable() {
         public void run() {
             updateListing();
-            //This method runs in the same thread as the UI.
-            //Do something to the UI thread here
         }
     };
 
@@ -121,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean scanning = false;
+
     public void scan(View v) {
         scanning = true;
         scanner.start();
@@ -128,10 +133,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onScanned(String text) {
         scanning = false;
+        cm.requestOrder(text);
         startListing();
     }
 
     private boolean exit = false;
+
     @Override
     public void onBackPressed() {
         if (scanning) {

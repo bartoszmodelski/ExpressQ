@@ -1,15 +1,13 @@
 package com.delta.expressq;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
-import static android.Manifest.permission.*;
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.GET_ACCOUNTS;
 import static android.support.v4.app.ActivityCompat.requestPermissions;
 
 class PermissionChecker {
@@ -20,13 +18,11 @@ class PermissionChecker {
         return mainActivityHandle.getApplicationContext();
     }
 
-    public PermissionChecker(MainActivity mainActivityHandle)
-    {
+    public PermissionChecker(MainActivity mainActivityHandle) {
         this.mainActivityHandle = mainActivityHandle;
     }
 
-    public void check()
-    {
+    public void check() {
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             if (checkPermission()) {

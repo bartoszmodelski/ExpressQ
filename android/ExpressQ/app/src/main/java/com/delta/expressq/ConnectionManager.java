@@ -25,8 +25,8 @@ public class ConnectionManager {
     private final String minutes = "30";
     private final MainActivity activity;
     private final Method replyWithUpcomingOrders, processCheckCredentialsReplyMethod,
-        replyWithOrder, processOrderReplyMethod, processUpcomingOrdersReplyMethod,
-        replyWithCorrectCredentials;
+            replyWithOrder, processOrderReplyMethod, processUpcomingOrdersReplyMethod,
+            replyWithCorrectCredentials;
 
     public ConnectionManager(String url, String username, String APIkey, MainActivity activity,
                              Method replyWithUpcomingOrders, Method replyWithOrder,
@@ -57,7 +57,7 @@ public class ConnectionManager {
 
     public void requestUpdateStatus(String transactionID, String status) {
         requestHttp(url + "?name=" + username + "&APIpass=" + APIkey
-                + "&transactionID=" + transactionID + "&status=" + status,
+                        + "&transactionID=" + transactionID + "&status=" + status,
                 null);
     }
 
@@ -123,7 +123,7 @@ public class ConnectionManager {
 
     public void requestOrder(String qrcode) {
         requestHttp(url + "?name=" + username + "&APIpass=" + APIkey + "&transactionID=" + qrcode,
-                        processOrderReplyMethod);
+                processOrderReplyMethod);
     }
 
     public void processOrderReply(String response) {
@@ -191,7 +191,7 @@ public class ConnectionManager {
                         } else if (responseFormatted.equals("unknown_error")) {
                             showError("Unknown error. If it persists contact SwiftQ team.");
                         } else if (callback != null) {
-                                invokeMethod(callback, responseFormatted);
+                            invokeMethod(callback, responseFormatted);
                         }
                     }
                 },

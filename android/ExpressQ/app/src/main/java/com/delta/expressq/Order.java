@@ -40,7 +40,7 @@ public class Order {
         sb.append("\nOrder status: " + getStatus() + ".");
         sb.append("\nPrice paid: £" + String.format("%.2f", price) + ".");
         sb.append("\n\nPurchase:");
-        for (Map.Entry<Item, Integer> entry: items.entrySet()) {
+        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
             sb.append(String.format("\n%3d - %s", entry.getValue(), entry.getKey().getName()));
             entry.getValue();
         }
@@ -66,7 +66,7 @@ public class Order {
         sb.append("\nFull name: " + fullname + ".");
         sb.append("\nOrder status: " + getStatus() + ".");
         sb.append("\n\nPurchase:");
-        for (Map.Entry<Item, Integer> entry: items.entrySet()) {
+        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
             sb.append(String.format("\n%3d - %s", entry.getValue(), entry.getKey().getName()));
             entry.getValue();
         }
