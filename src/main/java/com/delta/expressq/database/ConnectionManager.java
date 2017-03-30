@@ -887,6 +887,7 @@ public class ConnectionManager {
 			pstmt.setInt(1, venueid);
 			pstmt.setString(2, description);
 			pstmt.executeUpdate();
+			cleanup (conn, pstmt, null);
         }catch (SQLException sqle) {
             throw new ConnectionManagerException(sqle);
         }
@@ -908,6 +909,7 @@ public class ConnectionManager {
                 stmt.setInt(1, k);
                 stmt.executeUpdate();
             }
+            cleanup(conn, null, null);
         } catch (Exception ex) {
         	throw new ConnectionManagerException(ex);
         }
@@ -1003,6 +1005,7 @@ public class ConnectionManager {
 			pstmt.setString(6, allergens);
 			pstmt.setInt(7, preparationtime);
 			pstmt.executeUpdate();
+			cleanup(conn, pstmt, null);
         }catch (SQLException sqle) {
             throw new ConnectionManagerException(sqle);
         }
@@ -1024,6 +1027,7 @@ public class ConnectionManager {
                 stmt.setInt(1, k);
                 stmt.executeUpdate();
             }
+            cleanup(conn, null, null);
         } catch (Exception ex) {
         	throw new ConnectionManagerException(ex);
         }
