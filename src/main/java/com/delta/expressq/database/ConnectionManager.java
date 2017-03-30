@@ -85,7 +85,7 @@ public class ConnectionManager {
 	*	@param 		transactionID 	id of needed transaction
 	*	@param		name 			venue name
 	*	@param		APIpass 		venue password for mobile application
-	*	@returns 	details of needed transaction as transaction object
+	*	@return 	details of needed transaction as transaction object
 	*/
     public static Transaction getTransaction(String name, String APIpass, int transactionID) throws ConnectionManagerException {
         try {
@@ -157,7 +157,6 @@ public class ConnectionManager {
      *	@param		name 			venue name
      *	@param		APIpass 		venue password for mobile application
      *	@param	    status 		    new status
-     *	@returns 	details of needed transaction as transaction object
      */
      public static void updateTransactionStatus(String name, String APIpass, int transactionID, int status)
                     throws ConnectionManagerException {
@@ -193,7 +192,7 @@ public class ConnectionManager {
 	*	@param 		minutes 		only show transactions planned within this time from now
 	*	@param		name 			venue name
 	*	@param		APIpass 		venue password for mobile application
-	*	@returns 	list of ids (integers)
+	*	@return 	list of ids (integers)
 	*/
 	public static List<Integer> getIDsOfUpcomingTransactions(String name, String APIpass, int minutes) throws ConnectionManagerException {
 		PreparedStatement pstmt;
@@ -229,7 +228,7 @@ public class ConnectionManager {
      *	@param 		minutes 	    scope of upcomingness
      *	@param		name 			venue name
      *	@param		APIpass 		venue password for mobile application
-     *	@returns 	details of needed transaction as transaction object
+     *	@return 	details of needed transaction as transaction object
      */
      public static Map<Transaction, Map<Item, Integer>> getUpcomingOrders(String name, String APIpass, int minutes) throws ConnectionManagerException {
          try {
@@ -294,7 +293,7 @@ public class ConnectionManager {
 	/**
 	*	Method gets items and their quantities for given transaction.
 	*	@param 		transactionID 	id of transaction
-	*	@returns 	hashmap of item and quantity
+	*	@return 	hashmap of item and quantity
 	*/
     public static HashMap getItemsInTransaction(int transactionID) throws ConnectionManagerException {
         PreparedStatement pstmt;
@@ -459,7 +458,7 @@ public class ConnectionManager {
    /**
 	*	Method gets details of requested items.
 	*	@param 		ids				list of items' ids
-	*	@returns 	list of Item objects
+	*	@return 	list of Item objects
 	*/
     public static ArrayList<Item> getItemsByIDs(List<Integer> ids) throws ConnectionManagerException {
         //to avoid sending unprepared statements (query had one hardcoded Item)
@@ -498,7 +497,7 @@ public class ConnectionManager {
 	*	Method puts new order into database.
 	*	@param 		user			username of customer
 	*	@param		order			Order object containing order details
-	*	@returns 	id of just added transaction
+	*	@return 	id of just added transaction
 	*/
     public static int newOrder(String user, Order order) throws ConnectionManagerException {
         try {
@@ -815,9 +814,6 @@ public class ConnectionManager {
      * Returns user object corresponding to given username
      *
      * @param username	sought user's username
-     * @param email		email value to be written to database
-     * @param fname		first name value to be written to database
-     * @param lname		last name value to br written to database
      * @return			user object if found, null otherwise
      * @throws ConnectionManagerException
      */
