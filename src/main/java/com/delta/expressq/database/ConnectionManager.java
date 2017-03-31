@@ -16,7 +16,11 @@ public class ConnectionManager {
     private static final String DB_USER = "b02576368bd1b5";
     private static final String DB_PASS = "6d1d4ae1";
 
-    // Method controlling connections to the database
+    /**
+     * This method controls connections to the database
+     * @return conn if connection is successful, otherwise return an error message.
+     * @throws ConnectionManagerException
+     */
     private static Connection getConnection() throws ConnectionManagerException {
         try {
 			Class.forName(JDBC_DRIVER);
@@ -32,6 +36,12 @@ public class ConnectionManager {
         }
     }
 
+    /**
+     * Close's connections to database when method is finished
+     * @param conn 
+     * @param pstmt
+     * @param rs
+     */
     private static void cleanup(Connection conn, PreparedStatement pstmt, ResultSet rs) {
         try {
             if (pstmt != null) {
@@ -85,7 +95,7 @@ public class ConnectionManager {
 	*	@param 		transactionID 	id of needed transaction
 	*	@param		name 			venue name
 	*	@param		APIpass 		venue password for mobile application
-	*	@returns 	details of needed transaction as transaction object
+	*	@return 	details of needed transaction as transaction object
 	*/
     public static Transaction getTransaction(String name, String APIpass, int transactionID) throws ConnectionManagerException {
         try {
@@ -157,7 +167,6 @@ public class ConnectionManager {
      *	@param		name 			venue name
      *	@param		APIpass 		venue password for mobile application
      *	@param	    status 		    new status
-     *	@returns 	details of needed transaction as transaction object
      */
      public static void updateTransactionStatus(String name, String APIpass, int transactionID, int status)
                     throws ConnectionManagerException {
@@ -193,7 +202,7 @@ public class ConnectionManager {
 	*	@param 		minutes 		only show transactions planned within this time from now
 	*	@param		name 			venue name
 	*	@param		APIpass 		venue password for mobile application
-	*	@returns 	list of ids (integers)
+	*	@return 	list of ids (integers)
 	*/
 	public static List<Integer> getIDsOfUpcomingTransactions(String name, String APIpass, int minutes) throws ConnectionManagerException {
 		PreparedStatement pstmt;
@@ -229,7 +238,7 @@ public class ConnectionManager {
      *	@param 		minutes 	    scope of upcomingness
      *	@param		name 			venue name
      *	@param		APIpass 		venue password for mobile application
-     *	@returns 	details of needed transaction as transaction object
+     *	@return 	details of needed transaction as transaction object
      */
      public static Map<Transaction, Map<Item, Integer>> getUpcomingOrders(String name, String APIpass, int minutes) throws ConnectionManagerException {
          try {
@@ -294,7 +303,7 @@ public class ConnectionManager {
 	/**
 	*	Method gets items and their quantities for given transaction.
 	*	@param 		transactionID 	id of transaction
-	*	@returns 	hashmap of item and quantity
+	*	@return 	hashmap of item and quantity
 	*/
     public static HashMap getItemsInTransaction(int transactionID) throws ConnectionManagerException {
         PreparedStatement pstmt;
@@ -459,7 +468,7 @@ public class ConnectionManager {
    /**
 	*	Method gets details of requested items.
 	*	@param 		ids				list of items' ids
-	*	@returns 	list of Item objects
+	*	@return 	list of Item objects
 	*/
     public static ArrayList<Item> getItemsByIDs(List<Integer> ids) throws ConnectionManagerException {
         //to avoid sending unprepared statements (query had one hardcoded Item)
@@ -498,7 +507,7 @@ public class ConnectionManager {
 	*	Method puts new order into database.
 	*	@param 		user			username of customer
 	*	@param		order			Order object containing order details
-	*	@returns 	id of just added transaction
+	*	@return 	id of just added transaction
 	*/
     public static int newOrder(String user, Order order) throws ConnectionManagerException {
         try {
@@ -815,9 +824,6 @@ public class ConnectionManager {
      * Returns user object corresponding to given username
      *
      * @param username	sought user's username
-     * @param email		email value to be written to database
-     * @param fname		first name value to be written to database
-     * @param lname		last name value to br written to database
      * @return			user object if found, null otherwise
      * @throws ConnectionManagerException
      */
@@ -881,6 +887,7 @@ public class ConnectionManager {
 			pstmt.setInt(1, venueid);
 			pstmt.setString(2, description);
 			pstmt.executeUpdate();
+			cleanup (conn, pstmt, null);
         }catch (SQLException sqle) {
             throw new ConnectionManagerException(sqle);
         }
@@ -902,6 +909,7 @@ public class ConnectionManager {
                 stmt.setInt(1, k);
                 stmt.executeUpdate();
             }
+            cleanup(conn, null, null);
         } catch (Exception ex) {
         	throw new ConnectionManagerException(ex);
         }
@@ -997,6 +1005,7 @@ public class ConnectionManager {
 			pstmt.setString(6, allergens);
 			pstmt.setInt(7, preparationtime);
 			pstmt.executeUpdate();
+			cleanup(conn, pstmt, null);
         }catch (SQLException sqle) {
             throw new ConnectionManagerException(sqle);
         }
@@ -1018,6 +1027,7 @@ public class ConnectionManager {
                 stmt.setInt(1, k);
                 stmt.executeUpdate();
             }
+            cleanup(conn, null, null);
         } catch (Exception ex) {
         	throw new ConnectionManagerException(ex);
         }

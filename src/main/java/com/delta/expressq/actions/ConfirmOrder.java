@@ -78,11 +78,10 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			params.put("currency", "gbp");
 			params.put("description", user.getFirstName() + " " + user.getLastName() + " ordered from venue with id" + order.getVenue());
 			params.put("source", token);
-			Charge charge = Charge.create(params);
 			if ((hour.equals("unspecified")) && (minute.equals("unspecified"))) {
-				return placeOrderWithoutTime(username);
+				return placeOrderWithoutTime(username, params);
 			} else {
-				return placeOrderWithTime(minute, hour, username);
+				return placeOrderWithTime(minute, hour, username, params);
 			}
 		}
 		//if not logged redirect to login page
@@ -97,9 +96,10 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	 * @param minute MM in HH:MM time format
 	 * @param hour HH in HH:MM time format
 	 * @param username user for which order should be placed
+	 * @param params 
 	 * @return "success", "error", "db_error"
 	 */
-	private String placeOrderWithTime(String minute, String hour, String username) {
+	private String placeOrderWithTime(String minute, String hour, String username, Map<String, Object> params) {
 		int hourConverted, minuteConverted;
 		try {
 			hourConverted = convertHour(hour);
@@ -131,6 +131,8 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			message.setSubject(subject);
 			message.setText(body);
 			Transport.send(message);
+			Charge charge = Charge.create(params);
+
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -144,9 +146,10 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	/**
 	 * Place order for specific user, without specifying time. Sends a confirmation email.
 	 * @param username user for which order should be placed
+	 * @param params 
 	 * @return "success", "db_error"
 	 */
-	private String placeOrderWithoutTime(String username) {
+	private String placeOrderWithoutTime(String username, Map<String, Object> params) {
 		try {
 			transactionID = ActiveRecord.confirmOrder(username);
 		} catch (ConnectionManagerException e) {
@@ -168,6 +171,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			message.setSubject(subject);
 			message.setText(body);
 			Transport.send(message);
+			Charge charge = Charge.create(params);
 		}
 		catch(Exception e){
 			e.printStackTrace();
