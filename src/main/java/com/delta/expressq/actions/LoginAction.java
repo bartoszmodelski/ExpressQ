@@ -8,6 +8,7 @@ public class LoginAction extends ActionSupportWithSession {
 	private static final long serialVersionUID = 1L;
 	private String username = "";
 	private String password = "";
+	public String venueID = "";
 
 	/**
 	 * If the user is logged in they are unable to view the log in page.
@@ -19,7 +20,7 @@ public class LoginAction extends ActionSupportWithSession {
 			return SUCCESS;
 		}
 	}
-	
+
 	/**
 	 * Used to redirect the user to the home page after they have logged in.
 	 * @return SUCCESS
@@ -61,7 +62,13 @@ public class LoginAction extends ActionSupportWithSession {
 					return LOGIN;
 				} else {
 					session.put("user", user);
-					return SUCCESS;
+					if (isRedirectDeclared()) {
+						venueID = getRedirectURL();
+						removeRedirect();
+						return "show_venue";
+					} else {
+						return SUCCESS;
+					}
 				}
 			} catch (ConnectionManagerException e) {
 				return "db_error";
@@ -86,5 +93,13 @@ public class LoginAction extends ActionSupportWithSession {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setVenue(String venueID) {
+		this.venueID = venueID;
+	}
+
+	public String getVenue() {
+		return venueID;
 	}
 }

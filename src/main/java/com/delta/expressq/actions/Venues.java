@@ -12,12 +12,24 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 	public Map<String, Integer> venues = new HashMap<String, Integer>();
 	protected Map<String, ArrayList<Item>> items = new HashMap<String, ArrayList<Item>>();
 	public String id = null;
+	public String populateFieldsScript = "";
 	public String venueName;
 
 	/**
 	 * Lists the venues for the user to choose, then given a venue choice produces a list of items.
 	 */
 	public String execute() throws Exception{
+		if (isOrderStoredTemp()) {
+			Map<String, String> itemsAndQuantities = getOrderTemp();
+			StringBuilder sb = new StringBuilder();
+			for (Map.Entry<String, String> entry: itemsAndQuantities.entrySet()) {
+				sb.append("document.getElementById(\"summary_itemsToOrder_'" +
+					entry.getKey() + "'_\").value = " + entry.getValue() + ";\n");
+			}
+			populateFieldsScript = sb.toString();
+			removeOrderTemp();
+		}
+
 		if (id == null) {
 			ConnectionManager.setVenues(venues);
 			return "listVenues";
@@ -54,6 +66,14 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 
 	public Map<String, ArrayList<Item>> getItems() {
 		return items;
+	}
+
+	public String getPopulateFieldsScript() {
+		return populateFieldsScript;
+	}
+
+	public void setPopulateFieldsScript(String populateFieldsScript) {
+		this.populateFieldsScript = populateFieldsScript;
 	}
 
 	public void setServletRequest(HttpServletRequest request) {

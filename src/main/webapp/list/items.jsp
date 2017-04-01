@@ -9,10 +9,30 @@
     <jsp:attribute name="navbar">
 		<jsp:include page="/partials/navbar.jsp"/>
 	</jsp:attribute>
+    <jsp:attribute name="script">
+        <script>
+            if(window.attachEvent) {
+                window.attachEvent('onload', populate);
+            } else {
+                if(window.onload) {
+                    var curronload = window.onload;
+                    var newonload = function(evt) {
+                        curronload(evt);
+                        populate(evt);
+                        };
+                    window.onload = newonload;
+                } else {
+                    window.onload = populate;
+                }
+            }
+            function populate() {
+                ${populateFieldsScript}
+            }
+        </script>
+    </jsp:attribute>
     <jsp:body>
         <div class="container">
             <h2 class="text-center"><s:property value="venueName"/></h2>
-            <logic:iterate>
                 <s:form method="POST" action="summary">
                     <s:iterator value="items">
                         <h3><s:property value="key"/></h3>
@@ -41,7 +61,6 @@
                     <s:submit value="Purchase!" cssClass="btn btn-primary btn-sm" cssStyle="margin-bottom: 10px;"/>
                     <input type="hidden" name="venue" value="${id}">
                 </s:form>
-            </logic:iterate>
         </div>
     </jsp:body>
 </t:wrapper>

@@ -23,6 +23,38 @@ public class ActionSupportWithSession extends ActionSupport implements SessionAw
 			//System.out.println(getUserObject().getUsername());
 	}
 
+	public void storeOrderTemp(Map<String, String> itemsToOrder) {
+		session.put("itemsToOrder", itemsToOrder);
+	}
+
+	public void removeOrderTemp() {
+		session.remove("itemsToOrder");
+	}
+
+	public Map<String, String> getOrderTemp() {
+		return (Map<String, String>)session.get("itemsToOrder");
+	}
+
+	public boolean isOrderStoredTemp() {
+		return session.containsKey("itemsToOrder");
+	}
+
+	public void declareRedirectAfterLogin(String value) {
+		session.put("redirect", value);
+	}
+
+	public boolean isRedirectDeclared() {
+		return session.containsKey("redirect");
+	}
+
+	public String getRedirectURL() {
+		return (String)session.get("redirect");
+	}
+
+	public void removeRedirect() {
+		session.remove("redirect");
+	}
+
 	public boolean isLoggedIn() {
 		return session.containsKey("user");
 	}

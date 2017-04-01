@@ -18,7 +18,7 @@ public class Summary extends ActionSupportWithSession {
 	private String venue = new String();
 	public Double total;
 	public String amount;
-	
+
 	/**
 	 * Gathers the items the user has placed for order and displays it.
 	 */
@@ -29,26 +29,26 @@ public class Summary extends ActionSupportWithSession {
 				System.out.println("itemsToOrder is null: implement a try to retrieve it from active record");
 				return ERROR;
 			}
-	
+
 			//itemsToOrder is a following map [ItemId] = Quantity,
 			// thus it has to be converted from String, String to Int, Int
 			Map<Integer, Integer>  itemsToOrderConverted = new HashMap<Integer, Integer>();
 			int id, quantity;
 			for (Map.Entry<String, String> entry : itemsToOrder.entrySet()) {
-	
+
 				try {
 					id = Integer.parseInt(entry.getKey());
 					quantity = Integer.parseInt(entry.getValue());
 				} catch (Exception e) {
 					return ERROR;
 				}
-	
+
 				//omit items whose quantity is lower than 1
 				if (quantity > 0) {
 					itemsToOrderConverted.put(id, quantity);
 				}
 			}
-	
+
 			//Retrieve Item objects by IDs
 			try {
 				items = ConnectionManager.getItemsByIDs(new ArrayList(itemsToOrderConverted.keySet()));
@@ -62,7 +62,7 @@ public class Summary extends ActionSupportWithSession {
 					order.add(i, itemsToOrderConverted.get(i.getID()));
 					System.out.println(i.toString() + " " + Integer.toString(itemsToOrderConverted.get(i.getID())));
 				}
-		
+
 				try {
 					order.setVenue(Integer.parseInt(venue));
 				} catch (Exception e) {
@@ -71,8 +71,11 @@ public class Summary extends ActionSupportWithSession {
 				ActiveRecord.setOrderForUser(user.getUsername(), order);
 				return SUCCESS;
 			}
-		}else{
-			return "error";
+		} else {
+			declareRedirectAfterLogin(venue);
+			storeOrderTemp(itemsToOrder);
+			addWarningMessage("Hey!", " You have to be logged in to order.");
+			return "login_noredirect";
 		}
 	}
 
@@ -99,24 +102,24 @@ public class Summary extends ActionSupportWithSession {
     public void setItemsToOrder(Map<String, String> order) {
            this.itemsToOrder = itemsToOrder;
     }
-    
+
     public Double getTotal(){
     	total = order.getTotal();
     	return total;
     }
-    
+
     public void setTotal(Double total){
     	this.total = total;
     }
-    
+
     public String getAmount(){
     	total = order.getTotal();
-    	DecimalFormat df = new DecimalFormat("#.00"); 
+    	DecimalFormat df = new DecimalFormat("#.00");
     	amount = df.format(total);
     	amount = amount.replace(".","");
     	return amount;
     }
-    
+
     public void setAmount(String amount){
     	this.amount = amount;
     }

@@ -29,16 +29,16 @@ public class Order {
 
     public String getAmount(){
     	total = getTotal();
-    	DecimalFormat df = new DecimalFormat("#.00"); 
+    	DecimalFormat df = new DecimalFormat("#.00");
     	amount = df.format(total);
     	amount = amount.replace(".","");
     	return amount;
     }
-    
+
     public void setAmount(String amount){
     	this.amount = amount;
     }
-	
+
 	public String generateAndSetKeywords() {
 		this.keywords = KeywordsGenerator.getKeywords();
 		return this.keywords;
@@ -62,6 +62,7 @@ public class Order {
 
 
 	public Order(Map<Item, Integer> itemsAndQuantities) {
+		this();
 		setItemsAndQuantities(itemsAndQuantities);
 	}
 

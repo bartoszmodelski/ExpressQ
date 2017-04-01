@@ -16,7 +16,9 @@
 </head>
 <body>
 <jsp:invoke fragment="navbar"/>
-<jsp:include page="/messages.jsp"/>
+<div class="container">
+    <jsp:include page="/messages.jsp"/>
+</div>
 <jsp:doBody/>
 <footer class="footer">
     <div class="container">

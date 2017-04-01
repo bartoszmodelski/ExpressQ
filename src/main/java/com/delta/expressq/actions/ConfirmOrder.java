@@ -41,15 +41,15 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.port", "465");
 	}
-	
+
 	/**
 	 * Main function called by struts, when routed to "confirm". Retrives payment details inputted by user and creates a charge to our Stripe account.
 	 * @return "success", "db_error", "login", "error"
-	 * @throws APIException 
-	 * @throws CardException 
-	 * @throws APIConnectionException 
-	 * @throws InvalidRequestException 
-	 * @throws AuthenticationException 
+	 * @throws APIException
+	 * @throws CardException
+	 * @throws APIConnectionException
+	 * @throws InvalidRequestException
+	 * @throws AuthenticationException
 	 */
 	public String execute() throws AuthenticationException, InvalidRequestException, APIConnectionException, CardException, APIException {
 		//if logged in attempt at placing order
@@ -58,10 +58,10 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			String username = getUserObject().getUsername();
 			to = user.getEmail();
 			if (!ActiveRecord.orderExists(username)) {	//if order does not exists
-				addActionError("Internal error. Please place order again.");
+				addDangerMessage("Internal error. ", "Please place order again.");
 				return "order_again";
 			} else if (!ActiveRecord.isStillValid(username)) { //if order was placed too long ago
-				addActionError("Order was not confirmed within allowed time (2 hours). "
+				addDangerMessage("Error. ", "Order was not confirmed within allowed time (2 hours). "
 					+ "Please place it again.");
 				ActiveRecord.removeOrderFromAR(username);
 				return "order_again";
@@ -69,10 +69,10 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			//Setup for stripe charge
 			Stripe.apiKey = "sk_test_U1DddsCH9sv1xbGdcv1G7ZRl";
 			String token = request.getParameter("stripeToken");
-			
+
 			System.out.println(ActiveRecord.getMaximalConfirmationTimeAsString());
 			Order order = ActiveRecord.getOrder(username);
-			
+
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("amount", order.getAmount());
 			params.put("currency", "gbp");
@@ -83,10 +83,10 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			} else {
 				return placeOrderWithTime(minute, hour, username, params);
 			}
+		} else {
+			addWarningMessage("Hey!", " You have to be logged in to order.");
+			return "login_noredirect";
 		}
-		//if not logged redirect to login page
-		addActionError("You have to be logged in to place order.");
-		return "login";
 	}
 
 
@@ -96,7 +96,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	 * @param minute MM in HH:MM time format
 	 * @param hour HH in HH:MM time format
 	 * @param username user for which order should be placed
-	 * @param params 
+	 * @param params
 	 * @return "success", "error", "db_error"
 	 */
 	private String placeOrderWithTime(String minute, String hour, String username, Map<String, Object> params) {
@@ -118,7 +118,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			return "db_error";
 		} try{
 			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
-				protected PasswordAuthentication 
+				protected PasswordAuthentication
 				getPasswordAuthentication() {
 				return new PasswordAuthentication(from, password);
 				}
@@ -126,7 +126,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			body ="Order was successful. Your order number is: " + Integer.toString(getTransactionID());
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
-			message.setRecipients(Message.RecipientType.TO, 
+			message.setRecipients(Message.RecipientType.TO,
 			InternetAddress.parse(to));
 			message.setSubject(subject);
 			message.setText(body);
@@ -146,7 +146,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	/**
 	 * Place order for specific user, without specifying time. Sends a confirmation email.
 	 * @param username user for which order should be placed
-	 * @param params 
+	 * @param params
 	 * @return "success", "db_error"
 	 */
 	private String placeOrderWithoutTime(String username, Map<String, Object> params) {
@@ -155,10 +155,10 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 		} catch (ConnectionManagerException e) {
 			addActionError("Order not placed.");
 			return "db_error";
-		} 
+		}
 		try{
 			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
-				protected PasswordAuthentication 
+				protected PasswordAuthentication
 				getPasswordAuthentication() {
 				return new PasswordAuthentication(from, password);
 				}
@@ -166,7 +166,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			body ="Order was successful. Your order number is: " + Integer.toString(getTransactionID());
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
-			message.setRecipients(Message.RecipientType.TO, 
+			message.setRecipients(Message.RecipientType.TO,
 			InternetAddress.parse(to));
 			message.setSubject(subject);
 			message.setText(body);
@@ -241,7 +241,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
-	
+
 	public HttpServletRequest getServletRequest(){
 		return request;
 	}

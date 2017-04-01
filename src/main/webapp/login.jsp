@@ -10,9 +10,7 @@
 		<jsp:include page="partials/navbar.jsp"/>
 	</jsp:attribute>
     <jsp:body>
-        <div class=container>
-            <s:actionmessage/>
-            <s:actionerror/>
+        <div class="container">
             <br>
             <s:form id="idLoginForm" action="loginUser" cssClass="form-signin">
                 <h2 class="form-signin-heading text-center">Login below</h2>
@@ -27,4 +25,3 @@
         <link rel="stylesheet" href="css/login.css">
     </jsp:body>
 </t:wrapper>
-
