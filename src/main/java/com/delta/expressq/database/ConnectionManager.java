@@ -16,6 +16,11 @@ public class ConnectionManager {
     private static final String DB_USER = "b02576368bd1b5";
     private static final String DB_PASS = "6d1d4ae1";
 
+    //Types of groupings (used in analytics)
+    public static final int perWeek = 0;
+    public static final int perMonth = 1;
+
+
     /**
      * This method controls connections to the database
      * @return conn if connection is successful, otherwise return an error message.
@@ -38,7 +43,7 @@ public class ConnectionManager {
 
     /**
      * Close's connections to database when method is finished
-     * @param conn 
+     * @param conn
      * @param pstmt
      * @param rs
      */
@@ -963,7 +968,7 @@ public class ConnectionManager {
 	 * @param sectionID The sectionID that will be used to retrieve the desired items.
 	 * @throws ConnectionManagerException
 	 */
-     
+
 	public static void getItemsBySection(Map<String, Integer> items, String sectionID) throws ConnectionManagerException {
 		PreparedStatement pstmt;
 		try {
@@ -1113,10 +1118,60 @@ public class ConnectionManager {
             while (rs.next()){
             	orderDetails.put(rs.getString("transactionID"), rs.getString("totalprice"));
             }
-            cleanup(conn, null, rs);
+            cleanup(conn, pstmt, rs);
             return orderDetails;
 		}catch (Exception ex) {
             throw new ConnectionManagerException(ex);
         }
 	}
+
+    private static String parseGroupBy(int grouping)
+            throws ConnectionManagerException {
+        if (grouping == perWeek) {
+            return "week";
+        } else if (grouping == perMonth) {
+            return "month";
+        } else {
+            throw new ConnectionManagerException("Unknown grouping type. Please use constants defined in CM.");
+        }
+    }
+
+    /**
+	 * Gets overall AverageCustomerSpending per month or week.
+	 * @param venueOwnerID ID of user account with assigned venue
+	 * @param grouping grouping perMonth or perWeek
+	 * @param year year from which data should be retrieved
+     * @return pairs of ACS / month or ACS / week number
+	 * @throws ConnectionManagerException
+	 */
+    public static Map<Integer, Integer> getACS(int venueOwnerID, int grouping, int year)
+            throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        Map ACSs = new HashMap<Integer, Integer>();
+        String groupBy = parseGroupBy(grouping);
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT GROUP_CONCAT(DISTINCT Transaction.UserID) UserIDs, "
+                        + "COUNT(DISTINCT Transaction.UserID) as noCustomers, SUM(TotalPrice) as TCS, "
+		                + "ROUND(SUM(TotalPrice) / COUNT(DISTINCT Transaction.UserID)) as ACS, COUNT(*), "
+                        + "WEEK(time) as week, MONTH(time) as month "
+                    + "FROM Transaction, Venue "
+                    + "WHERE Transaction.VenueID = Venue.VenueID "
+	                    + "AND Venue.UserID = ? "
+	                    + "AND YEAR(time) = ? "
+                    + "GROUP BY " + groupBy);
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setInt(2, year);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                ACSs.put(rs.getInt(groupBy), rs.getInt("ACS"));
+            }
+            cleanup(conn, pstmt, rs);
+            return ACSs;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
 }

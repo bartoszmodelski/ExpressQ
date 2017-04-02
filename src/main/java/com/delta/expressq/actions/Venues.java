@@ -18,7 +18,7 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 	/**
 	 * Lists the venues for the user to choose, then given a venue choice produces a list of items.
 	 */
-	public String execute() throws Exception{
+	public String execute() {
 		if (isOrderStoredTemp()) {
 			Map<String, String> itemsAndQuantities = getOrderTemp();
 			StringBuilder sb = new StringBuilder();
@@ -30,17 +30,24 @@ public class Venues extends ActionSupportWithSession implements ServletRequestAw
 			removeOrderTemp();
 		}
 
-		if (id == null) {
-			ConnectionManager.setVenues(venues);
-			return "listVenues";
-		}
-		ConnectionManager.setItems(items, id);
-		//System.out.println(items.toString());
-		if(items.toString() == "{}") { //can be better
+		try {
+			if (id == null) {
+				ConnectionManager.setVenues(venues);
+				return "listVenues";
+			}
+
+
+			ConnectionManager.setItems(items, id);
+
+
+			if(items.toString() == "{}") { //can be better
+				return ERROR;
+			}else{
+				venueName = ConnectionManager.getVenueName(id);
+				return "listItems";
+			}
+		} catch (Exception e) {
 			return ERROR;
-		}else{
-			venueName = ConnectionManager.getVenueName(id);
-			return "listItems";
 		}
 	}
 
