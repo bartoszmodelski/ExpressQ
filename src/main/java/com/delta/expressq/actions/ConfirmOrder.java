@@ -13,9 +13,11 @@ import com.stripe.exception.InvalidRequestException;
 import com.stripe.model.Charge;
 
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +42,28 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 		properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.port", "465");
+	}
+	
+	/**
+	 * Sends confirmation email when order is successful
+	 * @throws AddressException
+	 * @throws MessagingException
+	 */
+	public void sendEmail() throws AddressException, MessagingException{
+		Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+			protected PasswordAuthentication
+			getPasswordAuthentication() {
+			return new PasswordAuthentication(from, password);
+			}
+		});
+		body ="Order was successful. Your order number is: " + Integer.toString(getTransactionID());
+		Message message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(from));
+		message.setRecipients(Message.RecipientType.TO,
+		InternetAddress.parse(to));
+		message.setSubject(subject);
+		message.setText(body);
+		Transport.send(message);
 	}
 
 	/**
@@ -117,20 +141,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			addActionError("Order not placed.");
 			return "db_error";
 		} try{
-			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
-				protected PasswordAuthentication
-				getPasswordAuthentication() {
-				return new PasswordAuthentication(from, password);
-				}
-			});
-			body ="Order was successful. Your order number is: " + Integer.toString(getTransactionID());
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
-			message.setRecipients(Message.RecipientType.TO,
-			InternetAddress.parse(to));
-			message.setSubject(subject);
-			message.setText(body);
-			Transport.send(message);
+			sendEmail();
 			Charge charge = Charge.create(params);
 
 		}
@@ -157,20 +168,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			return "db_error";
 		}
 		try{
-			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
-				protected PasswordAuthentication
-				getPasswordAuthentication() {
-				return new PasswordAuthentication(from, password);
-				}
-			});
-			body ="Order was successful. Your order number is: " + Integer.toString(getTransactionID());
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
-			message.setRecipients(Message.RecipientType.TO,
-			InternetAddress.parse(to));
-			message.setSubject(subject);
-			message.setText(body);
-			Transport.send(message);
+			sendEmail();
 			Charge charge = Charge.create(params);
 		}
 		catch(Exception e){
