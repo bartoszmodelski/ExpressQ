@@ -50,7 +50,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	 * @throws AddressException
 	 * @throws MessagingException
 	 */
-	public void sendEmail(String username) throws AddressException, MessagingException{
+	public void sendEmail() throws AddressException, MessagingException{
 		Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
 			protected PasswordAuthentication
 			getPasswordAuthentication() {
@@ -143,7 +143,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			addActionError("Order not placed.");
 			return "db_error";
 		} try{
-			sendEmail(username);
+			sendEmail();
 			Charge charge = Charge.create(params);
 		}
 		catch(Exception e){
@@ -169,7 +169,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			return "db_error";
 		}
 		try{
-			sendEmail(username);
+			sendEmail();
 			Charge charge = Charge.create(params);
 		}
 		catch(Exception e){
