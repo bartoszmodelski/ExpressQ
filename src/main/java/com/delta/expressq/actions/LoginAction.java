@@ -22,14 +22,6 @@ public class LoginAction extends ActionSupportWithSession {
 	}
 
 	/**
-	 * Used to redirect the user to the home page after they have logged in.
-	 * @return SUCCESS
-	 */
-	public String home() {
-		return SUCCESS;
-	}
-
-	/**
 	 * Removes the logged in user from the session.
 	 * @return SUCCESS
 	 */
