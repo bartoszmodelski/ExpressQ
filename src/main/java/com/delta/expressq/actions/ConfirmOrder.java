@@ -46,23 +46,24 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	
 	/**
 	 * Sends confirmation email when order is successful
+	 * @param username 
 	 * @throws AddressException
 	 * @throws MessagingException
 	 */
-	public void sendEmail() throws AddressException, MessagingException{
+	public void sendEmail(String username) throws AddressException, MessagingException{
 		Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
 			protected PasswordAuthentication
 			getPasswordAuthentication() {
 			return new PasswordAuthentication(from, password);
 			}
 		});
-		body ="Order was successful. Your order number is: " + Integer.toString(getTransactionID());
 		Message message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(from));
 		message.setRecipients(Message.RecipientType.TO,
 		InternetAddress.parse(to));
 		message.setSubject(subject);
-		message.setText(body);
+		message.setContent("<h1>Order Successful</h1> <p>Thank you for ordering with SwiftQ. Your order number is: "  + Integer.toString(getTransactionID())
+		+ "</p>", "text/html");
 		Transport.send(message);
 	}
 
@@ -93,15 +94,16 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			//Setup for stripe charge
 			Stripe.apiKey = "sk_test_U1DddsCH9sv1xbGdcv1G7ZRl";
 			String token = request.getParameter("stripeToken");
-
+			
 			System.out.println(ActiveRecord.getMaximalConfirmationTimeAsString());
 			Order order = ActiveRecord.getOrder(username);
-
+			
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("amount", order.getAmount());
 			params.put("currency", "gbp");
 			params.put("description", user.getFirstName() + " " + user.getLastName() + " ordered from venue with id" + order.getVenue());
 			params.put("source", token);
+			
 			if ((hour.equals("unspecified")) && (minute.equals("unspecified"))) {
 				return placeOrderWithoutTime(username, params);
 			} else {
@@ -141,9 +143,8 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			addActionError("Order not placed.");
 			return "db_error";
 		} try{
-			sendEmail();
+			sendEmail(username);
 			Charge charge = Charge.create(params);
-
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -168,7 +169,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			return "db_error";
 		}
 		try{
-			sendEmail();
+			sendEmail(username);
 			Charge charge = Charge.create(params);
 		}
 		catch(Exception e){
