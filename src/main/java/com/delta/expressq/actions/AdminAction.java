@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import com.delta.expressq.database.*;
+import com.delta.expressq.util.BCrypt;
 import com.delta.expressq.util.User;
 import com.delta.expressq.util.UserNew;
 
@@ -15,6 +16,8 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	public String arrayDeletionSelection[], deleteSelection, selectedID;
 	Map userDetails;
 	User user = new User();
+	private String username, password, passwordConf, email, fName, lName;
+	private int type;
 
 	/**
 	 * Calls the DisplayUsers method within ConnectionManager to retrieve the users from the database and sets the user object to "disp"
@@ -136,6 +139,50 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 		}
 	}
 	
+	/**
+	 * Displays admin version of the registration page. This page allows the admin to specify the user type.
+	 * @return
+	 */
+	public String InsertDisplay(){
+		if(isLoggedIn()){
+			UserNew adminuser = getUserObject();
+			if (adminuser.getType() == 1){
+				return SUCCESS;
+			}else{
+				return "permission_error";
+			}
+		}else{
+			return "permission_error";
+		}
+	}
+	
+	public String InsertUser() throws ConnectionManagerException{
+		if(isLoggedIn()){
+			UserNew adminuser = getUserObject();
+			if (adminuser.getType() == 1){
+				String salt = BCrypt.gensalt(12);
+				String hashed_password = BCrypt.hashpw(password, salt);
+				if (ConnectionManager.checkUserName(username) == true) { //if the username already exists in the system inform the user. otherwise add the user details to the database
+					addInformationMessage("Alert! ", "That username already exists.");
+					return "fail";
+				}
+				else if (ConnectionManager.checkEmail(email) == true){
+					addInformationMessage("Alert! ", "That email already exists.");
+					return "fail";
+				}
+				else{
+					ConnectionManager.adminWriteUser(username, hashed_password, email, fName, lName, type);
+					addSuccessMessage("Registration Successful! ", "");
+					return "success";
+				}
+			}else{
+				return "permission_error";
+			}
+		}else{
+			return "permission_error";
+		}
+	}
+	
 	//getters and setters
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -172,5 +219,61 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 	
 	public void setUser(User user){
 		this.user = user;
+	}
+	
+	public String getUsername(){
+		return username;
+	}
+	
+	public void setUsername(String username){
+		this.username = username;
+	}
+	
+	public String getPassword(){
+		return password;
+	}
+	
+	public void setPassword(String password){
+		this.password = password;
+	}
+	
+	public String getPasswordConf(){
+		return passwordConf;
+	}
+	
+	public void setPasswordConf(String passwordConf){
+		this.passwordConf = passwordConf;
+	}
+	
+	public String getEmail(){
+		return email;
+	}
+	
+	public void setEmail(String email){
+		this.email = email;
+	}
+	
+	public String getFName(){
+		return fName;
+	}
+	
+	public void setFName(String fName){
+		this.fName = fName;
+	}
+	
+	public String getLName(){
+		return lName;
+	}
+	
+	public void setLName(String lName){
+		this.lName = lName;
+	}
+	
+	public int getType(){
+		return type;
+	}
+	
+	public void setType(int type){
+		this.type = type;
 	}
 }

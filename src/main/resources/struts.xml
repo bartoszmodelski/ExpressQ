@@ -108,6 +108,15 @@
 	<action name="update" class="com.delta.expressq.actions.AdminAction" method="UpdateUserDetails">
 	  <result name="success" type="redirect">view</result>
 	</action>
+		
+	<action name ="insertuserdisplay" class="com.delta.expressq.actions.AdminAction" method="InsertDisplay">
+		<result name = "success">/admin/insertuser.jsp</result>
+	</action>
+	
+	<action name ="insertuser" class="com.delta.expressq.actions.AdminAction" method="InsertUser">
+		<result name = "success" type="redirect">view</result>
+		<result name = "fail">/admin/insertuser.jsp</result>
+	</action>
 	<!--End of AdminAction Actions-->
 
 	<!--User Profile Action-->
@@ -121,6 +130,7 @@
 	<action name ="UserUpdate" class="com.delta.expressq.actions.UserProfileAction" method="Update">
 		<result name ="success" type="redirect">index</result>
 	</action>
+
 
 	<!--///////////////// Venue Actions /////////////////-->
 	<action name ="venuehome" class="com.delta.expressq.actions.VenueAction" method="execute">
