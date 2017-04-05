@@ -62,19 +62,14 @@ public class Registration extends ActionSupportWithSession {
 	}
 
 	/**
-	 * Calls the registerUser function if the current user does not exist or is an admin user.
+	 * Calls the registerUser function if the current user does not exist.
 	 */
 	public String execute() throws Exception{
 		if(isLoggedIn()){
-			UserNew user = getUserObject();
-				if(user.getType() == 2|| user.getType() == 0){
-					return "permission_error";
-				}else{
-					return registerUser();
-				}
+			return "permission_error";
 		}else{
 			return registerUser();
-		}
+			}
 	}
 	/**
 	 * When the registration action is called this checks if a user already exists in the database with the username and email that has been selected by the user.
