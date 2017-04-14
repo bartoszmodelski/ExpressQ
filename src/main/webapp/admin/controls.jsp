@@ -4,7 +4,7 @@
  
        <div class="container">
             <s:actionmessage/>
-            <a href="<s:url action="insert.action"/>">Insert New User</a>
+            <a href="<s:url action="insertuserdisplay"/>">Insert New User</a>
             <br><br>
             <table class="table">
                 <form name="userDisplay" method="post">

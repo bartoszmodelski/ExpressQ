@@ -35,7 +35,7 @@
         <div class="container">
             <s:form name="registration" method="POST" action="reg" onsubmit="return validateForm()"
                     cssClass="form-signin">
-                <h3 class="form-signin-heading">ExpressQ Registration</h3>
+                <h3 class="form-signin-heading">SwiftQ Registration</h3>
                 <s:textfield name="Uname" placeholder="Username" cssClass="form-signin"/>
                 <s:password name="Pass" placeholder="Password" cssClass="form-signin"/>
                 <s:password name="PassConf" placeholder="Confirm Password" cssClass="form-signin"/>

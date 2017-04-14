@@ -91,12 +91,7 @@
 
 	<!-- Delete User(s) -->
     <action name="del" class="com.delta.expressq.actions.AdminAction" method="Delete">
-      <result name="success">/admin/deletesuccess.jsp</result>
-    </action>
-
-	<!-- Insert New User -->
-    <action name="insert" class="com.delta.expressq.actions.AdminAction" method="Insert">
-      <result>registration.jsp</result>
+      <result name="success" type ="redirect">view</result>
     </action>
 
 	<!-- Edit User Display-->

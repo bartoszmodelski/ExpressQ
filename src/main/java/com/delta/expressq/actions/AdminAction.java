@@ -61,7 +61,8 @@ public class AdminAction extends ActionSupportWithSession implements ServletRequ
 						ConnectionManager.DeleteUsers(arrayDeletionSelection);
 					} catch (ConnectionManagerException e) {
 						return "db_error";
-					}	
+					}
+					addSuccessMessage("Success! ", "User(s) Deleted.");
 					return SUCCESS;
 				}
 			}else{

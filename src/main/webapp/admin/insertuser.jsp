@@ -35,14 +35,14 @@
         <div class="container">
             <s:form name="insertuser" method="POST" action="insertuser" onsubmit="return validateForm()"
                     cssClass="form-signin">
-                <h3 class="form-signin-heading">ExpressQ Registration</h3>
+                <h3 class="form-signin-heading">SwiftQ Insert User</h3>
                 <s:textfield name="username" label="Username" cssClass="form-signin"/>
                 <s:password name="password" label="Password" cssClass="form-signin"/>
                 <s:password name="passwordConf" label="Confirm Password" cssClass="form-signin"/>
                 <s:textfield type = "email" name="Email" label="Email Address" cssClass="form-signin"/>
                 <s:textfield name="fName" label="First Name" cssClass="form-signin"/>
                 <s:textfield name="lName" label="Last Name" cssClass="form-signin"/>
-                <s:select label="type"  name="Type" list ="{0,1,2}" cssClass="form-control" />
+                <s:select label="Type"  name="Type" list ="{0,1,2}" cssClass="form-control" />
                 <s:submit value="Add User" cssClass="form-signin btn btn-lg btn-block btn-primary"
                           cssStyle="margin-top: 10px;"/>
             </s:form>
