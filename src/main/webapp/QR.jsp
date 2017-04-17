@@ -26,7 +26,7 @@
                         </logic:iterate>
 
             </table>
-            <div class="row" align = "center" id="qrcode" ></div>
+            <div align = "center" id="qrcode" style ="padding-bottom: 50px"></div>
         </div>
         <script type="text/javascript" src="jquery.qrcode.js"></script>
         <script type="text/javascript" src="qrcode.js"></script>
