@@ -15,7 +15,7 @@
             <s:form cssStyle="max-width: 330px; padding: 15px; margin: 0 auto;" name="sectionupdate" method="POST"
                     action="updatesection">
                 <s:hidden name="sectionID" value="%{selectedSectionID}" cssClass="form-control"/>
-                <s:textfield name="NewName" value="%{Name}" label="New Section Name" cssClass="form-control"/>
+                <s:textfield name="NewName" value="%{Name}" label="New Section Name" cssClass="form-control" required="true"/>
                 <s:submit value="Update" cssClass="btn btn btn-primary btn-sm" cssStyle="float: right;"/>
             </s:form>
         </div>
