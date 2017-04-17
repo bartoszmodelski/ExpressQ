@@ -69,6 +69,12 @@
 		<result name="login">login.jsp</result>
 	</action>
 
+    <action name="chart" class="com.delta.expressq.actions.ChartGenerator">
+		<interceptor-ref name="loginStack" />
+		<result name="success">chart.jsp</result>
+		<result name="login">login.jsp</result>
+	</action>
+
 	<!-- show summary of order -->
 	<action name="summary" class="com.delta.expressq.actions.Summary" method="execute">
 		<result name="success">order/summary.jsp</result>
