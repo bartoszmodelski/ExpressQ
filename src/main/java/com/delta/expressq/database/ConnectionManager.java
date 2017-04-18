@@ -190,7 +190,6 @@ public class ConnectionManager {
              pstmt.setInt(2, transactionID);
              pstmt.setString(3, name);
              pstmt.setString(4, APIpass);
-             System.out.println(pstmt);
              pstmt.executeUpdate();
 
              cleanup(conn, pstmt, null);
@@ -1201,6 +1200,114 @@ public class ConnectionManager {
             }
             cleanup(conn, pstmt, rs);
             return salePerDay;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
+
+    public static Map<String, Integer> getMostCommonlyPurchasedTogether(int venueOwnerID,
+            java.sql.Date fromDate, java.sql.Date toDate)
+            throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        try{
+            Map<String, Integer> pairAndShare = new HashMap<String, Integer>();
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT Transaction.TransactionID, iq1.ItemID, iq2.ItemID, "
+                            + " i1.Name as name1, i2.Name as name2, COUNT(*) as count "
+                        + " FROM Item as i1, Item as i2, Transaction, ItemQuantity as iq1, ItemQuantity as iq2, Venue  "
+                        + " WHERE Transaction.VenueID = Venue.VenueID  "
+                        	+ " AND Venue.UserID = ? "
+                        	+ " AND iq1.TransactionID = Transaction.TransactionID  "
+                        	+ " AND iq2.TransactionID = iq1.TransactionID  "
+                        	+ " AND iq1.ItemID > iq2.ItemID  "
+                        	+ " AND iq1.ItemID = i1.ItemID  "
+                        	+ " AND iq2.ItemID = i2.ItemID "
+                        	+ " AND DATE(Transaction.Time) BETWEEN ? AND ?  "
+                        + " GROUP BY Concat(iq1.ItemID, \"-\", iq2.ItemID)  "
+                        + " ORDER BY count DESC "); //fr
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setDate(2, fromDate);
+            pstmt.setDate(3, toDate);
+            ResultSet rs = pstmt.executeQuery();
+
+            int rest = 0;
+            int first7only = 0;
+            while (rs.next()){
+                int count = rs.getInt("count");
+
+                if (first7only < 6) {
+                    String item1 = rs.getString("name1");
+                    String item2 = rs.getString("name2");
+                    pairAndShare.put(item1 + ", " + item2, count);
+                    first7only++;
+                } else {
+                    rest += count;
+                }
+            }
+            pairAndShare.put("Rest", rest);
+            cleanup(conn, pstmt, rs);
+            return pairAndShare;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+
+    }
+
+    public static double getItemPopularity(int venueOwnerID, int itemID,
+            java.sql.Date fromDate, java.sql.Date toDate)
+            throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement(" SELECT * FROM "
+                        + " (SELECT COUNT(*) as noItems "
+                            + " FROM Item, Section, Venue "
+                            + " WHERE Item.SectionID = Section.SectionID "
+                                + " AND Section.VenueID = Venue.VenueID "
+                                + " AND Venue.UserID = ?) as count, " //userId
+
+                        + " (SELECT SUM( ItemQuantity.Quantity ) AS totalSale  "
+                            + " FROM ItemQuantity, Transaction, Venue  "
+                            + " WHERE Transaction.TransactionID = ItemQuantity.TransactionID  "
+                                + " AND Transaction.VenueID = Venue.VenueID  "
+                                + " AND Venue.UserID = ? " //userId
+						        + " AND DATE(Transaction.Time) BETWEEN ? AND ?) as total, " //from, to
+
+                        + " (SELECT SUM( ItemQuantity.Quantity ) AS itemSale  "
+                            + " FROM ItemQuantity, Transaction, Venue  "
+                            + " WHERE Transaction.TransactionID = ItemQuantity.TransactionID  "
+                                + " AND Transaction.VenueID = Venue.VenueID  "
+                                + " AND Venue.UserID = ? " //userId
+						        + " AND ItemQuantity.ItemId = ? " //itemID
+						        + " AND DATE(Transaction.Time) BETWEEN ? AND ?) as item "); //from, to
+
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setInt(2, venueOwnerID);
+            pstmt.setInt(5, venueOwnerID);
+
+            pstmt.setDate(3, fromDate);
+            pstmt.setDate(4, toDate);
+            pstmt.setDate(7, fromDate);
+            pstmt.setDate(8, toDate);
+
+            pstmt.setInt(6, itemID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            double popularity = -1;
+            if (rs.next()){
+                double itemSale = rs.getDouble("itemSale");
+                double totalSale = rs.getDouble("totalSale");
+                double noItems = rs.getInt("noItems");
+
+                popularity = (itemSale / (totalSale / noItems));
+            } else {
+                throw new Exception ("Result set empty");
+            }
+            cleanup(conn, pstmt, rs);
+            return popularity;
         } catch (Exception ex) {
             throw new ConnectionManagerException(ex);
         }

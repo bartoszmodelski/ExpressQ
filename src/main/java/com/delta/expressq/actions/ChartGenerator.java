@@ -19,6 +19,12 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 	public String datasetTitle = "";
 	public String type = "";
 	public String currency = "";
+	public String chartType = "bar";
+	public String canvasId = "";
+	public String fromDate = "";
+	public String toDate = "";
+	public String pId = "";
+	public String itemID = "";
 
 	public String execute() {
 		if (type.equals("ACSperMonth"))
@@ -27,15 +33,45 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			return getACSperWeek();
 		else if (type.equals("ItemSale"))
 			return getItemSale();
+		else if (type.equals("MostCommonlyTogether"))
+			return getMostCommonlyPurchasedTogether();
 		else
 			return ERROR;
+	}
+
+	public String getMostCommonlyPurchasedTogether() {
+		try {
+			LocalDate start = LocalDate.parse(fromDate);
+			LocalDate end = LocalDate.parse(toDate);
+			Map<String, Integer> pairAndShare = ConnectionManager.getMostCommonlyPurchasedTogether(
+				getUserObject().getUserID(),
+				java.sql.Date.valueOf(start),
+				java.sql.Date.valueOf(end));
+
+
+			for (Map.Entry<String, Integer> entry: pairAndShare.entrySet()) {
+				labels += "\"" + entry.getKey() + "\",";
+				data +=	Integer.toString(entry.getValue()) + ",";
+			}
+
+			chartType = "doughnut";
+			datasetTitle = "Pair sale";
+			chartTitle = "Items most commonly purchased together";
+			return "doughnut_chart";
+		} catch (ConnectionManagerException e) {
+			System.out.println(e);
+			return "db_error";
+		} catch (Exception e) {
+			System.out.println(e);
+			return "error";
+		}
 	}
 
 	public String getACSperMonth() {
 		try {
 			Map<Integer, Integer> ACSs = ConnectionManager.getACS(
 						getUserObject().getUserID(),
-						ConnectionManager.perMonth, 2017);
+						ConnectionManager.perMonth, Integer.parseInt(year));
 
 			for (int i = 0; i < 12; i++) {
 				labels += "\"" + getMonth(i) + "\",";
@@ -45,11 +81,12 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 					data += "0,";
 			}
 
-			currency = "£";
+			currency = "\u00a3";
 			datasetTitle = "ACS";
+			chartType = "bar";
 			chartTitle = "Average customer spending per month";
 
-			return SUCCESS;
+			return "barchart";
 		} catch (ConnectionManagerException e) {
 			return "db_error";
 		} catch (Exception e) {
@@ -59,13 +96,12 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 
 	public String getItemSale() {
 		try {
-			LocalDate start = LocalDate.parse("2016-12-20");
-			LocalDate end = LocalDate.parse("2017-04-20");
+			LocalDate start = LocalDate.parse(fromDate);
+			LocalDate end = LocalDate.parse(toDate);
 			Map<java.sql.Date, Integer> salePerDay = ConnectionManager.getItemSale(
-						getUserObject().getUserID(), 32,
+						getUserObject().getUserID(), Integer.parseInt(itemID),
 						java.sql.Date.valueOf(start),
 						java.sql.Date.valueOf(end));
-			System.out.println(salePerDay);
 
 			for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1)) {
 				labels += "\"" + date + "\",";
@@ -77,10 +113,11 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 				}
 			}
 
-			datasetTitle = "Quantity";
-			chartTitle = "Daily quantity of item x";
+			datasetTitle = "Sale";
+			chartType = "bar";
+			chartTitle = "Daily sale of item x";
 
-			return SUCCESS;
+			return "barchart";
 		} catch (ConnectionManagerException e) {
 			System.out.println(e.getMessage());
 			return "db_error";
@@ -94,7 +131,7 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 		try {
 			Map<Integer, Integer> ACSs = ConnectionManager.getACS(
 						getUserObject().getUserID(),
-						ConnectionManager.perWeek, 2017);
+						ConnectionManager.perWeek, Integer.parseInt(year));
 
 			for (int i = 0; i < 53; i++) {
 				if (i % 4 == 0)
@@ -109,9 +146,10 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			}
 
 			datasetTitle = "ACS";
+			chartType = "bar";
 			chartTitle = "Average customer spending per week";
 
-			return SUCCESS;
+			return "barchart";
 		} catch (ConnectionManagerException e) {
 			return "db_error";
 		} catch (Exception e) {
@@ -184,5 +222,37 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 
 	private int getNumberDaysInMonth(int year, int month) {
 		return 1;
+	}
+
+	public void setCanvasId(String canvasId) {
+		this.canvasId = canvasId;
+	}
+
+	public String getCanvasId() {
+		return canvasId;
+	}
+
+	public void setPId(String pId) {
+		this.pId = pId;
+	}
+
+	public String getPId() {
+		return pId;
+	}
+
+	public void setItemID(String itemID) {
+		this.itemID = itemID;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
 	}
 }

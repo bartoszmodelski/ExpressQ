@@ -1,6 +1,6 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-$("p").click(function() {
+$("#<s:property escapeHtml="false" value="pId"/>").click(function() {
 	var color = Chart.helpers.color;
     var barChartData = {
         labels: [<s:property escapeHtml="false" value="labels"/>],
@@ -13,7 +13,7 @@ $("p").click(function() {
             }]
         };
 
-        var ctx = document.getElementById("canvas").getContext("2d");
+        var ctx = document.getElementById("<s:property escapeHtml="false" value="canvasId"/>").getContext("2d");
         window.myBar = new Chart(ctx, {
             type: 'bar',
             data: barChartData,

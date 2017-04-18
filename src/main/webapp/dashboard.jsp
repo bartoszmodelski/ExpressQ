@@ -16,15 +16,25 @@
         <jsp:attribute name="script">
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
                 <script src="../../js/utils.js"></script>
-                <script src="/chart?type=ItemSale"></script>
+                <!--script src="/chart?type=ItemSale"></script-->
+                <script src="/chart?type=MostCommonlyTogether&fromDate=2016-12-10&toDate=2018-01-01&canvasId=mostPopularPairs&pId=mostPopularPairsBtn"></script>
+                <script src="/chart?type=ItemSale&fromDate=2016-12-10&itemID=32&toDate=2018-01-01&canvasId=itemSale&pId=itemSaleBtn"></script>
+                <script src="/chart?type=ACSperMonth&year=2017&canvasId=ACSperMonth&pId=ACSperMonthBtn"></script>
+                <script src="/chart?type=ACSperWeek&year=2017&canvasId=ACSperWeek&pId=ACSperWeekBtn"></script>
         </jsp:attribute>
     <jsp:body>
         <div class="container">
     		<br>Available charts:
     		<br>- type=ACSperMonth
     		<br>- type=ACSperWeek
-            <p>CLICK!</p>
-            <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="canvas"></canvas>
+            <p id="mostPopularPairsBtn">Show items most commonly bought together</p>
+            <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="mostPopularPairs"></canvas>
+            <p id="itemSaleBtn">Show item's (id=32) sale</p>
+            <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="itemSale"></canvas>
+            <p id="ACSperMonthBtn">Show average customer spending per month</p>
+            <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="ACSperMonth"></canvas>
+            <p id="ACSperWeekBtn">Show average customer spending per week</p>
+            <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="ACSperWeek"></canvas>
         </div>
     </jsp:body>
 
