@@ -1,7 +1,6 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 $("p").click(function() {
-    alert("werkz");
 	var color = Chart.helpers.color;
     var barChartData = {
         labels: [<s:property escapeHtml="false" value="labels"/>],
@@ -33,9 +32,9 @@ $("p").click(function() {
                             beginAtZero: true,
                             callback: function(value, index, values) {
                                 if(parseInt(value) >= 1000){
-                                    return '£' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    return '<s:property escapeHtml="false" value="currency"/>' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                 } else {
-                                    return '£' + value;
+                                    return '<s:property escapeHtml="false" value="currency"/>' + value;
                                 }
                             }
                         }
@@ -43,5 +42,5 @@ $("p").click(function() {
                 }
             }
         });
-    
+
 });

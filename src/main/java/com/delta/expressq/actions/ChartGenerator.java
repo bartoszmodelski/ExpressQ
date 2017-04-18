@@ -3,6 +3,8 @@ package com.delta.expressq.actions;
 import com.delta.expressq.database.*;
 import com.delta.expressq.util.*;
 import java.util.*;
+import java.time.LocalDate;
+import java.sql.Date;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
@@ -16,14 +18,17 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 	public String chartTitle = "";
 	public String datasetTitle = "";
 	public String type = "";
+	public String currency = "";
 
 	public String execute() {
 		if (type.equals("ACSperMonth"))
 			return getACSperMonth();
 		else if(type.equals("ACSperWeek"))
 			return getACSperWeek();
+		else if (type.equals("ItemSale"))
+			return getItemSale();
 		else
-			return "menu";
+			return ERROR;
 	}
 
 	public String getACSperMonth() {
@@ -40,6 +45,7 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 					data += "0,";
 			}
 
+			currency = "£";
 			datasetTitle = "ACS";
 			chartTitle = "Average customer spending per month";
 
@@ -47,6 +53,39 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 		} catch (ConnectionManagerException e) {
 			return "db_error";
 		} catch (Exception e) {
+			return "error";
+		}
+	}
+
+	public String getItemSale() {
+		try {
+			LocalDate start = LocalDate.parse("2016-12-20");
+			LocalDate end = LocalDate.parse("2017-04-20");
+			Map<java.sql.Date, Integer> salePerDay = ConnectionManager.getItemSale(
+						getUserObject().getUserID(), 32,
+						java.sql.Date.valueOf(start),
+						java.sql.Date.valueOf(end));
+			System.out.println(salePerDay);
+
+			for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1)) {
+				labels += "\"" + date + "\",";
+
+				if (salePerDay.containsKey(java.sql.Date.valueOf(date))) {
+					data += Integer.toString(salePerDay.get(java.sql.Date.valueOf(date))) + ",";
+				} else {
+					data += "0,";
+				}
+			}
+
+			datasetTitle = "Quantity";
+			chartTitle = "Daily quantity of item x";
+
+			return SUCCESS;
+		} catch (ConnectionManagerException e) {
+			System.out.println(e.getMessage());
+			return "db_error";
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return "error";
 		}
 	}
@@ -106,6 +145,10 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getCurrency() {
+		return currency;
 	}
 
 	private String getMonth(int number) {

@@ -2,9 +2,7 @@ package com.delta.expressq.database;
 
 import java.sql.*;
 import java.util.*;
-import java.util.HashMap;
 import java.sql.Time;
-import java.util.Map;
 
 import com.delta.expressq.util.*;
 
@@ -1170,6 +1168,39 @@ public class ConnectionManager {
             }
             cleanup(conn, pstmt, rs);
             return ACSs;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
+
+    public static Map<java.sql.Date, Integer> getItemSale(int venueOwnerID, int itemID,
+            java.sql.Date fromDate, java.sql.Date toDate)
+            throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        Map salePerDay = new HashMap<java.sql.Date, Integer>();
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT DATE(Transaction.Time) AS date, SUM( ItemQuantity.Quantity ) AS sum "
+                    + " FROM ItemQuantity, Transaction, Venue "
+                    + " WHERE Transaction.TransactionID = ItemQuantity.TransactionID "
+	                       + " AND Transaction.VenueID = Venue.VenueID "
+                           + " AND Venue.UserID = ? "
+                           + " AND ItemQuantity.ItemID = ? "
+                           + " AND DATE(Transaction.Time) BETWEEN ? AND ? "
+                    + " GROUP BY DATE(Transaction.Time) "
+                    + " ORDER BY Transaction.Time ");
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setInt(2, itemID);
+            pstmt.setDate(3, fromDate);
+            pstmt.setDate(4, toDate);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                salePerDay.put(rs.getDate("date"), rs.getInt("sum"));
+            }
+            cleanup(conn, pstmt, rs);
+            return salePerDay;
         } catch (Exception ex) {
             throw new ConnectionManagerException(ex);
         }

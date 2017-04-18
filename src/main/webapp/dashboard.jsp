@@ -16,7 +16,7 @@
         <jsp:attribute name="script">
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
                 <script src="../../js/utils.js"></script>
-                <script src="/chart?type=ACSperMonth"></script>
+                <script src="/chart?type=ItemSale"></script>
         </jsp:attribute>
     <jsp:body>
         <div class="container">
