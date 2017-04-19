@@ -62,6 +62,21 @@
 		<result name="success">login.jsp</result>
 	</action>
 
+    <action name="analytics" class="com.delta.expressq.actions.Analytics">
+		<interceptor-ref name="loginStack" />
+		<result name="success">analytics.jsp</result>
+		<result name="menu">dashboard.jsp</result>
+		<result name="login">login.jsp</result>
+	</action>
+
+    <action name="chart" class="com.delta.expressq.actions.ChartGenerator">
+		<interceptor-ref name="loginStack" />
+		<result name="barchart">barchart.jsp</result>
+		<result name="linechart">linechart.jsp</result>
+		<result name="doughnut_chart">doughnut_chart.jsp</result>
+		<result name="login">login.jsp</result>
+	</action>
+
 	<!-- show summary of order -->
 	<action name="summary" class="com.delta.expressq.actions.Summary" method="execute">
 		<result name="success">order/summary.jsp</result>

@@ -2,6 +2,8 @@
 <%@attribute name="title" fragment="true" %>
 <%@attribute name="navbar" fragment="true" %>
 <%@attribute name="script" fragment="true" %>
+<%@attribute name="sidebar" fragment="true" %>
+<%@attribute name="head" fragment="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +15,7 @@
     <link rel="stylesheet" href="../../css/bootstrap.css">
     <link rel="stylesheet" href="../../css/sticky-footer.css">
     <link rel="stylesheet" href="../../css/bootstrap-theme.css">
+    <jsp:invoke fragment="head"/>
 </head>
 <body>
 <jsp:invoke fragment="navbar"/>

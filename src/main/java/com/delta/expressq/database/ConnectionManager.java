@@ -2,9 +2,7 @@ package com.delta.expressq.database;
 
 import java.sql.*;
 import java.util.*;
-import java.util.HashMap;
 import java.sql.Time;
-import java.util.Map;
 
 import com.delta.expressq.util.*;
 
@@ -15,6 +13,11 @@ public class ConnectionManager {
     // Database credentials
     private static final String DB_USER = "b02576368bd1b5";
     private static final String DB_PASS = "6d1d4ae1";
+
+    //Types of groupings (used in analytics)
+    public static final int perWeek = 0;
+    public static final int perMonth = 1;
+
 
     /**
      * This method controls connections to the database
@@ -38,7 +41,7 @@ public class ConnectionManager {
 
     /**
      * Close's connections to database when method is finished
-     * @param conn 
+     * @param conn
      * @param pstmt
      * @param rs
      */
@@ -187,7 +190,6 @@ public class ConnectionManager {
              pstmt.setInt(2, transactionID);
              pstmt.setString(3, name);
              pstmt.setString(4, APIpass);
-             System.out.println(pstmt);
              pstmt.executeUpdate();
 
              cleanup(conn, pstmt, null);
@@ -963,7 +965,7 @@ public class ConnectionManager {
 	 * @param sectionID The sectionID that will be used to retrieve the desired items.
 	 * @throws ConnectionManagerException
 	 */
-     
+
 	public static void getItemsBySection(Map<String, Integer> items, String sectionID) throws ConnectionManagerException {
 		PreparedStatement pstmt;
 		try {
@@ -1113,7 +1115,7 @@ public class ConnectionManager {
             while (rs.next()){
             	orderDetails.put(rs.getString("transactionID"), rs.getString("totalprice"));
             }
-            cleanup(conn, null, rs);
+            cleanup(conn, pstmt, rs);
             return orderDetails;
 		}catch (Exception ex) {
             throw new ConnectionManagerException(ex);
@@ -1142,4 +1144,289 @@ public class ConnectionManager {
             throw new ConnectionManagerException(sqle);
         }
 	}
+
+    private static String parseGroupBy(int grouping)
+            throws ConnectionManagerException {
+        if (grouping == perWeek) {
+            return "week";
+        } else if (grouping == perMonth) {
+            return "month";
+        } else {
+            throw new ConnectionManagerException("Unknown grouping type. Please use constants defined in CM.");
+        }
+    }
+
+    /**
+	 * Gets overall AverageCustomerSpending per month or week.
+	 * @param venueOwnerID ID of user account with assigned venue
+	 * @param grouping grouping perMonth or perWeek
+	 * @param year year from which data should be retrieved
+     * @return pairs of ACS / month or ACS / week number
+	 * @throws ConnectionManagerException
+	 */
+    public static Map<Integer, Integer> getACS(int venueOwnerID, int grouping, int year)
+            throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        Map ACSs = new HashMap<Integer, Integer>();
+        String groupBy = parseGroupBy(grouping);
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT GROUP_CONCAT(DISTINCT Transaction.UserID) UserIDs, "
+                        + "COUNT(DISTINCT Transaction.UserID) as noCustomers, SUM(TotalPrice) as TCS, "
+		                + "ROUND(SUM(TotalPrice) / COUNT(DISTINCT Transaction.UserID)) as ACS, COUNT(*), "
+                        + "WEEK(time) as week, MONTH(time) as month "
+                    + "FROM Transaction, Venue "
+                    + "WHERE Transaction.VenueID = Venue.VenueID "
+	                    + "AND Venue.UserID = ? "
+	                    + "AND YEAR(time) = ? "
+                    + "GROUP BY " + groupBy);
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setInt(2, year);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                ACSs.put(rs.getInt(groupBy), rs.getInt("ACS"));
+            }
+            cleanup(conn, pstmt, rs);
+            return ACSs;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
+
+    public static Map<java.sql.Date, Integer> getItemSale(int venueOwnerID, int itemID,
+            java.sql.Date fromDate, java.sql.Date toDate)
+            throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        Map salePerDay = new HashMap<java.sql.Date, Integer>();
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT DATE(Transaction.Time) AS date, SUM( ItemQuantity.Quantity ) AS sum "
+                    + " FROM ItemQuantity, Transaction, Venue "
+                    + " WHERE Transaction.TransactionID = ItemQuantity.TransactionID "
+	                       + " AND Transaction.VenueID = Venue.VenueID "
+                           + " AND Venue.UserID = ? "
+                           + " AND ItemQuantity.ItemID = ? "
+                           + " AND DATE(Transaction.Time) BETWEEN ? AND ? "
+                    + " GROUP BY DATE(Transaction.Time) "
+                    + " ORDER BY Transaction.Time ");
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setInt(2, itemID);
+            pstmt.setDate(3, fromDate);
+            pstmt.setDate(4, toDate);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                salePerDay.put(rs.getDate("date"), rs.getInt("sum"));
+            }
+            cleanup(conn, pstmt, rs);
+            return salePerDay;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
+
+    public static Map<String, Double> getAllItemsPopularity(int venueOwnerID,
+            java.sql.Date fromDate, java.sql.Date toDate)
+            throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        Map popularities = new HashMap<String, Double>();
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement(" SELECT * FROM "
+                + " (SELECT COUNT(*) as noItems FROM Item, Section, Venue "
+                    + " WHERE Item.SectionID = Section.SectionID AND Section.VenueID = Venue.VenueID AND Venue.UserID = ?) as count, " //userid
+
+                + " (SELECT SUM( ItemQuantity.Quantity ) AS totalSale "
+                    + " FROM ItemQuantity, Transaction, Venue "
+                    + " WHERE Transaction.TransactionID = ItemQuantity.TransactionID "
+                        + " AND Transaction.VenueID = Venue.VenueID "
+                        + " AND Venue.UserID = ? " //userid
+						+ " AND DATE(Transaction.Time) BETWEEN ? AND ?) as total, " //from, to
+
+                + " (SELECT SUM( ItemQuantity.Quantity ) AS itemSale, Item.ItemID, Item.Name "
+                    + " FROM ItemQuantity, Transaction, Venue, Item "
+                    + " WHERE Transaction.TransactionID = ItemQuantity.TransactionID "
+                        + " AND Transaction.VenueID = Venue.VenueID "
+						+ " AND ItemQuantity.ItemID = Item.ItemID "
+                        + " AND Venue.UserID = ? " //userid
+						+ " AND DATE(Transaction.Time) BETWEEN ? AND ? " //from, to
+	                + " GROUP BY ItemQuantity.ItemID) as itemRow "
+
+	            + " GROUP BY itemRow.ItemID ");
+
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setInt(2, venueOwnerID);
+            pstmt.setInt(5, venueOwnerID);
+
+            pstmt.setDate(3, fromDate);
+            pstmt.setDate(4, toDate);
+            pstmt.setDate(6, fromDate);
+            pstmt.setDate(7, toDate);
+            ResultSet rs = pstmt.executeQuery();
+            double popularity = 0;
+            while (rs.next()){
+                double itemSale = rs.getDouble("itemSale");
+                double totalSale = rs.getDouble("totalSale");
+                double noItems = rs.getInt("noItems");
+
+                popularity = (itemSale / (totalSale / noItems));
+                popularities.put(rs.getString("Name"), popularity);
+            }
+            cleanup(conn, pstmt, rs);
+            return popularities;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
+
+
+
+    public static Map<String, Integer> getMostCommonlyPurchasedTogether(int venueOwnerID,
+            java.sql.Date fromDate, java.sql.Date toDate)
+            throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        try{
+            Map<String, Integer> pairAndShare = new HashMap<String, Integer>();
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement("SELECT Transaction.TransactionID, iq1.ItemID, iq2.ItemID, "
+                            + " i1.Name as name1, i2.Name as name2, COUNT(*) as count "
+                        + " FROM Item as i1, Item as i2, Transaction, ItemQuantity as iq1, ItemQuantity as iq2, Venue  "
+                        + " WHERE Transaction.VenueID = Venue.VenueID  "
+                        	+ " AND Venue.UserID = ? "
+                        	+ " AND iq1.TransactionID = Transaction.TransactionID  "
+                        	+ " AND iq2.TransactionID = iq1.TransactionID  "
+                        	+ " AND iq1.ItemID > iq2.ItemID  "
+                        	+ " AND iq1.ItemID = i1.ItemID  "
+                        	+ " AND iq2.ItemID = i2.ItemID "
+                        	+ " AND DATE(Transaction.Time) BETWEEN ? AND ?  "
+                        + " GROUP BY Concat(iq1.ItemID, \"-\", iq2.ItemID)  "
+                        + " ORDER BY count DESC "); //fr
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setDate(2, fromDate);
+            pstmt.setDate(3, toDate);
+            ResultSet rs = pstmt.executeQuery();
+
+            int rest = 0;
+            int first7only = 0;
+            while (rs.next()){
+                int count = rs.getInt("count");
+
+                if (first7only < 6) {
+                    String item1 = rs.getString("name1");
+                    String item2 = rs.getString("name2");
+                    pairAndShare.put(item1 + ", " + item2, count);
+                    first7only++;
+                } else {
+                    rest += count;
+                }
+            }
+            pairAndShare.put("Rest", rest);
+            cleanup(conn, pstmt, rs);
+            return pairAndShare;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+
+    }
+
+
+
+    public static Map<Integer, Integer> getTransactionsPerHour(int venueOwnerID,
+            java.sql.Date fromDate, java.sql.Date toDate)
+            throws ConnectionManagerException {
+        Map<Integer, Integer> transactionsPerHour = new HashMap<Integer, Integer>();
+        PreparedStatement pstmt;
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement(" SELECT hour(transaction.time) as hour, COUNT(*) as count  "
+                + " FROM transaction, venue  "
+                + " WHERE transaction.venueID = venue.venueID  "
+    	            + " AND venue.UserID = ?  "
+    	            + " AND DATE(Transaction.Time) BETWEEN ? AND ? "
+                + " GROUP BY hour "
+                + " ORDER BY hour "); //from, to
+
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setDate(2, fromDate);
+            pstmt.setDate(3, toDate);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                int hour = rs.getInt("hour");
+                int transactions = rs.getInt("count");
+                transactionsPerHour.put(hour, transactions);
+            }
+            cleanup(conn, pstmt, rs);
+            return transactionsPerHour;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
+
+
+    public static double getItemPopularity(int venueOwnerID, int itemID,
+            java.sql.Date fromDate, java.sql.Date toDate)
+            throws ConnectionManagerException {
+        PreparedStatement pstmt;
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement(" SELECT * FROM "
+                        + " (SELECT COUNT(*) as noItems "
+                            + " FROM Item, Section, Venue "
+                            + " WHERE Item.SectionID = Section.SectionID "
+                                + " AND Section.VenueID = Venue.VenueID "
+                                + " AND Venue.UserID = ?) as count, " //userId
+
+                        + " (SELECT SUM( ItemQuantity.Quantity ) AS totalSale  "
+                            + " FROM ItemQuantity, Transaction, Venue  "
+                            + " WHERE Transaction.TransactionID = ItemQuantity.TransactionID  "
+                                + " AND Transaction.VenueID = Venue.VenueID  "
+                                + " AND Venue.UserID = ? " //userId
+						        + " AND DATE(Transaction.Time) BETWEEN ? AND ?) as total, " //from, to
+
+                        + " (SELECT SUM( ItemQuantity.Quantity ) AS itemSale  "
+                            + " FROM ItemQuantity, Transaction, Venue  "
+                            + " WHERE Transaction.TransactionID = ItemQuantity.TransactionID  "
+                                + " AND Transaction.VenueID = Venue.VenueID  "
+                                + " AND Venue.UserID = ? " //userId
+						        + " AND ItemQuantity.ItemId = ? " //itemID
+						        + " AND DATE(Transaction.Time) BETWEEN ? AND ?) as item "); //from, to
+
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setInt(2, venueOwnerID);
+            pstmt.setInt(5, venueOwnerID);
+
+            pstmt.setDate(3, fromDate);
+            pstmt.setDate(4, toDate);
+            pstmt.setDate(7, fromDate);
+            pstmt.setDate(8, toDate);
+
+            pstmt.setInt(6, itemID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            double popularity = -1;
+            if (rs.next()){
+                double itemSale = rs.getDouble("itemSale");
+                double totalSale = rs.getDouble("totalSale");
+                double noItems = rs.getInt("noItems");
+
+                popularity = (itemSale / (totalSale / noItems));
+            } else {
+                throw new Exception ("Result set empty");
+            }
+            cleanup(conn, pstmt, rs);
+            return popularity;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
 }
