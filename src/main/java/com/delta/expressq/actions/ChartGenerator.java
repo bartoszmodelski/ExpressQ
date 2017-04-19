@@ -25,6 +25,7 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 	public String toDate = "";
 	public String pId = "";
 	public String itemID = "";
+	public String colour = "window.chartColors.red";
 
 	public String execute() {
 		if (type.equals("ACSperMonth"))
@@ -33,6 +34,8 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			return getACSperWeek();
 		else if (type.equals("ItemSale"))
 			return getItemSale();
+		else if (type.equals("AllItemsPopularity"))
+			return getAllItemsPopularity();
 		else if (type.equals("MostCommonlyTogether"))
 			return getMostCommonlyPurchasedTogether();
 		else
@@ -56,7 +59,7 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 
 			chartType = "doughnut";
 			datasetTitle = "Pair sale";
-			chartTitle = "Items most commonly purchased together";
+			chartTitle = "Items most commonly purchased together between " + fromDate + " and " + toDate;
 			return "doughnut_chart";
 		} catch (ConnectionManagerException e) {
 			System.out.println(e);
@@ -94,6 +97,8 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 		}
 	}
 
+
+
 	public String getItemSale() {
 		try {
 			LocalDate start = LocalDate.parse(fromDate);
@@ -113,11 +118,12 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 				}
 			}
 
+			colour = "window.chartColors.blue";
 			datasetTitle = "Sale";
 			chartType = "bar";
-			chartTitle = "Daily sale of item x";
+			chartTitle = "Daily sale of item x between " + start + " and " + end;
 
-			return "barchart";
+			return "linechart";
 		} catch (ConnectionManagerException e) {
 			System.out.println(e.getMessage());
 			return "db_error";
@@ -126,6 +132,8 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			return "error";
 		}
 	}
+
+
 
 	public String getACSperWeek() {
 		try {
@@ -144,7 +152,7 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 				else
 					data += "0,";
 			}
-
+			colour = "window.chartColors.purple";
 			datasetTitle = "ACS";
 			chartType = "bar";
 			chartTitle = "Average customer spending per week";
@@ -156,6 +164,38 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			return "error";
 		}
 	}
+
+	public String getColour() {
+		return colour;
+	}
+
+	public String getAllItemsPopularity() {
+		try {
+			LocalDate start = LocalDate.parse(fromDate);
+			LocalDate end = LocalDate.parse(toDate);
+			Map<String, Double> popularities = ConnectionManager.getAllItemsPopularity(
+						getUserObject().getUserID(),
+						java.sql.Date.valueOf(start),
+						java.sql.Date.valueOf(end));
+
+			for (Map.Entry<String, Double> entry: popularities.entrySet()) {
+					labels += "\"" + entry.getKey() + "\",";
+					data +=	Double.toString(entry.getValue()) + ",";
+
+			}
+
+			datasetTitle = "Popularity";
+			chartType = "bar";
+			chartTitle = "Popularity of all items between " + start + " and " + end ;
+
+			return "barchart";
+		} catch (ConnectionManagerException e) {
+			return "db_error";
+		} catch (Exception e) {
+			return "error";
+		}
+	}
+
 
 	public String getData() {
 		return data;

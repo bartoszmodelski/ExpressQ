@@ -1,8 +1,9 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 $("#<s:property escapeHtml="false" value="pId"/>").click(function() {
+var color = Chart.helpers.color;
 	var config = {
-	        type: 'doughnut',
+	        type: 'pie',
 	        data: {
 	            datasets: [{
 	                data: [<s:property escapeHtml="false" value="data"/>],
@@ -12,6 +13,8 @@ $("#<s:property escapeHtml="false" value="pId"/>").click(function() {
 	                    window.chartColors.yellow,
 	                    window.chartColors.green,
 	                    window.chartColors.blue,
+						window.chartColors.purple,
+                    	window.chartColors.grey,
 	                ],
 		            label: '<s:property escapeHtml="false" value="datasetTitle"/>'
 	            }],

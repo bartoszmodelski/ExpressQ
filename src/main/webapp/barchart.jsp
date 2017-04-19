@@ -6,8 +6,8 @@ $("#<s:property escapeHtml="false" value="pId"/>").click(function() {
         labels: [<s:property escapeHtml="false" value="labels"/>],
             datasets: [{
                 label: '<s:property escapeHtml="false" value="datasetTitle"/>',
-                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-                borderColor: window.chartColors.red,
+                backgroundColor: color( <s:property escapeHtml="false" value="colour"/>).alpha(0.5).rgbString(),
+                borderColor: <s:property escapeHtml="false" value="colour"/>,
                 borderWidth: 1,
                 data: [<s:property escapeHtml="false" value="data"/>]
             }]

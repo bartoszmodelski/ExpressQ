@@ -72,6 +72,7 @@
     <action name="chart" class="com.delta.expressq.actions.ChartGenerator">
 		<interceptor-ref name="loginStack" />
 		<result name="barchart">barchart.jsp</result>
+		<result name="linechart">linechart.jsp</result>
 		<result name="doughnut_chart">doughnut_chart.jsp</result>
 		<result name="login">login.jsp</result>
 	</action>
