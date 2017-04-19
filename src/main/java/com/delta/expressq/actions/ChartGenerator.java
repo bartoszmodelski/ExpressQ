@@ -89,7 +89,7 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			currency = "\u00a3";
 			datasetTitle = "ACS";
 			chartType = "bar";
-			chartTitle = "Average customer spending per month";
+			chartTitle = "Average customer spending per month in " + Integer.parseInt(year);
 
 			return "barchart";
 		} catch (ConnectionManagerException e) {
@@ -182,7 +182,7 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			colour = "window.chartColors.purple";
 			datasetTitle = "ACS";
 			chartType = "bar";
-			chartTitle = "Average customer spending per week";
+			chartTitle = "Average customer spending per week in " + Integer.parseInt(year);
 
 			return "barchart";
 		} catch (ConnectionManagerException e) {
