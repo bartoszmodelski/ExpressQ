@@ -22,20 +22,21 @@
                 <script src="/chart?type=ACSperMonth&year=2017&canvasId=ACSperMonth&pId=ACSperMonthBtn"></script>
                 <script src="/chart?type=ACSperWeek&year=2017&canvasId=ACSperWeek&pId=ACSperWeekBtn"></script>
                 <script src="/chart?type=AllItemsPopularity&fromDate=2016-12-10&toDate=2018-01-01&canvasId=AllItemsPopularity&pId=AllItemsPopularityBtn"></script>
+                <script src="/chart?type=TransactionsPerHour&fromDate=2016-12-10&toDate=2018-01-01&canvasId=TransactionsPerHour&pId=TransactionsPerHourBtn"></script>
         </jsp:attribute>
     <jsp:body>
         <div class="container">
     		<br>Available charts:
-    		<br>- type=ACSperMonth
-    		<br>- type=ACSperWeek
-            <p id="itemSaleBtn">Show item's (id=32) sale</p>
-            <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="itemSale"></canvas>
             <p id="ACSperMonthBtn">Show average customer spending per month</p>
             <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="ACSperMonth"></canvas>
             <p id="ACSperWeekBtn">Show average customer spending per week</p>
             <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="ACSperWeek"></canvas>
             <p id="AllItemsPopularityBtn">All items popularity</p>
             <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="AllItemsPopularity"></canvas>
+            <p id="TransactionsPerHourBtn">Cumulative transactions per hour</p>
+            <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="TransactionsPerHour"></canvas>
+            <p id="itemSaleBtn">Show item's (id=32) sale</p>
+            <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="itemSale"></canvas>
             <p id="mostPopularPairsBtn">Show items most commonly bought together</p>
             <br><br><canvas style="-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none;" id="mostPopularPairs"></canvas>
         </div>

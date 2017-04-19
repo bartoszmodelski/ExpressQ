@@ -1311,6 +1311,43 @@ public class ConnectionManager {
 
     }
 
+
+
+    public static Map<Integer, Integer> getTransactionsPerHour(int venueOwnerID,
+            java.sql.Date fromDate, java.sql.Date toDate)
+            throws ConnectionManagerException {
+        Map<Integer, Integer> transactionsPerHour = new HashMap<Integer, Integer>();
+        PreparedStatement pstmt;
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement(" SELECT hour(transaction.time) as hour, COUNT(*) as count  "
+                + " FROM transaction, venue  "
+                + " WHERE transaction.venueID = venue.venueID  "
+    	            + " AND venue.UserID = ?  "
+    	            + " AND DATE(Transaction.Time) BETWEEN ? AND ? "
+                + " GROUP BY hour "
+                + " ORDER BY hour "); //from, to
+
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setDate(2, fromDate);
+            pstmt.setDate(3, toDate);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                int hour = rs.getInt("hour");
+                int transactions = rs.getInt("count");
+                transactionsPerHour.put(hour, transactions);
+            }
+            cleanup(conn, pstmt, rs);
+            return transactionsPerHour;
+        } catch (Exception ex) {
+            throw new ConnectionManagerException(ex);
+        }
+    }
+
+
     public static double getItemPopularity(int venueOwnerID, int itemID,
             java.sql.Date fromDate, java.sql.Date toDate)
             throws ConnectionManagerException {

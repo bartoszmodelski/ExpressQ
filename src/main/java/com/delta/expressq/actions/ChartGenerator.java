@@ -34,6 +34,8 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			return getACSperWeek();
 		else if (type.equals("ItemSale"))
 			return getItemSale();
+		else if (type.equals("TransactionsPerHour"))
+			return getTransactionsPerHour();
 		else if (type.equals("AllItemsPopularity"))
 			return getAllItemsPopularity();
 		else if (type.equals("MostCommonlyTogether"))
@@ -97,7 +99,33 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 		}
 	}
 
+	public String getTransactionsPerHour() {
+		try {
+			LocalDate start = LocalDate.parse(fromDate);
+			LocalDate end = LocalDate.parse(toDate);
+			Map<Integer, Integer> transactionsPerHour = ConnectionManager.getTransactionsPerHour(
+						getUserObject().getUserID(),
+						java.sql.Date.valueOf(start),
+						java.sql.Date.valueOf(end));
 
+			for (Map.Entry<Integer, Integer> entry: transactionsPerHour.entrySet()) {
+				labels += "\"" + Integer.toString(entry.getKey()) + "\",";
+				data += Integer.toString(entry.getValue()) + ",";
+			}
+
+			colour = "window.chartColors.green";
+			datasetTitle = "Sale";
+			chartTitle = "Cumulative transactions per hour between " + start + " and " + end;
+
+			return "linechart";
+		} catch (ConnectionManagerException e) {
+			System.out.println(e.getMessage());
+			return "db_error";
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return "error";
+		}
+	}
 
 	public String getItemSale() {
 		try {
@@ -120,7 +148,6 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 
 			colour = "window.chartColors.blue";
 			datasetTitle = "Sale";
-			chartType = "bar";
 			chartTitle = "Daily sale of item x between " + start + " and " + end;
 
 			return "linechart";
