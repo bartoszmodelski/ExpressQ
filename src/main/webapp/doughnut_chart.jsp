@@ -35,6 +35,10 @@ var color = Chart.helpers.color;
 	            }
 			}
 	    };
+	    
+	  	$('#canvas1').remove();
+	  	$('#chartdiv').append('<canvas id="canvas1"><canvas>');
+	    
 		var ctx = document.getElementById("<s:property escapeHtml="false" value="canvasId"/>").getContext("2d");
 	    window.myDoughnut = new Chart(ctx, config);
 });

@@ -12,9 +12,12 @@ $("#<s:property escapeHtml="false" value="pId"/>").click(function() {
                 data: [<s:property escapeHtml="false" value="data"/>]
             }]
         };
-
-        var ctx = document.getElementById("<s:property escapeHtml="false" value="canvasId"/>").getContext("2d");
-        window.myBar = new Chart(ctx, {
+        
+	  $('#canvas1').remove();
+	  $('#chartdiv').append('<canvas id="canvas1"><canvas>');
+     
+        var ctx = document.getElementById("<s:property escapeHtml="false" value="canvasId"/>").getContext("2d");  
+        myBar = new Chart(ctx, {
             type: 'bar',
             data: barChartData,
             options: {
@@ -42,5 +45,4 @@ $("#<s:property escapeHtml="false" value="pId"/>").click(function() {
                 }
             }
         });
-
 });

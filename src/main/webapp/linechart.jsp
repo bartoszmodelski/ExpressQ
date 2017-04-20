@@ -15,6 +15,9 @@ $("#<s:property escapeHtml="false" value="pId"/>").click(function() {
 
         };
 
+	  	$('#canvas1').remove();
+	  	$('#chartdiv').append('<canvas id="canvas1"><canvas>');
+
             var ctx = document.getElementById("<s:property escapeHtml="false" value="canvasId"/>").getContext("2d");
             window.myMixedChart = new Chart(ctx, {
                 type: 'bar',

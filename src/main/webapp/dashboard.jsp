@@ -25,10 +25,10 @@
                 <script src="/chart?type=TransactionsPerHour&fromDate=2016-12-10&toDate=2018-01-01&canvasId=canvas1&pId=TransactionsPerHourBtn"></script>
         </jsp:attribute>
     <jsp:body>
-        <div class="container-fluid">
+        <div class="container-fluid" id ="chartcontainer">
             <div class="row">
                 <div class="col-sm-2">
-                    <nav class="nav flex-column">
+                    <nav class="nav flex-column">     
                         <p id="ACSperMonthBtn">Average Customer Spending per Month</p>
                         <p id="ACSperWeekBtn">Average Customer Spending per Week</p>
                         <p id="AllItemsPopularityBtn">Item Popularity</p>
@@ -37,7 +37,7 @@
                         <p id="mostPopularPairsBtn">Common item pairings</p>
                     </nav>
                 </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10" id="chartdiv">
                         <canvas id="canvas1"></canvas>
                     </div>
             </div>
