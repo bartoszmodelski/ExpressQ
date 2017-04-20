@@ -22,6 +22,7 @@ var color = Chart.helpers.color;
 	        },
 	        options: {
 	            responsive: true,
+	            maintainAspectRatio: false,
 	            legend: {
 	                position: 'top',
 	            },
@@ -40,5 +41,7 @@ var color = Chart.helpers.color;
 	  	$('#chartdiv').append('<canvas id="canvas1"><canvas>');
 	    
 		var ctx = document.getElementById("<s:property escapeHtml="false" value="canvasId"/>").getContext("2d");
+		ctx.canvas.width = 100;
+		ctx.canvas.height = 550;
 	    window.myDoughnut = new Chart(ctx, config);
 });

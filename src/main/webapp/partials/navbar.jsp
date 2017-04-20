@@ -28,6 +28,7 @@
             		<li><a href="<s:url action="profile"/>"><s:property value="%{(#session['user']).getUsername()}"/></a></li>
             		<li><a href="<s:url action="viewQR"/>">View QR Codes</a></li>
             		<li><a href="<s:url action="venuehome"/>">Menu Controls</a></li>
+            		<li><a href="<s:url action="analytics"/>">Analysis</a></li>
             		<li><a href="<s:url action="venues"/>">Venues</a></li>
             		<li><a href="<s:url action="logout"/>">Logout</a></li>
                 </s:elseif>
