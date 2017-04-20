@@ -33,8 +33,8 @@
                         <p id="ACSperWeekBtn" class="btn btn-sm btn-primary">Average Customer Spending per Week</p><br>
                         <p id="AllItemsPopularityBtn" class="btn btn-sm btn-primary">Item Popularity</p><br>
                         <p id="TransactionsPerHourBtn" class="btn btn-sm btn-primary">Transactions per Hour</p><br>
-                        <p id="itemSaleBtn" class="btn btn-sm btn-primary">Sales of Item (id=32)</p><br>
-                        <p id="mostPopularPairsBtn" class="btn btn-sm btn-primary">Common item pairings</p><br>
+                        <p id="itemSaleBtn" class="btn btn-sm btn-primary">Customer Retention</p><br>
+                        <p id="mostPopularPairsBtn" class="btn btn-sm btn-primary">Common Item Pairings</p><br>
                     </nav>
                 </div>
                     <div class="col-sm-9" id="chartdiv">

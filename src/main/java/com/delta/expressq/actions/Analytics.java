@@ -11,7 +11,16 @@ import java.sql.Date;
 
 public class Analytics extends ActionSupportWithSession {
 	public String execute() {
-		return "menu";
+		if (isLoggedIn()){
+			UserNew user = getUserObject();
+			if (user.getType() == 2){
+				return "menu";
+			}else{
+				return "permission_error";
+			}
+		}else{
+			return "permission_error";
+		}
 	}
 
 
