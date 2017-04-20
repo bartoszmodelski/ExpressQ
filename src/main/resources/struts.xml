@@ -8,7 +8,7 @@
     <package name="default" namespace="/" extends="struts-default">
 
 	<interceptors>
-		<interceptor class="com.delta.expressq.interceptors.LoginInterceptor" name="loginInterceptor">
+		<interceptor class="com.delta.swiftq.interceptors.LoginInterceptor" name="loginInterceptor">
 		</interceptor>
 		<interceptor-stack name="loginStack">
 			<interceptor-ref name="loginInterceptor" />
@@ -27,28 +27,28 @@
     	<result >/index.jsp</result>
 	</action>
 
-	<action name="venues" class="com.delta.expressq.actions.Venues" method="execute">
+	<action name="venues" class="com.delta.swiftq.actions.Venues" method="execute">
 		<result name="listVenues">list/venues.jsp</result>
 		<result name="listItems">list/items.jsp</result>
 	</action>
 
 	<!-- registration -->
-		<action name="registration" class="com.delta.expressq.actions.Registration" method="display">
+		<action name="registration" class="com.delta.swiftq.actions.Registration" method="display">
 		<result name="success">registration.jsp</result>
 	</action>
 
-	<action name="reg" class="com.delta.expressq.actions.Registration" method = "execute">
+	<action name="reg" class="com.delta.swiftq.actions.Registration" method = "execute">
 		<result name="success">index.jsp</result>
 		<result name="registration">registration.jsp</result>
 	</action>
 
 	<!-- login -->
-	<action name="login" class="com.delta.expressq.actions.LoginAction" method="execute">
+	<action name="login" class="com.delta.swiftq.actions.LoginAction" method="execute">
 		<result name="success">login.jsp</result>
 	</action>
 
 	<!-- login action -->
-	<action name="loginUser" class="com.delta.expressq.actions.LoginAction" method="login">
+	<action name="loginUser" class="com.delta.swiftq.actions.LoginAction" method="login">
         <result name="show_venue" type="redirectAction">
             <param name="actionName">venues</param>
             <param name="id">${venueID}</param>
@@ -58,18 +58,18 @@
 	</action>
 
 	<!-- logout action -->
-	<action name="logout" class="com.delta.expressq.actions.LoginAction" method="logout">
+	<action name="logout" class="com.delta.swiftq.actions.LoginAction" method="logout">
 		<result name="success">login.jsp</result>
 	</action>
 
-    <action name="analytics" class="com.delta.expressq.actions.Analytics">
+    <action name="analytics" class="com.delta.swiftq.actions.Analytics">
 		<interceptor-ref name="loginStack" />
 		<result name="success">analytics.jsp</result>
 		<result name="menu">dashboard.jsp</result>
 		<result name="login">login.jsp</result>
 	</action>
 
-    <action name="chart" class="com.delta.expressq.actions.ChartGenerator">
+    <action name="chart" class="com.delta.swiftq.actions.ChartGenerator">
 		<interceptor-ref name="loginStack" />
 		<result name="barchart">barchart.jsp</result>
 		<result name="linechart">linechart.jsp</result>
@@ -78,12 +78,12 @@
 	</action>
 
 	<!-- show summary of order -->
-	<action name="summary" class="com.delta.expressq.actions.Summary" method="execute">
+	<action name="summary" class="com.delta.swiftq.actions.Summary" method="execute">
 		<result name="success">order/summary.jsp</result>
 		<result name="empty">order/empty.jsp</result>
 	</action>
 
-	<action name="confirmOrder" class="com.delta.expressq.actions.ConfirmOrder">
+	<action name="confirmOrder" class="com.delta.swiftq.actions.ConfirmOrder">
 		<interceptor-ref name="loginStack" />
 		<result name="success">order/confirmed.jsp</result>
 		<result name="error">order/summary.jsp</result>
@@ -91,7 +91,7 @@
 	</action>
 
 	<!-- json -->
-	<action name="json" class="com.delta.expressq.actions.Json" method="execute">
+	<action name="json" class="com.delta.swiftq.actions.Json" method="execute">
 		<result name="success">json/success.jsp</result>
 		<result name="incorrect_id">json/incorrect_id.jsp</result>
 		<result name="incorrect_credentials">json/incorrect_credentials.jsp</result>
@@ -100,98 +100,98 @@
 	</action>
 
     <!-- AdminAction Actions -->
-    <action name="view" class="com.delta.expressq.actions.AdminAction" method="Display">
+    <action name="view" class="com.delta.swiftq.actions.AdminAction" method="Display">
       <result name="success">/admin/display.jsp</result>
     </action>
 
 	<!-- Delete User(s) -->
-    <action name="del" class="com.delta.expressq.actions.AdminAction" method="Delete">
+    <action name="del" class="com.delta.swiftq.actions.AdminAction" method="Delete">
       <result name="success" type ="redirect">view</result>
     </action>
 
 	<!-- Edit User Display-->
-    <action name="edit" class="com.delta.expressq.actions.AdminAction" method="Edit">
+    <action name="edit" class="com.delta.swiftq.actions.AdminAction" method="Edit">
       <result name ="success">admin/edituser.jsp</result>
     </action>
 
 	<!-- Save Edited Changes -->
-	<action name="update" class="com.delta.expressq.actions.AdminAction" method="UpdateUserDetails">
+	<action name="update" class="com.delta.swiftq.actions.AdminAction" method="UpdateUserDetails">
 	  <result name="success" type="redirect">view</result>
 	</action>
 		
-	<action name ="insertuserdisplay" class="com.delta.expressq.actions.AdminAction" method="InsertDisplay">
+	<action name ="insertuserdisplay" class="com.delta.swiftq.actions.AdminAction" method="InsertDisplay">
 		<result name = "success">/admin/insertuser.jsp</result>
 	</action>
 	
-	<action name ="insertuser" class="com.delta.expressq.actions.AdminAction" method="InsertUser">
+	<action name ="insertuser" class="com.delta.swiftq.actions.AdminAction" method="InsertUser">
 		<result name = "success" type="redirect">view</result>
 		<result name = "fail">/admin/insertuser.jsp</result>
 	</action>
 	<!--End of AdminAction Actions-->
 
 	<!--User Profile Action-->
-	<action name ="profile" class="com.delta.expressq.actions.UserProfileAction">
+	<action name ="profile" class="com.delta.swiftq.actions.UserProfileAction">
 		<interceptor-ref name="loginStack" />
 		<result name ="success">userprofile.jsp</result>
 		<result name="login" type="redirect">login</result>
 	</action>
 
 	<!--Action for saving customer profile changes-->
-	<action name ="UserUpdate" class="com.delta.expressq.actions.UserProfileAction" method="Update">
+	<action name ="UserUpdate" class="com.delta.swiftq.actions.UserProfileAction" method="Update">
 		<result name ="success" type="redirect">index</result>
 	</action>
 
 
 	<!--///////////////// Venue Actions /////////////////-->
-	<action name ="venuehome" class="com.delta.expressq.actions.VenueAction" method="execute">
+	<action name ="venuehome" class="com.delta.swiftq.actions.VenueAction" method="execute">
 		<result name ="success">/venue/main.jsp</result>
 	</action>
 
-	<action name ="NewSection" class="com.delta.expressq.actions.VenueAction" method="NewSection">
+	<action name ="NewSection" class="com.delta.swiftq.actions.VenueAction" method="NewSection">
 	      <result>/venue/newsection.jsp</result>
 	</action>
 
-	<action name ="InsertSection" class="com.delta.expressq.actions.VenueAction" method="InsertSection">
+	<action name ="InsertSection" class="com.delta.swiftq.actions.VenueAction" method="InsertSection">
 		<result name ="success" type="redirect">venuehome</result>
 	</action>
 
-	<action name="delsection" class="com.delta.expressq.actions.VenueAction" method="DeleteSection">
+	<action name="delsection" class="com.delta.swiftq.actions.VenueAction" method="DeleteSection">
     	<result name="success" type="redirect">venuehome</result>
     </action>
 
-    <action name="editsection" class="com.delta.expressq.actions.VenueAction" method="EditSection">
+    <action name="editsection" class="com.delta.swiftq.actions.VenueAction" method="EditSection">
     	<result name="success">/venue/editsection.jsp</result>
     </action>
 
-	<action name="updatesection" class="com.delta.expressq.actions.VenueAction" method="UpdateSection">
+	<action name="updatesection" class="com.delta.swiftq.actions.VenueAction" method="UpdateSection">
     	<result name="success" type="redirect">venuehome</result>
 	</action>
 
-	<action name="viewItems" class="com.delta.expressq.actions.VenueAction" method="DisplayItems">
+	<action name="viewItems" class="com.delta.swiftq.actions.VenueAction" method="DisplayItems">
 		<result name="success">/venue/items.jsp</result>
 	</action>
 
-	<action name ="NewItem" class="com.delta.expressq.actions.VenueAction" method="NewItem">
+	<action name ="NewItem" class="com.delta.swiftq.actions.VenueAction" method="NewItem">
 	      <result>/venue/newitem.jsp</result>
 	</action>
 
-	<action name="InsertItem" class="com.delta.expressq.actions.VenueAction" method="InsertItem">
+	<action name="InsertItem" class="com.delta.swiftq.actions.VenueAction" method="InsertItem">
     	<result name="success" type="redirect">venuehome</result>
     </action>
 
-    <action name="delitems" class="com.delta.expressq.actions.VenueAction" method="DeleteItem">
+    <action name="delitems" class="com.delta.swiftq.actions.VenueAction" method="DeleteItem">
     	<result name="success" type="redirect">venuehome</result>
     </action>
 
-    <action name="edititem" class="com.delta.expressq.actions.VenueAction" method="EditItem">
+    <action name="edititem" class="com.delta.swiftq.actions.VenueAction" method="EditItem">
     	<result name="success">venue/editItem.jsp</result>
     </action>
 
-    <action name="updateitem" class="com.delta.expressq.actions.VenueAction" method="UpdateItem">
+    <action name="updateitem" class="com.delta.swiftq.actions.VenueAction" method="UpdateItem">
     	<result name="success" type="redirect">venuehome</result>
 	</action>
 
-	<action name="viewQR" class="com.delta.expressq.actions.ViewQR" method="execute">
+	<action name="viewQR" class="com.delta.swiftq.actions.ViewQR" method="execute">
 		<result name="success">QR.jsp</result>
 		<result name="empty">qrempty.jsp</result>
 	</action>

@@ -1,4 +1,4 @@
- <%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page import="java.util.*" %>
  
@@ -23,7 +23,7 @@
                         if (userList != null) {
                             Iterator it = userList.iterator();
                             while (it.hasNext()) {
-                                com.delta.expressq.util.User user = (com.delta.expressq.util.User) it.next();
+                                com.delta.swiftq.util.User user = (com.delta.swiftq.util.User) it.next();
                                 int UserID = user.getUserID();
                                 String UserName = user.getUsername();
                                 String Fname = user.getFname();
