@@ -27,17 +27,17 @@
     <jsp:body>
         <div class="container-fluid" id ="chartcontainer">
             <div class="row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <nav class="nav flex-column">     
-                        <p id="ACSperMonthBtn">Average Customer Spending per Month</p>
-                        <p id="ACSperWeekBtn">Average Customer Spending per Week</p>
-                        <p id="AllItemsPopularityBtn">Item Popularity</p>
-                        <p id="TransactionsPerHourBtn">Transactions per Hour</p>
-                        <p id="itemSaleBtn">Sales of Item (id=32)</p>
-                        <p id="mostPopularPairsBtn">Common item pairings</p>
+                        <p id="ACSperMonthBtn" class="btn btn-sm btn-primary">Average Customer Spending per Month</p><br>
+                        <p id="ACSperWeekBtn" class="btn btn-sm btn-primary">Average Customer Spending per Week</p><br>
+                        <p id="AllItemsPopularityBtn" class="btn btn-sm btn-primary">Item Popularity</p><br>
+                        <p id="TransactionsPerHourBtn" class="btn btn-sm btn-primary">Transactions per Hour</p><br>
+                        <p id="itemSaleBtn" class="btn btn-sm btn-primary">Sales of Item (id=32)</p><br>
+                        <p id="mostPopularPairsBtn" class="btn btn-sm btn-primary">Common item pairings</p><br>
                     </nav>
                 </div>
-                    <div class="col-sm-10" id="chartdiv">
+                    <div class="col-sm-9" id="chartdiv">
                         <canvas id="canvas1"></canvas>
                     </div>
             </div>
