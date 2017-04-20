@@ -34,6 +34,8 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			return getACSperWeek();
 		else if (type.equals("ItemSale"))
 			return getItemSale();
+		else if (type.equals("CustomerRetentionRate"))
+			return getCustomerRetentionRate();
 		else if (type.equals("TransactionsPerHour"))
 			return getTransactionsPerHour();
 		else if (type.equals("AllItemsPopularity"))
@@ -70,6 +72,32 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			System.out.println(e);
 			return "error";
 		}
+	}
+
+	public String getCustomerRetentionRate() {
+		try {
+			Map<Integer, Double> CRR = ConnectionManager.getCustomerRetentionRate(
+						getUserObject().getUserID(), Integer.parseInt(year));
+
+			for (int i = 1; i < 12; i++) {
+				labels += "\"" + getMonth(i) + "\",";
+				if (CRR.containsKey(i))
+					data +=	Double.toString(CRR.get(i)) + ",";
+				else
+					data += "0,";
+			}
+
+			datasetTitle = "CRR";
+			chartType = "bar";
+			chartTitle = "Customer retention rate in every month of " + Integer.parseInt(year);
+
+			return "barchart";
+		} catch (ConnectionManagerException e) {
+			return "db_error";
+		} catch (Exception e) {
+			return "error";
+		}
+
 	}
 
 	public String getACSperMonth() {
@@ -211,9 +239,9 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 
 			}
 
-			datasetTitle = "Popularity";
+			datasetTitle = "Transactions";
 			chartType = "bar";
-			chartTitle = "Popularity of all items between " + start + " and " + end ;
+			chartTitle = "Venue popularity between " + start + " and " + end ;
 
 			return "barchart";
 		} catch (ConnectionManagerException e) {

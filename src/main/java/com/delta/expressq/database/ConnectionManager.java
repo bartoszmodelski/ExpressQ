@@ -244,6 +244,7 @@ public class ConnectionManager {
      */
      public static Map<Transaction, Map<Item, Integer>> getUpcomingOrders(String name, String APIpass, int minutes) throws ConnectionManagerException {
          try {
+             minutes = minutes + 60;
              Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement("SELECT User.Username, User.Fname, User.Lname, TransactionID, "
                      + " User.UserID, Keywords, Transaction.VenueID, TotalPrice, Time, CollectionTime, Status "
@@ -1121,7 +1122,7 @@ public class ConnectionManager {
             throw new ConnectionManagerException(ex);
         }
 	}
-	
+
 	public static boolean adminWriteUser(String username, String password, String email, String fName, String lName, int type) throws ConnectionManagerException {
         // Using prepared statement to prevent SQL injection
         PreparedStatement pstmt;
@@ -1371,6 +1372,65 @@ public class ConnectionManager {
     }
 
 
+    public static Map<Integer, Double> getCustomerRetentionRate(int venueOwnerID, int year)
+            throws ConnectionManagerException {
+        Map<Integer, Double> CRRperMonth = new HashMap<Integer, Double>();
+        PreparedStatement pstmt;
+        try{
+            Connection conn = getConnection();
+            pstmt = conn.prepareStatement(""
+                + " SELECT Venue.VenueID INTO @var_venueID "
+                + " FROM Venue "
+                + " WHERE Venue.UserID = ?; " //userid
+
+                + " SELECT ec_without_nc, sc, ec_without_nc / sc AS crr, q1.month, q2.u1month, q2.u2month "
+                + " FROM ( "
+
+                    + " SELECT COUNT( DISTINCT transaction.userID ) AS sc, MONTH( Transaction.Time ) AS MONTH  "
+                    + " FROM transaction "
+                    + " WHERE YEAR( Transaction.Time ) = ?" //yr
+                        + " AND transaction.VenueID = @var_venueID  "
+                    + " GROUP BY MONTH) AS q1, "
+
+                    + " (SELECT COUNT( DISTINCT u1.UserID ) AS ec_without_nc, u1.month AS u1month, u2.month AS u2month "
+                    + " FROM  "
+                        + " (SELECT DISTINCT transaction.userID, MONTH( Transaction.Time ) AS  MONTH  "
+                        + " FROM transaction "
+                        + " WHERE YEAR( Transaction.Time ) = ? " //yr
+                            + " AND transaction.VenueID = @var_venueID) AS u1, "
+
+                        + " (SELECT DISTINCT transaction.userID, MONTH( Transaction.Time ) AS MONTH "
+                        + " FROM transaction "
+                        + " WHERE YEAR( Transaction.Time ) = ? " //yr
+                            + " AND transaction.VenueID = @var_venueID) AS u2 "
+                    + " WHERE u1.userID = u2.userID "
+                        + " AND u1.month +1 = u2.month "
+                    + " GROUP BY CONCAT( u1.month,  \"-\", u2.month )) AS q2 "
+                + " WHERE q1.month = q2.u1month ");
+
+
+            pstmt.setInt(1, venueOwnerID);
+            pstmt.setInt(2, year);
+            pstmt.setInt(3, year);
+            pstmt.setInt(4, year);
+            System.out.println(pstmt);
+            ResultSet rs = pstmt.executeQuery();
+
+            double crr = 0;
+            int month = 0;
+            while (rs.next()){
+                crr = rs.getDouble("crr");
+                month = rs.getInt("u2month");
+                CRRperMonth.put(month, crr);
+            }
+            cleanup(conn, pstmt, rs);
+            return CRRperMonth;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new ConnectionManagerException(ex);
+        }
+    }
+
     public static double getItemPopularity(int venueOwnerID, int itemID,
             java.sql.Date fromDate, java.sql.Date toDate)
             throws ConnectionManagerException {
@@ -1429,4 +1489,6 @@ public class ConnectionManager {
             throw new ConnectionManagerException(ex);
         }
     }
+
+
 }
