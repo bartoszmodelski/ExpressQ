@@ -9,7 +9,7 @@ import com.delta.expressq.util.*;
 public class ConnectionManager {
     // JDBC driver name and database URL
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://us-cdbr-iron-east-04.cleardb.net/heroku_ce661b81b9c9192";
+    private static final String DB_URL = "jdbc:mysql://us-cdbr-iron-east-04.cleardb.net/heroku_ce661b81b9c9192?allowMultiQueries=true";
     // Database credentials
     private static final String DB_USER = "b02576368bd1b5";
     private static final String DB_PASS = "6d1d4ae1";
@@ -1413,20 +1413,25 @@ public class ConnectionManager {
             pstmt.setInt(2, year);
             pstmt.setInt(3, year);
             pstmt.setInt(4, year);
-            System.out.println(pstmt);
             ResultSet rs = pstmt.executeQuery();
-
-            double crr = 0;
-            int month = 0;
-            while (rs.next()){
-                crr = rs.getDouble("crr");
-                month = rs.getInt("u2month");
-                CRRperMonth.put(month, crr);
+            rs.close();
+            if (pstmt.getMoreResults()) {
+                rs = pstmt.getResultSet();
+                double crr = 0;
+                int month = 0;
+                while (rs.next()){
+                    crr = rs.getDouble("crr");
+                    month = rs.getInt("u2month");
+                    CRRperMonth.put(month, crr);
+                }
             }
+
+
             cleanup(conn, pstmt, rs);
             return CRRperMonth;
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
             throw new ConnectionManagerException(ex);
         }
     }
@@ -1486,6 +1491,7 @@ public class ConnectionManager {
             cleanup(conn, pstmt, rs);
             return popularity;
         } catch (Exception ex) {
+
             throw new ConnectionManagerException(ex);
         }
     }

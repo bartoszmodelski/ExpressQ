@@ -12,11 +12,11 @@ $("#<s:property escapeHtml="false" value="pId"/>").click(function() {
                 data: [<s:property escapeHtml="false" value="data"/>]
             }]
         };
-        
+
 	  $('#canvas1').remove();
 	  $('#chartdiv').append('<canvas id="canvas1"><canvas>');
-     
-        var ctx = document.getElementById("<s:property escapeHtml="false" value="canvasId"/>").getContext("2d");  
+
+        var ctx = document.getElementById("<s:property escapeHtml="false" value="canvasId"/>").getContext("2d");
         myBar = new Chart(ctx, {
             type: 'bar',
             data: barChartData,
@@ -35,9 +35,9 @@ $("#<s:property escapeHtml="false" value="pId"/>").click(function() {
                             beginAtZero: true,
                             callback: function(value, index, values) {
                                 if(parseInt(value) >= 1000){
-                                    return '<s:property escapeHtml="false" value="currency"/>' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    return '<s:property escapeHtml="false" value="currency"/>' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '<s:property escapeHtml="false" value="symbol"/>';
                                 } else {
-                                    return '<s:property escapeHtml="false" value="currency"/>' + value;
+                                    return '<s:property escapeHtml="false" value="currency"/>' + value + '<s:property escapeHtml="false" value="symbol"/>';
                                 }
                             }
                         }
