@@ -25,7 +25,7 @@
                 <script src="/chart?type=TransactionsPerHour&fromDate=2016-12-10&toDate=2018-01-01&canvasId=canvas1&pId=TransactionsPerHourBtn"></script>
         </jsp:attribute>
     <jsp:body>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-2">
                     <nav class="nav flex-column">
@@ -37,11 +37,9 @@
                         <p id="mostPopularPairsBtn">Common item pairings</p>
                     </nav>
                 </div>
-                <div class="container" style="margin-left: 20px;">
                     <div class="col-sm-10">
                         <canvas id="canvas1"></canvas>
                     </div>
-                </div>
             </div>
         </div>
     </jsp:body>
