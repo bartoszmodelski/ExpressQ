@@ -23,18 +23,20 @@
                 <script src="/chart?type=ACSperWeek&year=2017&canvasId=canvas1&pId=ACSperWeekBtn"></script>
                 <script src="/chart?type=AllItemsPopularity&fromDate=2016-12-10&toDate=2018-01-01&canvasId=canvas1&pId=AllItemsPopularityBtn"></script>
                 <script src="/chart?type=TransactionsPerHour&fromDate=2016-12-10&toDate=2018-01-01&canvasId=canvas1&pId=TransactionsPerHourBtn"></script>
+                <script src="/chart?type=CustomerRetentionRate&year=2017&canvasId=canvas1&pId=CustomerRetentionRateBtn"></script>
         </jsp:attribute>
     <jsp:body>
         <div class="container-fluid" id ="chartcontainer">
             <div class="row">
                 <div class="col-sm-3">
-                    <nav class="nav flex-column">     
+                    <nav class="nav flex-column">
                         <p id="ACSperMonthBtn" class="btn btn-sm btn-primary">Average Customer Spending per Month</p><br>
                         <p id="ACSperWeekBtn" class="btn btn-sm btn-primary">Average Customer Spending per Week</p><br>
                         <p id="AllItemsPopularityBtn" class="btn btn-sm btn-primary">Item Popularity</p><br>
                         <p id="TransactionsPerHourBtn" class="btn btn-sm btn-primary">Transactions per Hour</p><br>
-                        <p id="itemSaleBtn" class="btn btn-sm btn-primary">Customer Retention</p><br>
+                        <!-- <p id="itemSaleBtn" class="btn btn-sm btn-primary">Sales of Item (id=32)</p><br>-->
                         <p id="mostPopularPairsBtn" class="btn btn-sm btn-primary">Common Item Pairings</p><br>
+                        <p id="CustomerRetentionRateBtn" class="btn btn-sm btn-primary">Customer retention rate</p><br>
                     </nav>
                 </div>
                     <div class="col-sm-9" id="chartdiv">
