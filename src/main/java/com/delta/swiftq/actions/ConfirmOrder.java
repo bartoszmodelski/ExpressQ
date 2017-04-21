@@ -43,10 +43,10 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.port", "465");
 	}
-	
+
 	/**
 	 * Sends confirmation email when order is successful
-	 * @param username 
+	 * @param username
 	 * @throws AddressException
 	 * @throws MessagingException
 	 */
@@ -94,16 +94,16 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 			//Setup for stripe charge
 			Stripe.apiKey = "sk_test_U1DddsCH9sv1xbGdcv1G7ZRl";
 			String token = request.getParameter("stripeToken");
-			
+
 			System.out.println(ActiveRecord.getMaximalConfirmationTimeAsString());
 			Order order = ActiveRecord.getOrder(username);
-			
+
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("amount", order.getAmount());
 			params.put("currency", "gbp");
 			params.put("description", user.getFirstName() + " " + user.getLastName() + " ordered from venue with id" + order.getVenue());
 			params.put("source", token);
-			
+
 			if ((hour.equals("unspecified")) && (minute.equals("unspecified"))) {
 				return placeOrderWithoutTime(username, params);
 			} else {
@@ -129,7 +129,7 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 		int hourConverted, minuteConverted;
 		try {
 			hourConverted = convertHour(hour);
-			minuteConverted = convertMinute(hour);
+			minuteConverted = convertMinute(minute);
 		} catch (Exception e) {
 			addActionError("Incorrect time.");
 			return ERROR;
