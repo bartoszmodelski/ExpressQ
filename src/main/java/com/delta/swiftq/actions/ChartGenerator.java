@@ -1,4 +1,6 @@
 package com.delta.swiftq.actions;
+/** Class for generating various types of charts */
+
 
 import com.delta.swiftq.database.*;
 import com.delta.swiftq.util.*;
@@ -25,7 +27,9 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 	public String toDate = "";
 	public String pId = "";
 	public String itemID = "";
+	public String symbol = "";
 	public String colour = "window.chartColors.red";
+
 
 	public String execute() {
 		if (type.equals("ACSperMonth"))
@@ -82,11 +86,12 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 			for (int i = 1; i < 12; i++) {
 				labels += "\"" + getMonth(i) + "\",";
 				if (CRR.containsKey(i))
-					data +=	Double.toString(CRR.get(i)) + ",";
+					data +=	Integer.toString((int)(CRR.get(i) * 100)) + ",";
 				else
 					data += "0,";
 			}
 
+			symbol = "%";
 			datasetTitle = "CRR";
 			chartType = "bar";
 			chartTitle = "Customer retention rate in every month of " + Integer.parseInt(year);
@@ -143,7 +148,7 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 
 			colour = "window.chartColors.green";
 			datasetTitle = "Sale";
-			chartTitle = "Cumulative transactions per hour between " + start + " and " + end;
+			chartTitle = "Peak hours based on transactions between " + start + " and " + end;
 
 			return "linechart";
 		} catch (ConnectionManagerException e) {
@@ -207,6 +212,8 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 				else
 					data += "0,";
 			}
+
+			currency = "\u00a3";
 			colour = "window.chartColors.purple";
 			datasetTitle = "ACS";
 			chartType = "bar";
@@ -218,6 +225,10 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 		} catch (Exception e) {
 			return "error";
 		}
+	}
+
+	public String getSymbol() {
+		return symbol;
 	}
 
 	public String getColour() {
@@ -241,7 +252,7 @@ public class ChartGenerator extends ActionSupportWithSession implements ServletR
 
 			datasetTitle = "Transactions";
 			chartType = "bar";
-			chartTitle = "Venue popularity between " + start + " and " + end ;
+			chartTitle = "Item popularity between " + start + " and " + end ;
 
 			return "barchart";
 		} catch (ConnectionManagerException e) {
