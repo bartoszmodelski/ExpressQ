@@ -1,4 +1,4 @@
-package com.delta.expressq;
+package com.delta.swiftq;
 
 public class Item {
     public double price;

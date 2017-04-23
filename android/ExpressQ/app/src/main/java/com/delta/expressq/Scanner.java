@@ -1,4 +1,4 @@
-package com.delta.expressq;
+package com.delta.swiftq;
 
 import com.google.zxing.Result;
 

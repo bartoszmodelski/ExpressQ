@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ExpressQ</string>
+    <string name="app_name">SwiftQ</string>
     <string name="title_activity_order_listing">OrderListing</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

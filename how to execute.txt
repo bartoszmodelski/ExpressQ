@@ -4,7 +4,6 @@
 	to run with tests : mvn package 
 	java -jar target/dependency/webapp-runner.jar target/*.war
 
-
 2. For Heroku deployment:
 2.1 Credentials:
 	e-mail: tifyeros@norih.com (unaccessible temp. mailbox)

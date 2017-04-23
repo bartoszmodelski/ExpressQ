@@ -1,4 +1,4 @@
-package com.delta.expressq;
+package com.delta.swiftq;
 
 import android.content.Context;
 import android.content.DialogInterface;
