@@ -46,7 +46,6 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 
 	/**
 	 * Sends confirmation email when order is successful
-	 * @param username
 	 * @throws AddressException
 	 * @throws MessagingException
 	 */
@@ -70,11 +69,6 @@ public class ConfirmOrder extends ActionSupportWithSession implements ServletReq
 	/**
 	 * Main function called by struts, when routed to "confirm". Retrives payment details inputted by user and creates a charge to our Stripe account.
 	 * @return "success", "db_error", "login", "error"
-	 * @throws APIException
-	 * @throws CardException
-	 * @throws APIConnectionException
-	 * @throws InvalidRequestException
-	 * @throws AuthenticationException
 	 */
 	public String execute() throws AuthenticationException, InvalidRequestException, APIConnectionException, CardException, APIException {
 		//if logged in attempt at placing order
